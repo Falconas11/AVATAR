@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>AVATAR — Visualize Aging</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      <p class="eyebrow">Visualize Aging</p>
+      <h1>AVATAR</h1>
+      <p class="subtitle">
+        Explore how lifestyle factors may influence visible facial aging.
+      </p>
+    </header>
+
+    <section class="card">
+      <form id="avatar-form">
+        <label>
+          Portrait
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            required
+          />
+        </label>
+
+        <div class="grid">
+          <label>
+            Current age
+            <input id="age" type="number" min="1" max="120" value="20" />
+          </label>
+
+          <label>
+            Target age
+            <input id="target-age" type="number" min="1" max="120" value="65" />
+          </label>
+        </div>
+
+        <label>
+          Sex
+          <select id="sex">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </label>
+
+        <label>
+          Ethnicity
+          <input id="ethnicity" type="text" value="Asian" />
+        </label>
+
+        <div id="factor-controls"></div>
+
+        <button id="generate-button" type="submit">
+          Generate aging portrait
+        </button>
+      </form>
+    </section>
+
+    <section id="status" class="status"></section>
+
+    <section id="results" class="results hidden">
+      <div class="image-panel">
+        <h2>Original</h2>
+        <img id="original-preview" alt="Original portrait" />
+      </div>
+
+      <div class="image-panel">
+        <h2>Aged portrait</h2>
+        <img id="aged-result" alt="Generated aged portrait" />
+      </div>
+
+      <div class="features-panel">
+        <h2>Top aging features</h2>
+        <ol id="feature-list"></ol>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
