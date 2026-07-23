@@ -1,0 +1,74 @@
+﻿raw_name,raw_id,canonical_id,canonical_label,target_layer,target_category,action,reason
+African American,african_american,african_american,African American,factor,demographic_ethnicity,keep,Canonical factor or demographic input.
+Asian,asian,asian,Asian,factor,demographic_ethnicity,keep,Canonical factor or demographic input.
+Caucasian,caucasian,caucasian,Caucasian,factor,demographic_ethnicity,keep,Canonical factor or demographic input.
+Hispanic/Latino,hispanic_latino,hispanic_latino,Hispanic/Latino,factor,demographic_ethnicity,keep,Canonical factor or demographic input.
+Men,men,men,Men,factor,demographic_sex,keep,Canonical factor or demographic input.
+Women,women,women,Women,factor,demographic_sex,keep,Canonical factor or demographic input.
+General,general,general_diet_quality,General diet quality,factor,dietary_subfactor,rename,Clarified ambiguous diet subfactor label.
+Lack of Protein,lack_of_protein,protein_deficiency,Protein deficiency,factor,dietary_subfactor,rename,Converted lack-of phrasing to deficiency terminology.
+Lack of Vitamin A,lack_of_vitamin_a,vitamin_a_deficiency,Vitamin A deficiency,factor,dietary_subfactor,rename,Converted lack-of phrasing to deficiency terminology.
+Excess of Vitamin A,excess_of_vitamin_a,vitamin_a_excess,Vitamin A excess,factor,dietary_subfactor,rename,Standardized wording.
+Lack of Vitabmin B12,lack_of_vitabmin_b12,vitamin_b12_deficiency,Vitamin B12 deficiency,factor,dietary_subfactor,rename,Corrected spelling and standardized deficiency terminology.
+Lack of Vitamin B2,lack_of_vitamin_b2,vitamin_b2_deficiency,Vitamin B2 deficiency,factor,dietary_subfactor,rename,Converted lack-of phrasing to deficiency terminology.
+Lack of Vitamin B6,lack_of_vitamin_b6,vitamin_b6_deficiency,Vitamin B6 deficiency,factor,dietary_subfactor,rename,Converted lack-of phrasing to deficiency terminology.
+Alcohol,alcohol,alcohol,Alcohol,factor,lifestyle_factor,keep,Canonical factor or demographic input.
+Diet,diet,diet,Diet,factor,lifestyle_factor,keep,Canonical factor or demographic input.
+Smoking,smoking,smoking,Smoking,factor,lifestyle_factor,keep,Canonical factor or demographic input.
+Stress,stress,stress,Stress,factor,lifestyle_factor,keep,Canonical factor or demographic input.
+UV Exposure,uv_exposure,uv_exposure,UV exposure,factor,lifestyle_factor,keep,Canonical factor or demographic input.
+Crow's Feet,crow_s_feet,crow_feet,Crow's feet,feature,aging_feature,rename,Standardized apostrophe and capitalization.
+Profound nasolabial folds,profound_nasolabial_folds,deep_nasolabial_folds,Deep nasolabial folds,feature,aging_feature,rename,Standardized intensity wording.
+Coarse/Dry skin,coarse_dry_skin,dry_skin,Dry/coarse skin,feature,aging_feature,rename,Standardized word order and punctuation.
+xerosis,xerosis,dry_skin,Dry/coarse skin,feature,aging_feature,merge,Merged facial xerosis with the canonical dry-skin phenotype.
+Dull and uneven skin tone,dull_and_uneven_skin_tone,dull_skin_tone,Dull skin tone,feature,aging_feature,split,Compound source phenotype split into two renderable canonical features.
+Puffiness,puffiness,facial_puffiness,Facial puffiness,feature,aging_feature,rename,Added facial scope.
+More wrinkling,more_wrinkling,facial_wrinkles,Facial wrinkles,feature,aging_feature,rename,Converted comparative phrase to a stable phenotype name.
+Forehead wrinkles (20-60),forehead_wrinkles_20_60,forehead_wrinkles,Forehead wrinkles,feature,aging_feature,rename,Removed age range from node label; stored on the edge.
+Jowls,jowls,jowls,Jowls,feature,aging_feature,keep,Already canonical.
+Lower face Sagging,lower_face_sagging,lower_face_sagging,Lower-face sagging,feature,aging_feature,rename,Merged capitalization variant.
+Lower face sagging (40+),lower_face_sagging_40,lower_face_sagging,Lower-face sagging,feature,aging_feature,rename,Removed age condition from node label; stored on the edge.
+Marionette Lines (18-40),marionette_lines_18_40,marionette_lines,Marionette lines,feature,aging_feature,rename,Removed age range from node label; stored on the edge.
+Pronounced nasolabial,pronounced_nasolabial,nasolabial_folds,Nasolabial folds,feature,aging_feature,rename,Expanded incomplete phrase to canonical phenotype.
+Eye circles,eye_circles,under_eye_circles,Under-eye circles,feature,aging_feature,rename,Clarified anatomical location.
+Uneven Complexion,uneven_complexion,uneven_skin_tone,Uneven skin tone,feature,aging_feature,rename,Standardized complexion terminology.
+Dull and uneven skin tone,dull_and_uneven_skin_tone,uneven_skin_tone,Uneven skin tone,feature,aging_feature,merge,Uneven-tone component merged; dullness is also retained separately as dull_skin_tone.
+Uneven complexion,uneven_complexion,uneven_skin_tone,Uneven skin tone,feature,aging_feature,merge,Case variant merged into canonical uneven skin tone.
+cheilitis,cheilitis,cheilitis,Cheilitis,feature,clinical_condition,reclassify,Retained as a clinical condition.
+conjunctival and corneal xerosis,conjunctival_and_corneal_xerosis,ocular_xerosis,Conjunctival/corneal xerosis,feature,clinical_condition,rename,Standardized punctuation and kept separate from facial dry skin.
+Bimaxillary Protrusion,bimaxillary_protrusion,bimaxillary_protrusion,Bimaxillary protrusion,feature,facial_morphology,reclassify,"Merged capitalization variant. Classified as baseline morphology, not aging."
+Bimiaxillary Protrusion,bimiaxillary_protrusion,bimaxillary_protrusion,Bimaxillary protrusion,feature,facial_morphology,reclassify,"Corrected spelling. Classified as baseline morphology, not aging."
+Broad Nasal Base,broad_nasal_base,broad_nasal_base,Broad nasal base,feature,facial_morphology,reclassify,"Standardized capitalization. Classified as baseline morphology, not aging."
+Broader nose,broader_nose,broad_nose,Broad nose,feature,facial_morphology,reclassify,"Removed comparative phrasing. Classified as baseline morphology, not aging."
+Broad rounded face,broad_rounded_face,broad_rounded_face,Broad rounded face,feature,facial_morphology,reclassify,"Standardized capitalization. Classified as baseline morphology, not aging."
+Flatter midface,flatter_midface,flat_midface,Flat midface,feature,facial_morphology,reclassify,"Removed comparative phrasing. Classified as baseline morphology, not aging."
+Fuller upper Eyelid,fuller_upper_eyelid,full_upper_eyelids,Full upper eyelids,feature,facial_morphology,reclassify,"Standardized plurality and capitalization. Classified as baseline morphology, not aging."
+Higher Eyebrows,higher_eyebrows,high_eyebrows,High eyebrows,feature,facial_morphology,reclassify,"Removed comparative phrasing. Classified as baseline morphology, not aging."
+Increased bizygomatic distance,increased_bizygomatic_distance,increased_bizygomatic_width,Increased bizygomatic width,feature,facial_morphology,reclassify,"Replaced distance with standard facial-width terminology. Classified as baseline morphology, not aging."
+Lips w/ less volume,lips_w_less_volume,low_lip_volume,Lower lip volume,feature,facial_morphology,reclassify,"Expanded abbreviation and standardized wording. Classified as baseline morphology, not aging."
+Lower Nasal Bridge,lower_nasal_bridge,low_nasal_bridge,Low nasal bridge,feature,facial_morphology,reclassify,"Standardized adjective. Classified as baseline morphology, not aging."
+Narrower Nasal Base,narrower_nasal_base,narrow_nasal_base,Narrow nasal base,feature,facial_morphology,reclassify,"Removed comparative phrasing. Classified as baseline morphology, not aging."
+Orbital Proptosis,orbital_proptosis,orbital_proptosis,Orbital proptosis,feature,facial_morphology,reclassify,"Standardized capitalization. Classified as baseline morphology, not aging."
+Promient lips,promient_lips,prominent_lips,Prominent lips,feature,facial_morphology,reclassify,"Corrected spelling and merged synonym. Classified as baseline morphology, not aging."
+Protuberant Lips,protuberant_lips,prominent_lips,Prominent lips,feature,facial_morphology,reclassify,"Replaced uncommon wording with clearer canonical term. Classified as baseline morphology, not aging."
+Receded Chin,receded_chin,receded_chin,Receded chin,feature,facial_morphology,reclassify,"Standardized capitalization. Classified as baseline morphology, not aging."
+Decreased Nasal Projection,decreased_nasal_projection,reduced_nasal_projection,Reduced nasal projection,feature,facial_morphology,reclassify,"Standardized wording. Classified as baseline morphology, not aging."
+Wider/Rounder Face,wider_rounder_face,wide_round_face,Wide/round face,feature,facial_morphology,reclassify,"Standardized comparative morphology wording. Classified as baseline morphology, not aging."
+alopecia,alopecia,alopecia,Alopecia,feature,hair_feature,reclassify,Retained as a hair feature.
+lanugo-like hair,lanugo_like_hair,lanugo_like_hair,Lanugo-like hair,feature,hair_feature,keep,Already canonical after trimming whitespace.
+Tooth decay,tooth_decay,tooth_decay,Tooth decay,feature,oral_health_condition,reclassify,Retained but classified as oral health rather than facial aging.
+Blue/Blackish lips,blue_blackish_lips,darkened_lips,Blue/blackish lips,feature,pigmentation_feature,rename,Standardized capitalization and assigned pigmentation category.
+Hyperpigmentation,hyperpigmentation,hyperpigmentation,Hyperpigmentation,feature,pigmentation_feature,merge,Case variant merged into canonical hyperpigmentation.
+hyperpigmentation,hyperpigmentation,hyperpigmentation,Hyperpigmentation,feature,pigmentation_feature,reclassify,Classified specifically as pigmentation.
+Inconsistent face pigmentation,inconsistent_face_pigmentation,inconsistent_facial_pigmentation,Inconsistent facial pigmentation,feature,pigmentation_feature,rename,Standardized anatomical wording.
+Sunspots,sunspots,sunspots,Sunspots,feature,pigmentation_feature,reclassify,Classified specifically as pigmentation.
+yellow/orange pigmentation,yellow_orange_pigmentation,yellow_orange_pigmentation,Yellow/orange pigmentation,feature,pigmentation_feature,keep,Canonicalized capitalization.
+Acne,acne,acne,Acne,feature,skin_condition,reclassify,Retained but marked as a non-aging skin condition.
+desquamation,desquamation,desquamation,Desquamation,feature,skin_condition,reclassify,Retained as a skin condition.
+Eczema,eczema,eczema,Eczema,feature,skin_condition,reclassify,Retained but marked as a non-aging skin condition.
+Nodular elastosis,nodular_elastosis,nodular_elastosis,Nodular elastosis,feature,skin_condition,reclassify,Retained as a skin condition rather than a generic aging feature.
+seborrheic eruption,seborrheic_eruption,seborrheic_eruption,Seborrheic eruption,feature,skin_condition,reclassify,Retained as a skin condition.
+Enlarged pores,enlarged_pores,enlarged_pores,Enlarged pores,feature,skin_texture_feature,reclassify,Classified as a skin-texture feature.
+Broken capillaries,broken_capillaries,broken_capillaries,Broken capillaries,feature,vascular_feature,reclassify,Classified as a vascular feature.
+Redness,redness,facial_redness,Facial redness,feature,vascular_feature,rename,Added facial scope and vascular classification.
+Spider Veins,spider_veins,spider_veins,Spider veins,feature,vascular_feature,rename,Standardized capitalization and vascular classification.

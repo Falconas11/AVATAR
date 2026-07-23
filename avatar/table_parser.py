@@ -1,0 +1,1 @@
+"""Table -> graph parser."""

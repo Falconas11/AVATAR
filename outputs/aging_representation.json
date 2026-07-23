@@ -1,0 +1,1015 @@
+{
+  "profile": {
+    "age": 20,
+    "target_age": 65,
+    "sex": "male",
+    "ethnicity": "Asian",
+    "factors": {
+      "smoking": 0.0,
+      "uv_exposure": 0.4,
+      "alcohol": 0.1,
+      "stress": 0.6,
+      "diet": 0.3
+    }
+  },
+  "factor_activations": {
+    "smoking": 0.0,
+    "uv_exposure": 0.4,
+    "alcohol": 0.1,
+    "stress": 0.6,
+    "diet": 0.3,
+    "men": 1.0,
+    "asian": 1.0,
+    "general_diet_quality": 0.3,
+    "protein_deficiency": 0.3,
+    "vitamin_a_deficiency": 0.3,
+    "vitamin_a_excess": 0.3,
+    "vitamin_b12_deficiency": 0.3,
+    "vitamin_b2_deficiency": 0.3,
+    "vitamin_b6_deficiency": 0.3
+  },
+  "mechanisms": {
+    "skin_barrier_impairment": {
+      "label": "Skin barrier impairment",
+      "score": 0.6,
+      "category": "barrier_mechanism",
+      "region": "epidermis",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "causes_mechanism",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Altemus et al. 2001, PMID: 11511309"
+        }
+      ]
+    },
+    "pigmentation_dysregulation": {
+      "label": "Pigmentation dysregulation",
+      "score": 0.4,
+      "category": "pigmentation_mechanism",
+      "region": "epidermis",
+      "contributions": [
+        {
+          "source": "uv_dna_damage",
+          "source_layer": "mechanism",
+          "source_activation": 0.4,
+          "relation": "contributes_to",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Provisional pathway hypothesis"
+        }
+      ]
+    },
+    "uv_dna_damage": {
+      "label": "UV-induced DNA damage",
+      "score": 0.4,
+      "category": "cellular_mechanism",
+      "region": "epidermis",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "causes_mechanism",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Dong et al. 2008, PMID: 18459971"
+        }
+      ]
+    },
+    "collagen_degradation": {
+      "label": "Collagen degradation",
+      "score": 0.2,
+      "category": "ecm_mechanism",
+      "region": "dermis",
+      "contributions": [
+        {
+          "source": "mmp_activity",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "causes_mechanism",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Fisher et al. 1997, PMID: 9358139"
+        }
+      ]
+    },
+    "elastic_fiber_damage": {
+      "label": "Elastic fiber damage",
+      "score": 0.2,
+      "category": "ecm_mechanism",
+      "region": "dermis",
+      "contributions": [
+        {
+          "source": "mmp_activity",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "contributes_to",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Morita 2007, PMID: 17951030"
+        }
+      ]
+    },
+    "mmp_activity": {
+      "label": "Matrix metalloproteinase activity",
+      "score": 0.2,
+      "category": "ecm_mechanism",
+      "region": "dermis",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "activates_mechanism",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Fisher et al. 1997, PMID: 9358139"
+        },
+        {
+          "source": "oxidative_stress",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "promotes_mechanism",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Hwang et al. 2014, PMID: 25131997"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "activates_mechanism",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Knuutinen et al. 2002, PMID: 11966688"
+        }
+      ]
+    },
+    "oxidative_stress": {
+      "label": "Oxidative stress",
+      "score": 0.2,
+      "category": "cellular_mechanism",
+      "region": "",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "activates_mechanism",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Hwang et al. 2014, PMID: 25131997"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "activates_mechanism",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Morita 2007, PMID: 17951030"
+        }
+      ]
+    }
+  },
+  "aging_representation": {
+    "crow_feet": 0.6,
+    "enlarged_pores": 0.6,
+    "forehead_wrinkles": 0.6,
+    "under_eye_circles": 0.6,
+    "hyperpigmentation": 0.45,
+    "spider_veins": 0.4,
+    "sunspots": 0.4,
+    "dry_skin": 0.3286,
+    "uneven_skin_tone": 0.2667,
+    "deep_nasolabial_folds": 0.2,
+    "jowls": 0.2,
+    "lower_face_sagging": 0.2,
+    "broken_capillaries": 0.1,
+    "facial_puffiness": 0.1,
+    "facial_redness": 0.1,
+    "facial_wrinkles": 0.1,
+    "nodular_elastosis": 0.0
+  },
+  "features": {
+    "flat_midface": {
+      "label": "Flat midface",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "midface",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "full_upper_eyelids": {
+      "label": "Full upper eyelids",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "upper eyelids",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "high_eyebrows": {
+      "label": "High eyebrows",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "eyebrows",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "low_nasal_bridge": {
+      "label": "Low nasal bridge",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "nose",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "prominent_lips": {
+      "label": "Prominent lips",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "lips",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "receded_chin": {
+      "label": "Receded chin",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "chin",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "wide_round_face": {
+      "label": "Wide/round face",
+      "score": 1.0,
+      "category": "facial_morphology",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "asian",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "baseline_morphology",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Vashi et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "crow_feet": {
+      "label": "Crow's feet",
+      "score": 0.6,
+      "category": "aging_feature",
+      "region": "eye corners",
+      "contributions": [
+        {
+          "source": "men",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "more_prone_to",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Flament et al."
+        },
+        {
+          "source": "collagen_degradation",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "enlarged_pores": {
+      "label": "Enlarged pores",
+      "score": 0.6,
+      "category": "skin_texture_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "forehead_wrinkles": {
+      "label": "Forehead wrinkles",
+      "score": 0.6,
+      "category": "aging_feature",
+      "region": "forehead",
+      "contributions": [
+        {
+          "source": "men",
+          "source_layer": "factor",
+          "source_activation": 1.0,
+          "relation": "more_prone_to",
+          "weight": 1.0,
+          "contribution": 1.0,
+          "evidence": "Flament et al."
+        },
+        {
+          "source": "collagen_degradation",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "under_eye_circles": {
+      "label": "Under-eye circles",
+      "score": 0.6,
+      "category": "aging_feature",
+      "region": "under-eye",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "acne": {
+      "label": "Acne",
+      "score": 0.45,
+      "category": "skin_condition",
+      "region": "T-zone or entire face",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        },
+        {
+          "source": "general_diet_quality",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Illinois Dermatology Institute"
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "hyperpigmentation": {
+      "label": "Hyperpigmentation",
+      "score": 0.45,
+      "category": "pigmentation_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        },
+        {
+          "source": "vitamin_b12_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "spider_veins": {
+      "label": "Spider veins",
+      "score": 0.4,
+      "category": "vascular_feature",
+      "region": "cheek",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Swift et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "sunspots": {
+      "label": "Sunspots",
+      "score": 0.4,
+      "category": "pigmentation_feature",
+      "region": "cheekbones, nose, forehead",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Hussein et al."
+        },
+        {
+          "source": "pigmentation_dysregulation",
+          "source_layer": "mechanism",
+          "source_activation": 0.4,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "dry_skin": {
+      "label": "Dry/coarse skin",
+      "score": 0.3286,
+      "category": "aging_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        },
+        {
+          "source": "skin_barrier_impairment",
+          "source_layer": "mechanism",
+          "source_activation": 0.6,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Mechanistic mapping"
+        },
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Swift et al."
+        },
+        {
+          "source": "general_diet_quality",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Illinois Dermatology Institute"
+        },
+        {
+          "source": "vitamin_a_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        },
+        {
+          "source": "alcohol",
+          "source_layer": "factor",
+          "source_activation": 0.1,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.1,
+          "evidence": "Dover Behavioral Health System"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Swift et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "alopecia": {
+      "label": "Alopecia",
+      "score": 0.3,
+      "category": "hair_feature",
+      "region": "hair",
+      "contributions": [
+        {
+          "source": "vitamin_b2_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "cheilitis": {
+      "label": "Cheilitis",
+      "score": 0.3,
+      "category": "clinical_condition",
+      "region": "lips",
+      "contributions": [
+        {
+          "source": "vitamin_b2_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "desquamation": {
+      "label": "Desquamation",
+      "score": 0.3,
+      "category": "skin_condition",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "vitamin_b2_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "eczema": {
+      "label": "Eczema",
+      "score": 0.3,
+      "category": "skin_condition",
+      "region": "cheeks, eyes, mouth",
+      "contributions": [
+        {
+          "source": "general_diet_quality",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Illinois Dermatology Institute"
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "lanugo_like_hair": {
+      "label": "Lanugo-like hair",
+      "score": 0.3,
+      "category": "hair_feature",
+      "region": "forehead and ears",
+      "contributions": [
+        {
+          "source": "protein_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "ocular_xerosis": {
+      "label": "Conjunctival/corneal xerosis",
+      "score": 0.3,
+      "category": "clinical_condition",
+      "region": "eyes",
+      "contributions": [
+        {
+          "source": "vitamin_a_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": false,
+      "aging_related": false
+    },
+    "seborrheic_eruption": {
+      "label": "Seborrheic eruption",
+      "score": 0.3,
+      "category": "skin_condition",
+      "region": "nasolabial folds and eyebrows",
+      "contributions": [
+        {
+          "source": "vitamin_b6_deficiency",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "yellow_orange_pigmentation": {
+      "label": "Yellow/orange pigmentation",
+      "score": 0.3,
+      "category": "pigmentation_feature",
+      "region": "nasolabial folds and forehead",
+      "contributions": [
+        {
+          "source": "vitamin_a_excess",
+          "source_layer": "factor",
+          "source_activation": 0.3,
+          "relation": "associated_with",
+          "weight": 1.0,
+          "contribution": 0.3,
+          "evidence": "Wong et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "uneven_skin_tone": {
+      "label": "Uneven skin tone",
+      "score": 0.2667,
+      "category": "aging_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Swift et al."
+        },
+        {
+          "source": "pigmentation_dysregulation",
+          "source_layer": "mechanism",
+          "source_activation": 0.4,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Mechanistic mapping"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Swift et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "deep_nasolabial_folds": {
+      "label": "Deep nasolabial folds",
+      "score": 0.2,
+      "category": "aging_feature",
+      "region": "nasolabial region",
+      "contributions": [
+        {
+          "source": "collagen_degradation",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "contributes_to",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "jowls": {
+      "label": "Jowls",
+      "score": 0.2,
+      "category": "aging_feature",
+      "region": "lower cheek and jaw",
+      "contributions": [
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Flament et al."
+        },
+        {
+          "source": "elastic_fiber_damage",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "contributes_to",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Mechanistic mapping"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Flament et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "lower_face_sagging": {
+      "label": "Lower-face sagging",
+      "score": 0.2,
+      "category": "aging_feature",
+      "region": "lower face",
+      "contributions": [
+        {
+          "source": "elastic_fiber_damage",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "broken_capillaries": {
+      "label": "Broken capillaries",
+      "score": 0.1,
+      "category": "vascular_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "alcohol",
+          "source_layer": "factor",
+          "source_activation": 0.1,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.1,
+          "evidence": "Dover Behavioral Health System"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "facial_puffiness": {
+      "label": "Facial puffiness",
+      "score": 0.1,
+      "category": "aging_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "alcohol",
+          "source_layer": "factor",
+          "source_activation": 0.1,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.1,
+          "evidence": "Dover Behavioral Health System"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "facial_redness": {
+      "label": "Facial redness",
+      "score": 0.1,
+      "category": "vascular_feature",
+      "region": "nose and neck",
+      "contributions": [
+        {
+          "source": "alcohol",
+          "source_layer": "factor",
+          "source_activation": 0.1,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.1,
+          "evidence": "Dover Behavioral Health System"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "facial_wrinkles": {
+      "label": "Facial wrinkles",
+      "score": 0.1,
+      "category": "aging_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "collagen_degradation",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Fisher et al. 1997, PMID: 9358139"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Koh et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "darkened_lips": {
+      "label": "Blue/blackish lips",
+      "score": 0.0,
+      "category": "pigmentation_feature",
+      "region": "lips",
+      "contributions": [
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Chauhan et al. (PMC)"
+        }
+      ],
+      "renderable": true,
+      "aging_related": false
+    },
+    "nodular_elastosis": {
+      "label": "Nodular elastosis",
+      "score": 0.0,
+      "category": "skin_condition",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Chauhan et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "tooth_decay": {
+      "label": "Tooth decay",
+      "score": 0.0,
+      "category": "oral_health_condition",
+      "region": "mouth",
+      "contributions": [
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Cleveland Clinic"
+        }
+      ],
+      "renderable": false,
+      "aging_related": false
+    }
+  },
+  "metadata": {
+    "engine_version": "0.2.0",
+    "propagation": "topological_multi_hop_weighted_mean",
+    "node_count": 73,
+    "edge_count": 92
+  }
+}

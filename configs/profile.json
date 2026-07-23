@@ -1,0 +1,13 @@
+{
+  "age": 20,
+  "target_age": 65,
+  "sex": "male",
+  "ethnicity": "Asian",
+  "factors": {
+    "smoking": 0.0,
+    "uv_exposure": 0.4,
+    "alcohol": 0.1,
+    "stress": 0.6,
+    "diet": 0.3
+  }
+}

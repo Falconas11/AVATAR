@@ -1,0 +1,34 @@
+TASK: Edit the provided portrait of the same person. Do not generate a different individual.
+
+TARGET APPEARANCE: Edit the portrait so that the subject appears approximately 65 years old through realistic, gradual facial aging.
+
+AGE ANCHOR: The subject must be immediately perceived as approximately 65 years old and as an older adult before fine skin details are noticed. The overall age impression should be unmistakable, not merely middle-aged. The personalized changes below refine this age impression rather than replace it.
+
+AGE-TYPICAL FEATURES: Establish the normal overall appearance expected at the target age before applying the personalized regional details.
+- Add a natural salt-and-pepper hair pattern, with gray hairs scattered throughout and slightly denser graying around the temples, while preserving the original hairstyle, hairline, and overall hair density.
+- Add mild to moderate generalized skin laxity, especially in the cheeks and jawline.
+- Add mild age-related facial volume loss in the mid-face.
+- Add naturally deepened nasolabial folds.
+- Add subtle neck lines and mild neck laxity where the neck is visible.
+
+IDENTITY PRESERVATION: Preserve the subject's identity, facial bone structure, ethnicity, sex presentation, eye shape, nose shape, mouth shape, hairstyle, expression, pose, camera angle, lighting, clothing, background, and image composition.
+
+PRIMARY AGING IMPRESSION: The strongest overall impression of age should come from changes in the eye corners, entire face, forehead, and under-eye. These regions should establish the perceived age before smaller surface details are noticed. Exact changes are specified below by region.
+
+SECONDARY AGING CHANGES: Add these with lower visual emphasis: very subtle superficial vascular visibility (cheek) and sunspots and age spots (cheekbones, nose, forehead).
+
+SUPPORTING DETAILS: Keep these subtle and subordinate to the main aging changes: dry, slightly coarse skin texture (entire face).
+
+REGIONAL INSTRUCTIONS:
+- In the forehead, add moderate to strong horizontal forehead wrinkles.
+- In the eye corners, add moderate to strong crow's feet.
+- In the under-eye, add moderate to strong under-eye circles.
+- In localized areas of the cheek, add very subtle superficial vascular visibility that appears natural and non-pathological.
+- In the cheekbones, nose, forehead, add moderate sunspots and age spots.
+- In the nose, medial cheeks, and chin, add moderate enlarged pores. Maintain relatively smoother skin on the forehead and lateral cheeks. Across the remaining facial skin, add only subtle dry, slightly coarse skin texture.
+
+BIOLOGICAL CONSISTENCY: The visible appearance should reflect normal intrinsic aging, including gradual collagen loss, reduced skin elasticity, age-related facial soft-tissue descent, and natural facial volume redistribution. Also preserve the personalized aging tendency toward dryness and slightly coarse skin texture. Express these mechanisms only through realistic visible facial and skin changes. Do not introduce dermatological disease, medical annotations, pathological lesions, or anatomical overlays.
+
+REALISM: Keep the edits anatomically plausible, region-specific, photorealistic, naturally asymmetric, and integrated with the original skin texture. Use continuous transitions rather than pasted-on marks.
+
+NEGATIVE CONSTRAINTS: Do not alter identity or facial proportions. Avoid duplicated facial features, extra eyes or nostrils, warped anatomy, extreme asymmetry, caricature-like aging, uniform wrinkle overlays, plastic skin, heavy makeup, illustration, text, or watermarks. Do not create baldness, an altered hairline, reduced hair density, or artificial-looking uniformly white hair. Gray hair should remain unevenly distributed in a realistic salt-and-pepper pattern.

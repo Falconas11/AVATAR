@@ -1,0 +1,10 @@
+feature_id,feature,baseline_score,smoking_score,change_due_to_smoking
+nodular_elastosis,Nodular elastosis,0.0,1.0,1.0
+facial_wrinkles,Facial wrinkles,0.1,0.85,0.75
+deep_nasolabial_folds,Deep nasolabial folds,0.2,0.7,0.5
+jowls,Jowls,0.2,0.7,0.5
+lower_face_sagging,Lower-face sagging,0.2,0.7,0.5
+uneven_skin_tone,Uneven skin tone,0.2667,0.6,0.3333
+crow_feet,Crow's feet,0.6,0.85,0.25
+forehead_wrinkles,Forehead wrinkles,0.6,0.85,0.25
+dry_skin,Dry/coarse skin,0.3286,0.4714,0.1428

@@ -1,0 +1,188 @@
+{
+  "source_profile": {
+    "age": 20,
+    "target_age": 65,
+    "sex": "male",
+    "ethnicity": "Asian"
+  },
+  "target_age": 65,
+  "target_age_source": "profile",
+  "age_typical_features": [
+    "a natural salt-and-pepper hair pattern, with gray hairs scattered throughout and slightly denser graying around the temples, while preserving the original hairstyle, hairline, and overall hair density",
+    "mild to moderate generalized skin laxity, especially in the cheeks and jawline",
+    "mild age-related facial volume loss in the mid-face",
+    "naturally deepened nasolabial folds",
+    "subtle neck lines and mild neck laxity where the neck is visible"
+  ],
+  "selected_features": [
+    {
+      "feature_id": "crow_feet",
+      "label": "Crow's feet",
+      "score": 0.6,
+      "region": "eye corners",
+      "category": "aging_feature",
+      "intensity": "moderate to strong",
+      "phrase": "crow's feet",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "enlarged_pores",
+      "label": "Enlarged pores",
+      "score": 0.6,
+      "region": "entire face",
+      "category": "skin_texture_feature",
+      "intensity": "moderate to strong",
+      "phrase": "enlarged pores",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "forehead_wrinkles",
+      "label": "Forehead wrinkles",
+      "score": 0.6,
+      "region": "forehead",
+      "category": "aging_feature",
+      "intensity": "moderate to strong",
+      "phrase": "horizontal forehead wrinkles",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "under_eye_circles",
+      "label": "Under-eye circles",
+      "score": 0.6,
+      "region": "under-eye",
+      "category": "aging_feature",
+      "intensity": "moderate to strong",
+      "phrase": "under-eye circles",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "spider_veins",
+      "label": "Spider veins",
+      "score": 0.4,
+      "region": "cheek",
+      "category": "vascular_feature",
+      "intensity": "moderate",
+      "phrase": "very subtle superficial vascular visibility",
+      "priority": "secondary"
+    },
+    {
+      "feature_id": "sunspots",
+      "label": "Sunspots",
+      "score": 0.4,
+      "region": "cheekbones, nose, forehead",
+      "category": "pigmentation_feature",
+      "intensity": "moderate",
+      "phrase": "sunspots and age spots",
+      "priority": "secondary"
+    },
+    {
+      "feature_id": "dry_skin",
+      "label": "Dry/coarse skin",
+      "score": 0.3286,
+      "region": "entire face",
+      "category": "aging_feature",
+      "intensity": "subtle",
+      "phrase": "dry, slightly coarse skin texture",
+      "priority": "supporting"
+    }
+  ],
+  "regional_groups": {
+    "forehead": [
+      {
+        "feature_id": "forehead_wrinkles",
+        "label": "Forehead wrinkles",
+        "score": 0.6,
+        "region": "forehead",
+        "category": "aging_feature",
+        "intensity": "moderate to strong",
+        "phrase": "horizontal forehead wrinkles",
+        "priority": "primary"
+      }
+    ],
+    "eye corners": [
+      {
+        "feature_id": "crow_feet",
+        "label": "Crow's feet",
+        "score": 0.6,
+        "region": "eye corners",
+        "category": "aging_feature",
+        "intensity": "moderate to strong",
+        "phrase": "crow's feet",
+        "priority": "primary"
+      }
+    ],
+    "under-eye": [
+      {
+        "feature_id": "under_eye_circles",
+        "label": "Under-eye circles",
+        "score": 0.6,
+        "region": "under-eye",
+        "category": "aging_feature",
+        "intensity": "moderate to strong",
+        "phrase": "under-eye circles",
+        "priority": "primary"
+      }
+    ],
+    "cheek": [
+      {
+        "feature_id": "spider_veins",
+        "label": "Spider veins",
+        "score": 0.4,
+        "region": "cheek",
+        "category": "vascular_feature",
+        "intensity": "moderate",
+        "phrase": "very subtle superficial vascular visibility",
+        "priority": "secondary"
+      }
+    ],
+    "cheekbones, nose, forehead": [
+      {
+        "feature_id": "sunspots",
+        "label": "Sunspots",
+        "score": 0.4,
+        "region": "cheekbones, nose, forehead",
+        "category": "pigmentation_feature",
+        "intensity": "moderate",
+        "phrase": "sunspots and age spots",
+        "priority": "secondary"
+      }
+    ],
+    "entire face": [
+      {
+        "feature_id": "enlarged_pores",
+        "label": "Enlarged pores",
+        "score": 0.6,
+        "region": "entire face",
+        "category": "skin_texture_feature",
+        "intensity": "moderate to strong",
+        "phrase": "enlarged pores",
+        "priority": "primary"
+      },
+      {
+        "feature_id": "dry_skin",
+        "label": "Dry/coarse skin",
+        "score": 0.3286,
+        "region": "entire face",
+        "category": "aging_feature",
+        "intensity": "subtle",
+        "phrase": "dry, slightly coarse skin texture",
+        "priority": "supporting"
+      }
+    ]
+  },
+  "active_mechanisms": [
+    {
+      "id": "skin_barrier_impairment",
+      "label": "Skin barrier impairment",
+      "visible_effect": "dryness and slightly coarse skin texture",
+      "score": 0.6,
+      "region": "epidermis"
+    }
+  ],
+  "builder_metadata": {
+    "version": "1.0.0",
+    "minimum_score": 0.3,
+    "max_features": 12,
+    "strategy": "profile_target_age_resolution_age_anchor_age_typical_features_salt_and_pepper_hair_regional_pore_control_vascular_visibility_intrinsic_aging_consistency_perceptual_priority_feature_metadata_filtering_region_normalization_redundancy_suppression_priority_tiering"
+  }
+}

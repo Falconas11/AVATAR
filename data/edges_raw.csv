@@ -1,0 +1,73 @@
+source,target,relation,weight,region,reference,notes,context
+african_american,bimiaxillary_protrusion,more_prone_to,,,Vashi et al.,,
+african_american,broad_nasal_base,more_prone_to,,,Vashi et al.,,
+african_american,decreased_nasal_projection,more_prone_to,,,Vashi et al.,,
+african_american,hyperpigmentation,more_prone_to,,,Benton,,
+african_american,inconsistent_face_pigmentation,more_prone_to,,,Vashi et al.,*Most melatin so least prone to wrinkles,
+african_american,orbital_proptosis,more_prone_to,,,Vashi et al.,,
+african_american,promient_lips,more_prone_to,,,Vashi et al.,,
+alcohol,broken_capillaries,increases_risk,,Entire face,Dover Behavioral Health System,,
+alcohol,coarse_dry_skin,increases_risk,,Entire face,Dover Behavioral Health System,,
+alcohol,puffiness,increases_risk,,Entire face,Dover Behavioral Health System,,
+alcohol,redness,increases_risk,,"Nose, neck",Dover Behavioral Health System,,
+asian,flatter_midface,more_prone_to,,,Vashi et al.,,
+asian,fuller_upper_eyelid,more_prone_to,,,Vashi et al.,,
+asian,higher_eyebrows,more_prone_to,,,Vashi et al.,,
+asian,lower_face_sagging_40,more_prone_to,,,Flament et al.,"* B/c thicker dermis, most don't start noticing aging signs till their 40s-50s",
+asian,lower_nasal_bridge,more_prone_to,,,Vashi et al.,,
+asian,protuberant_lips,more_prone_to,,,Vashi et al.,,
+asian,receded_chin,more_prone_to,,,Vashi et al.,,
+asian,wider_rounder_face,more_prone_to,,,Vashi et al.,,
+caucasian,lips_w_less_volume,more_prone_to,,,Vashi et al.,,
+caucasian,narrower_nasal_base,more_prone_to,,,Vashi et al.,,
+caucasian,sunspots,more_prone_to,,,Hussein et al.,"* B/c less melatin, aging signs can start occuring in 20s",
+diet,excess_of_vitamin_a,has_subfactor,,,,,
+diet,general,has_subfactor,,,,,
+diet,lack_of_protein,has_subfactor,,,,,
+diet,lack_of_vitabmin_b12,has_subfactor,,,,,
+diet,lack_of_vitamin_a,has_subfactor,,,,,
+diet,lack_of_vitamin_b2,has_subfactor,,,,,
+diet,lack_of_vitamin_b6,has_subfactor,,,,,
+excess_of_vitamin_a,yellow_orange_pigmentation,associated_with,,"Nasolabial folds, forehead",Wong et al.,,"{""parent_factor"": ""Diet""}"
+general,acne,associated_with,,T-zone / Entire face,Illinois Dermatology Institute,,"{""parent_factor"": ""Diet""}"
+general,coarse_dry_skin,associated_with,,Entire face,Illinois Dermatology Institute,,"{""parent_factor"": ""Diet""}"
+general,eczema,associated_with,,"Cheeks, eyes, mouth",Illinois Dermatology Institute,,"{""parent_factor"": ""Diet""}"
+hispanic_latino,bimaxillary_protrusion,more_prone_to,,,Vashi et al.,,
+hispanic_latino,broad_rounded_face,more_prone_to,,,Vashi et al.,,
+hispanic_latino,broader_nose,more_prone_to,,,Vashi et al.,,
+hispanic_latino,hyperpigmentation,more_prone_to,,,Benton,,
+hispanic_latino,inconsistent_face_pigmentation,more_prone_to,,,Vashi et al.,"*B/c decent amount melatin, less prone to wrinkles",
+hispanic_latino,increased_bizygomatic_distance,more_prone_to,,,Vashi et al.,,
+hispanic_latino,profound_nasolabial_folds,more_prone_to,,,Benton,,
+hispanic_latino,receded_chin,more_prone_to,,,Vashi et al.,,
+lack_of_protein,lanugo_like_hair,associated_with,,"Forehead, eats",Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitabmin_b12,hyperpigmentation,associated_with,,Entire face,Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitamin_a,conjunctival_and_corneal_xerosis,associated_with,,Eyes,Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitamin_a,xerosis,associated_with,,Entire face,Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitamin_b2,alopecia,associated_with,,Hair,Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitamin_b2,cheilitis,associated_with,,Lips,Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitamin_b2,desquamation,associated_with,,Entire face,Wong et al.,,"{""parent_factor"": ""Diet""}"
+lack_of_vitamin_b6,seborrheic_eruption,associated_with,,"Nasolabial folds, eyebrows",Wong et al.,,"{""parent_factor"": ""Diet""}"
+men,crows_feet,more_prone_to,,,Flament et al.,,
+men,forehead_wrinkles_20_60,more_prone_to,,,Flament et al.,,
+smoking,blue_blackish_lips,increases_risk,,Mouth,Chauhan et al. (pmc),,
+smoking,coarse_dry_skin,increases_risk,,Entire face,Swift et al.,,
+smoking,jowls,increases_risk,,"Lower cheek, jaw",Flament et al,,
+smoking,more_wrinkling,increases_risk,,Entire face,Koh et al.,* can start seeing around age 20,
+smoking,nodular_elastosis,increases_risk,,Entire face,Chauhan et al.,,
+smoking,tooth_decay,increases_risk,,Mouth,Cleveland Clinic,,
+smoking,uneven_complexion,increases_risk,,Entire face,Swift et al.,,
+stress,acne,increases_risk,,Entire face,Bobok. et al,,
+stress,coarse_dry_skin,increases_risk,,Entire face,Bobok. et al,,
+stress,dull_and_uneven_skin_tone,increases_risk,,Entire face,Bobok. et al,* specific to those who are 35+,
+stress,enlarged_pores,increases_risk,,Entire face,Bobok. et al,,
+stress,eye_circles,increases_risk,,Eye,Bobok. et al,,
+stress,hyperpigmentation,increases_risk,,Entire face,Bobok. et al,,
+stress,pronounced_nasolabial,increases_risk,,Nose,Bobok. et al,* specific to those who are 35+,
+uv_exposure,coarse_dry_skin,increases_risk,,Entire face,Swift et al.,,
+uv_exposure,jowls,increases_risk,,"Lower cheek, jaw",Flament et al,,
+uv_exposure,spider_veins,increases_risk,,Cheek,Swift et al.,,
+uv_exposure,sunspots,increases_risk,,"Cheekbones, nose, forehead",Hussein et al.,*not even; driving,
+uv_exposure,uneven_complexion,increases_risk,,Entire face,Swift et al.,,
+women,lower_face_sagging,more_prone_to,,,Flament et al.,,
+women,marionette_lines_18_40,more_prone_to,,,Flament et al.,,

@@ -1,0 +1,496 @@
+{
+  "experiment": "Counterfactual smoking knowledge propagation",
+  "method": "All profile values are held constant while smoking is changed to 1.0.",
+  "baseline_profile": {
+    "age": 20,
+    "target_age": 65,
+    "sex": "male",
+    "ethnicity": "Asian",
+    "factors": {
+      "smoking": 0.0,
+      "uv_exposure": 0.4,
+      "alcohol": 0.1,
+      "stress": 0.6,
+      "diet": 0.3
+    }
+  },
+  "modified_profile": {
+    "age": 20,
+    "target_age": 65,
+    "sex": "male",
+    "ethnicity": "Asian",
+    "factors": {
+      "smoking": 1.0,
+      "uv_exposure": 0.4,
+      "alcohol": 0.1,
+      "stress": 0.6,
+      "diet": 0.3
+    }
+  },
+  "affected_features": [
+    {
+      "feature_id": "nodular_elastosis",
+      "feature": "Nodular elastosis",
+      "baseline_score": 0.0,
+      "smoking_score": 1.0,
+      "change_due_to_smoking": 1.0
+    },
+    {
+      "feature_id": "facial_wrinkles",
+      "feature": "Facial wrinkles",
+      "baseline_score": 0.1,
+      "smoking_score": 0.85,
+      "change_due_to_smoking": 0.75
+    },
+    {
+      "feature_id": "deep_nasolabial_folds",
+      "feature": "Deep nasolabial folds",
+      "baseline_score": 0.2,
+      "smoking_score": 0.7,
+      "change_due_to_smoking": 0.5
+    },
+    {
+      "feature_id": "jowls",
+      "feature": "Jowls",
+      "baseline_score": 0.2,
+      "smoking_score": 0.7,
+      "change_due_to_smoking": 0.5
+    },
+    {
+      "feature_id": "lower_face_sagging",
+      "feature": "Lower-face sagging",
+      "baseline_score": 0.2,
+      "smoking_score": 0.7,
+      "change_due_to_smoking": 0.5
+    },
+    {
+      "feature_id": "uneven_skin_tone",
+      "feature": "Uneven skin tone",
+      "baseline_score": 0.2667,
+      "smoking_score": 0.6,
+      "change_due_to_smoking": 0.3333
+    },
+    {
+      "feature_id": "crow_feet",
+      "feature": "Crow's feet",
+      "baseline_score": 0.6,
+      "smoking_score": 0.85,
+      "change_due_to_smoking": 0.25
+    },
+    {
+      "feature_id": "forehead_wrinkles",
+      "feature": "Forehead wrinkles",
+      "baseline_score": 0.6,
+      "smoking_score": 0.85,
+      "change_due_to_smoking": 0.25
+    },
+    {
+      "feature_id": "dry_skin",
+      "feature": "Dry/coarse skin",
+      "baseline_score": 0.3286,
+      "smoking_score": 0.4714,
+      "change_due_to_smoking": 0.1428
+    }
+  ],
+  "propagation_paths": {
+    "nodular_elastosis": [
+      {
+        "nodes": [
+          "smoking",
+          "nodular_elastosis"
+        ],
+        "relations": [
+          "increases_risk"
+        ],
+        "weights": [
+          1.0
+        ],
+        "evidence": [
+          "Chauhan et al."
+        ]
+      }
+    ],
+    "facial_wrinkles": [
+      {
+        "nodes": [
+          "smoking",
+          "facial_wrinkles"
+        ],
+        "relations": [
+          "increases_risk"
+        ],
+        "weights": [
+          1.0
+        ],
+        "evidence": [
+          "Koh et al."
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "mmp_activity",
+          "collagen_degradation",
+          "facial_wrinkles"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "causes_mechanism",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Knuutinen et al. 2002, PMID: 11966688",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Fisher et al. 1997, PMID: 9358139"
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "oxidative_stress",
+          "mmp_activity",
+          "collagen_degradation",
+          "facial_wrinkles"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "promotes_mechanism",
+          "causes_mechanism",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Morita 2007, PMID: 17951030",
+          "Hwang et al. 2014, PMID: 25131997",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Fisher et al. 1997, PMID: 9358139"
+        ]
+      }
+    ],
+    "deep_nasolabial_folds": [
+      {
+        "nodes": [
+          "smoking",
+          "mmp_activity",
+          "collagen_degradation",
+          "deep_nasolabial_folds"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "causes_mechanism",
+          "contributes_to"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Knuutinen et al. 2002, PMID: 11966688",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Mechanistic mapping"
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "oxidative_stress",
+          "mmp_activity",
+          "collagen_degradation",
+          "deep_nasolabial_folds"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "promotes_mechanism",
+          "causes_mechanism",
+          "contributes_to"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Morita 2007, PMID: 17951030",
+          "Hwang et al. 2014, PMID: 25131997",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Mechanistic mapping"
+        ]
+      }
+    ],
+    "jowls": [
+      {
+        "nodes": [
+          "smoking",
+          "jowls"
+        ],
+        "relations": [
+          "increases_risk"
+        ],
+        "weights": [
+          1.0
+        ],
+        "evidence": [
+          "Flament et al."
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "mmp_activity",
+          "elastic_fiber_damage",
+          "jowls"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "contributes_to",
+          "contributes_to"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Knuutinen et al. 2002, PMID: 11966688",
+          "Morita 2007, PMID: 17951030",
+          "Mechanistic mapping"
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "oxidative_stress",
+          "mmp_activity",
+          "elastic_fiber_damage",
+          "jowls"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "promotes_mechanism",
+          "contributes_to",
+          "contributes_to"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Morita 2007, PMID: 17951030",
+          "Hwang et al. 2014, PMID: 25131997",
+          "Morita 2007, PMID: 17951030",
+          "Mechanistic mapping"
+        ]
+      }
+    ],
+    "lower_face_sagging": [
+      {
+        "nodes": [
+          "smoking",
+          "mmp_activity",
+          "elastic_fiber_damage",
+          "lower_face_sagging"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "contributes_to",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Knuutinen et al. 2002, PMID: 11966688",
+          "Morita 2007, PMID: 17951030",
+          "Mechanistic mapping"
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "oxidative_stress",
+          "mmp_activity",
+          "elastic_fiber_damage",
+          "lower_face_sagging"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "promotes_mechanism",
+          "contributes_to",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Morita 2007, PMID: 17951030",
+          "Hwang et al. 2014, PMID: 25131997",
+          "Morita 2007, PMID: 17951030",
+          "Mechanistic mapping"
+        ]
+      }
+    ],
+    "uneven_skin_tone": [
+      {
+        "nodes": [
+          "smoking",
+          "uneven_skin_tone"
+        ],
+        "relations": [
+          "increases_risk"
+        ],
+        "weights": [
+          1.0
+        ],
+        "evidence": [
+          "Swift et al."
+        ]
+      }
+    ],
+    "crow_feet": [
+      {
+        "nodes": [
+          "smoking",
+          "mmp_activity",
+          "collagen_degradation",
+          "crow_feet"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "causes_mechanism",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Knuutinen et al. 2002, PMID: 11966688",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Mechanistic mapping"
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "oxidative_stress",
+          "mmp_activity",
+          "collagen_degradation",
+          "crow_feet"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "promotes_mechanism",
+          "causes_mechanism",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Morita 2007, PMID: 17951030",
+          "Hwang et al. 2014, PMID: 25131997",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Mechanistic mapping"
+        ]
+      }
+    ],
+    "forehead_wrinkles": [
+      {
+        "nodes": [
+          "smoking",
+          "mmp_activity",
+          "collagen_degradation",
+          "forehead_wrinkles"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "causes_mechanism",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Knuutinen et al. 2002, PMID: 11966688",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Mechanistic mapping"
+        ]
+      },
+      {
+        "nodes": [
+          "smoking",
+          "oxidative_stress",
+          "mmp_activity",
+          "collagen_degradation",
+          "forehead_wrinkles"
+        ],
+        "relations": [
+          "activates_mechanism",
+          "promotes_mechanism",
+          "causes_mechanism",
+          "manifests_as"
+        ],
+        "weights": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "evidence": [
+          "Morita 2007, PMID: 17951030",
+          "Hwang et al. 2014, PMID: 25131997",
+          "Fisher et al. 1997, PMID: 9358139",
+          "Mechanistic mapping"
+        ]
+      }
+    ],
+    "dry_skin": [
+      {
+        "nodes": [
+          "smoking",
+          "dry_skin"
+        ],
+        "relations": [
+          "increases_risk"
+        ],
+        "weights": [
+          1.0
+        ],
+        "evidence": [
+          "Swift et al."
+        ]
+      }
+    ]
+  },
+  "engine_metadata": {
+    "engine_version": "0.2.0",
+    "propagation": "topological_multi_hop_weighted_mean",
+    "node_count": 73,
+    "edge_count": 92
+  }
+}
