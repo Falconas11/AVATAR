@@ -1,1 +1,10 @@
 # Dependencies
+fastapi
+uvicorn[standard]
+python-multipart
+
+openai
+
+numpy
+pandas
+networkx
