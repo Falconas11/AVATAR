@@ -75,6 +75,9 @@ form.addEventListener("submit", async (event) => {
   originalPreview.src = URL.createObjectURL(image);
   resultsElement.classList.add("hidden");
   generateButton.disabled = true;
+
+  featureList.innerHTML =
+  '<li class="feature-empty">Analyzing aging features...</li>';
   statusElement.textContent =
     "Generating portrait. The first request may take longer while the server wakes up.";
 
@@ -95,35 +98,55 @@ form.addEventListener("submit", async (event) => {
 
     featureList.replaceChildren();
 
-    const features = Array.isArray(data.features)
-      ? data.features.slice(0, 8)
-      : [];
+    const formatFeatureName = (name) =>
+      name
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+    const features = Object.entries(data.aging_representation || {})
+      .map(([name, score]) => ({
+        name,
+        score: Number(score),
+      }))
+      .filter(({ score }) => Number.isFinite(score) && score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 8);
 
     for (const feature of features) {
       const item = document.createElement("li");
+      item.className = "feature-item";
 
-      if (typeof feature === "string") {
-        item.textContent = feature;
-      } else {
-        const name =
-          feature.label ||
-          feature.name ||
-          feature.feature ||
-          feature.node_id ||
-          "Aging feature";
+      const header = document.createElement("div");
+      header.className = "feature-header";
 
-        const score =
-          feature.score ??
-          feature.value ??
-          feature.activation;
+      const name = document.createElement("span");
+      name.className = "feature-name";
+      name.textContent = formatFeatureName(feature.name);
 
-        item.textContent =
-          score === undefined
-            ? name
-            : `${name}: ${Number(score).toFixed(2)}`;
-      }
+      const score = document.createElement("span");
+      score.className = "feature-score";
+      score.textContent = feature.score.toFixed(2);
 
+      const track = document.createElement("div");
+      track.className = "feature-track";
+
+      const bar = document.createElement("div");
+      bar.className = "feature-bar";
+
+      const normalizedScore = Math.max(0, Math.min(1, feature.score));
+      bar.style.width = `${normalizedScore * 100}%`;
+
+      header.append(name, score);
+      track.append(bar);
+      item.append(header, track);
       featureList.append(item);
+    }
+
+    if (features.length === 0) {
+      const emptyItem = document.createElement("li");
+      emptyItem.className = "feature-empty";
+      emptyItem.textContent = "No profile-specific aging features.";
+      featureList.append(emptyItem);
     }
 
     resultsElement.classList.remove("hidden");
