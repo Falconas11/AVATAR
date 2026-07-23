@@ -88,6 +88,8 @@ form.addEventListener("submit", async (event) => {
     });
 
     const data = await response.json();
+    console.log("Response keys:", Object.keys(data));
+    console.log("Knowledge keys:", Object.keys(data.knowledge || {}));
 
     if (!response.ok) {
       throw new Error(data.detail || "Generation failed.");
@@ -103,7 +105,17 @@ form.addEventListener("submit", async (event) => {
         .replaceAll("_", " ")
         .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-    const features = Object.entries(data.aging_representation || {})
+    const representation =
+      data.aging_representation ||
+      data.knowledge?.aging_representation ||
+      data.result?.aging_representation ||
+      data.output?.aging_representation ||
+      {};
+
+    console.log("Full API response:", data);
+    console.log("Resolved aging representation:", representation);
+
+    const features = Object.entries(representation)
       .map(([name, score]) => ({
         name,
         score: Number(score),
@@ -119,13 +131,13 @@ form.addEventListener("submit", async (event) => {
       const header = document.createElement("div");
       header.className = "feature-header";
 
-      const name = document.createElement("span");
-      name.className = "feature-name";
-      name.textContent = formatFeatureName(feature.name);
+      const nameElement = document.createElement("span");
+      nameElement.className = "feature-name";
+      nameElement.textContent = formatFeatureName(feature.name);
 
-      const score = document.createElement("span");
-      score.className = "feature-score";
-      score.textContent = feature.score.toFixed(2);
+      const scoreElement = document.createElement("span");
+      scoreElement.className = "feature-score";
+      scoreElement.textContent = feature.score.toFixed(2);
 
       const track = document.createElement("div");
       track.className = "feature-track";
@@ -136,10 +148,18 @@ form.addEventListener("submit", async (event) => {
       const normalizedScore = Math.max(0, Math.min(1, feature.score));
       bar.style.width = `${normalizedScore * 100}%`;
 
-      header.append(name, score);
+      header.append(nameElement, scoreElement);
       track.append(bar);
       item.append(header, track);
       featureList.append(item);
+    }
+
+    if (features.length === 0) {
+      const emptyItem = document.createElement("li");
+      emptyItem.className = "feature-empty";
+      emptyItem.textContent =
+        "No aging features were found in the API response.";
+      featureList.append(emptyItem);
     }
 
     if (features.length === 0) {
