@@ -2,59 +2,109 @@
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  color: #1f2937;
-  background: #f3f4f6;
+
+  --illinois-blue: #13294b;
+  --illinois-orange: #ff5f05;
+  --illinois-orange-hover: #e84f00;
+
+  --text-primary: #1f2937;
+  --text-secondary: #667085;
+  --border-color: #e5e7eb;
+  --page-background: #f3f4f6;
+  --card-background: #ffffff;
+
+  color: var(--text-primary);
+  background: var(--page-background);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top center,
+      rgb(255 95 5 / 7%),
+      transparent 340px
+    ),
+    var(--page-background);
 }
+
+img {
+  max-width: 100%;
+}
+
+/* Main page container */
 
 .container {
   width: min(920px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 48px 0 80px;
+  padding: 36px 0 64px;
 }
 
+/* Header */
+
 header {
-  margin-bottom: 32px;
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+.header-logo {
+  display: block;
+  width: auto;
+  height: 104px;
+  margin: 0 auto 18px;
+  object-fit: contain;
 }
 
 .eyebrow {
-  margin: 0 0 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  margin: 0 0 10px;
+  color: var(--illinois-orange);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 h1 {
   margin: 0;
+  color: var(--illinois-blue);
   font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 800;
   line-height: 0.95;
+  letter-spacing: -0.045em;
 }
 
 .subtitle {
-  max-width: 620px;
+  max-width: 650px;
+  margin: 18px auto 0;
+  color: var(--text-secondary);
   font-size: 1.05rem;
-  line-height: 1.6;
+  line-height: 1.65;
 }
+
+/* Cards and panels */
 
 .card,
 .image-panel,
 .features-panel {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 24px;
-  background: white;
-  box-shadow: 0 12px 36px rgb(15 23 42 / 8%);
+  background: var(--card-background);
+  box-shadow:
+    0 12px 36px rgb(15 23 42 / 8%),
+    0 2px 8px rgb(15 23 42 / 4%);
 }
 
 .card {
-  padding: 24px;
+  padding: 26px;
 }
 
 form,
@@ -68,7 +118,8 @@ form {
 }
 
 label {
-  font-weight: 600;
+  color: #25324a;
+  font-weight: 650;
 }
 
 input,
@@ -84,7 +135,25 @@ select {
   border: 1px solid #d1d5db;
   padding: 12px;
   background: white;
+  color: var(--text-primary);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
+input:focus,
+select:focus {
+  border-color: var(--illinois-orange);
+  outline: none;
+  box-shadow: 0 0 0 4px rgb(255 95 5 / 12%);
+}
+
+input[type="range"] {
+  padding: 0;
+  accent-color: var(--illinois-orange);
+}
+
+/* Form layout */
 
 .grid {
   display: grid;
@@ -104,24 +173,48 @@ select {
   grid-column: 1 / -1;
 }
 
+/* Main action button */
+
 button {
   border: 0;
-  padding: 14px 18px;
+  padding: 15px 18px;
   color: white;
-  background: #111827;
-  font-weight: 700;
+  background: var(--illinois-orange);
+  box-shadow: 0 8px 18px rgb(255 95 5 / 20%);
+  font-weight: 750;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--illinois-orange-hover);
+  box-shadow: 0 10px 24px rgb(255 95 5 / 26%);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 button:disabled {
   opacity: 0.55;
   cursor: wait;
+  transform: none;
 }
+
+/* Status */
 
 .status {
   min-height: 48px;
-  padding: 18px 0;
+  padding: 18px 2px;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
+
+/* Results */
 
 .results {
   display: grid;
@@ -131,13 +224,21 @@ button:disabled {
 
 .image-panel,
 .features-panel {
-  padding: 18px;
+  padding: 20px;
+}
+
+.image-panel h2,
+.features-panel h2 {
+  margin: 0 0 16px;
+  color: var(--illinois-blue);
+  font-size: 1.15rem;
 }
 
 .image-panel img {
   display: block;
   width: 100%;
   border-radius: 16px;
+  background: #eef0f3;
 }
 
 .features-panel {
@@ -148,7 +249,147 @@ button:disabled {
   display: none;
 }
 
+/* Aging feature bars */
+
+#feature-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature-item {
+  margin-bottom: 16px;
+}
+
+.feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.feature-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 7px;
+}
+
+.feature-name {
+  color: #172033;
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.feature-score {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.feature-track {
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+.feature-bar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--illinois-orange),
+    #ff8c42
+  );
+  border-radius: inherit;
+  transition: width 0.5s ease;
+}
+
+.feature-empty {
+  padding: 8px 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Footer */
+
+.site-footer {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid #dfe3e8;
+  text-align: center;
+}
+
+.footer-label {
+  margin: 0 0 20px;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 6vw, 64px);
+}
+
+.footer-logo {
+  display: block;
+  width: auto;
+  object-fit: contain;
+}
+
+.ncsa-logo {
+  max-width: 190px;
+  max-height: 64px;
+}
+
+.lab-logo {
+  max-width: 190px;
+  max-height: 86px;
+}
+
+.footer-note {
+  margin: 22px 0 0;
+  color: #858d9c;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* Responsive design */
+
 @media (max-width: 680px) {
+  .container {
+    width: min(100% - 24px, 920px);
+    padding: 26px 0 44px;
+  }
+
+  header {
+    margin-bottom: 26px;
+  }
+
+  .header-logo {
+    height: 86px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 17vw, 4.5rem);
+  }
+
+  .subtitle {
+    margin-top: 14px;
+    font-size: 0.96rem;
+  }
+
+  .card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
   .grid,
   .results {
     grid-template-columns: 1fr;
@@ -157,56 +398,19 @@ button:disabled {
   .features-panel {
     grid-column: auto;
   }
-}
 
-#feature-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+  .footer-logos {
+    flex-direction: column;
+    gap: 24px;
+  }
 
-.feature-item {
-  margin-bottom: 14px;
-}
+  .ncsa-logo {
+    max-width: 175px;
+    max-height: 58px;
+  }
 
-.feature-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 6px;
-}
-
-.feature-name {
-  color: #172033;
-  font-size: 0.92rem;
-  font-weight: 600;
-}
-
-.feature-score {
-  flex-shrink: 0;
-  color: #667085;
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.feature-track {
-  width: 100%;
-  height: 7px;
-  overflow: hidden;
-  background: #e5e7eb;
-  border-radius: 999px;
-}
-
-.feature-bar {
-  height: 100%;
-  background: #2563eb;
-  border-radius: inherit;
-  transition: width 0.5s ease;
-}
-
-.feature-empty {
-  padding: 8px 0;
-  color: #667085;
-  font-size: 0.9rem;
+  .lab-logo {
+    max-width: 165px;
+    max-height: 78px;
+  }
 }

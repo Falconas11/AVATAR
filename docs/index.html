@@ -2,28 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   />
+
   <title>AVATAR — Visualize Aging</title>
-  <link rel="stylesheet" href="./style.css" />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="./assets/avatar-logo.png"
+  />
+
+  <link
+    rel="stylesheet"
+    href="./style.css?v=8"
+  />
 </head>
 
 <body>
   <main class="container">
+
     <header>
+      <img
+        class="header-logo"
+        src="./assets/avatar-logo.png"
+        alt="AVATAR logo"
+      />
+
       <p class="eyebrow">Visualize Aging</p>
+
       <h1>AVATAR</h1>
+
       <p class="subtitle">
-        Explore how lifestyle factors may influence visible facial aging.
+        Explore how lifestyle, environmental, and demographic factors
+        may influence visible facial aging.
       </p>
     </header>
 
     <section class="card">
       <form id="avatar-form">
+
         <label>
           Portrait
+
           <input
             id="image"
             name="image"
@@ -36,17 +60,32 @@
         <div class="grid">
           <label>
             Current age
-            <input id="age" type="number" min="1" max="120" value="20" />
+
+            <input
+              id="age"
+              type="number"
+              min="1"
+              max="120"
+              value="20"
+            />
           </label>
 
           <label>
             Target age
-            <input id="target-age" type="number" min="1" max="120" value="65" />
+
+            <input
+              id="target-age"
+              type="number"
+              min="40"
+              max="120"
+              value="65"
+            />
           </label>
         </div>
 
         <label>
           Sex
+
           <select id="sex">
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -55,37 +94,84 @@
 
         <label>
           Ethnicity
-          <input id="ethnicity" type="text" value="Asian" />
+
+          <input
+            id="ethnicity"
+            type="text"
+            value="Asian"
+          />
         </label>
 
         <div id="factor-controls"></div>
 
-        <button id="generate-button" type="submit">
+        <button
+          id="generate-button"
+          type="submit"
+        >
           Generate aging portrait
         </button>
       </form>
     </section>
 
-    <section id="status" class="status"></section>
+    <section
+      id="status"
+      class="status"
+      aria-live="polite"
+    ></section>
 
-    <section id="results" class="results hidden">
+    <section
+      id="results"
+      class="results hidden"
+    >
       <div class="image-panel">
         <h2>Original</h2>
-        <img id="original-preview" alt="Original portrait" />
+
+        <img
+          id="original-preview"
+          alt="Original portrait"
+        />
       </div>
 
       <div class="image-panel">
         <h2>Aged portrait</h2>
-        <img id="aged-result" alt="Generated aged portrait" />
+
+        <img
+          id="aged-result"
+          alt="Generated aged portrait"
+        />
       </div>
 
       <div class="features-panel">
         <h2>Top aging features</h2>
+
         <ol id="feature-list"></ol>
       </div>
     </section>
+
+    <footer class="site-footer">
+      <p class="footer-label">Supported by</p>
+
+      <div class="footer-logos">
+        <img
+          class="footer-logo ncsa-logo"
+          src="./assets/ncsa-logo.png"
+          alt="National Center for Supercomputing Applications"
+        />
+
+        <img
+          class="footer-logo lab-logo"
+          src="./assets/disability-design-studio-logo.png"
+          alt="Disability Design Studio"
+        />
+      </div>
+
+      <p class="footer-note">
+        University of Illinois Urbana-Champaign
+      </p>
+    </footer>
+
   </main>
 
-  <script src="./app.js"></script>
+  <script src="./app.js?v=8"></script>
 </body>
 </html>
