@@ -12,7 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 # from avatar.knowledge_engine import KnowledgeEngine
-from avatar.knowledge_engine_v02 import KnowledgeEngine
+from avatar.knowledge_engine_v03 import KnowledgeEngine
 
 
 def parse_args() -> argparse.Namespace:
@@ -29,14 +29,14 @@ def parse_args() -> argparse.Namespace:
         "--nodes",
         type=Path,
         # default=ROOT / "data" / "nodes.csv",
-        default=ROOT / "data" / "nodes_v02.csv",
+        default=ROOT / "data" / "nodes_v03.csv",
         help="Path to nodes.csv.",
     )
     parser.add_argument(
         "--edges",
         type=Path,
         # default=ROOT / "data" / "edges.csv",
-        default=ROOT / "data" / "edges_v02.csv",
+        default=ROOT / "data" / "edges_v03.csv",
         help="Path to weighted edges.csv.",
     )
     parser.add_argument(

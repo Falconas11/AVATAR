@@ -1,0 +1,99 @@
+﻿source,target,relation,weight,region,age_min,age_max,sex_condition,ethnicity_condition,evidence,notes
+african_american,bimaxillary_protrusion,baseline_morphology,1.0,,,,,African American,Vashi et al.,
+african_american,broad_nasal_base,baseline_morphology,1.0,,,,,African American,Vashi et al.,
+african_american,orbital_proptosis,baseline_morphology,1.0,,,,,African American,Vashi et al.,
+african_american,prominent_lips,baseline_morphology,1.0,,,,,African American,Vashi et al.,
+african_american,reduced_nasal_projection,baseline_morphology,1.0,,,,,African American,Vashi et al.,
+african_american,hyperpigmentation,more_prone_to,1.0,entire face,,,,African American,Benton,
+african_american,inconsistent_facial_pigmentation,more_prone_to,1.0,entire face,,,,African American,Vashi et al.,
+alcohol,broken_capillaries,increases_risk,1.0,entire face,,,,,Dover Behavioral Health System,
+alcohol,dry_skin,increases_risk,1.0,entire face,,,,,Dover Behavioral Health System,
+alcohol,facial_puffiness,increases_risk,1.0,entire face,,,,,Dover Behavioral Health System,
+alcohol,facial_redness,increases_risk,1.0,nose and neck,,,,,Dover Behavioral Health System,
+asian,flat_midface,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,full_upper_eyelids,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,high_eyebrows,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,low_nasal_bridge,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,prominent_lips,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,receded_chin,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,wide_round_face,baseline_morphology,1.0,,,,,Asian,Vashi et al.,
+asian,lower_face_sagging,more_prone_to,1.0,lower face,40.0,,,Asian,Flament et al.,Source notes thicker dermis and later visible aging signs
+caucasian,low_lip_volume,baseline_morphology,1.0,,,,,Caucasian,Vashi et al.,
+caucasian,narrow_nasal_base,baseline_morphology,1.0,,,,,Caucasian,Vashi et al.,
+caucasian,sunspots,more_prone_to,1.0,face,20.0,,,Caucasian,Hussein et al.,Source attributes earlier signs partly to lower melanin
+diet,general_diet_quality,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+diet,protein_deficiency,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+diet,vitamin_a_deficiency,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+diet,vitamin_a_excess,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+diet,vitamin_b12_deficiency,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+diet,vitamin_b2_deficiency,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+diet,vitamin_b6_deficiency,has_subfactor,1.0,,,,,,Wong et al. / Illinois Dermatology Institute,
+general_diet_quality,acne,associated_with,1.0,T-zone or entire face,,,,,Illinois Dermatology Institute,
+general_diet_quality,dry_skin,associated_with,1.0,entire face,,,,,Illinois Dermatology Institute,
+general_diet_quality,eczema,associated_with,1.0,"cheeks, eyes, mouth",,,,,Illinois Dermatology Institute,
+hispanic_latino,bimaxillary_protrusion,baseline_morphology,1.0,,,,,Hispanic/Latino,Vashi et al.,
+hispanic_latino,broad_nose,baseline_morphology,1.0,,,,,Hispanic/Latino,Vashi et al.,
+hispanic_latino,broad_rounded_face,baseline_morphology,1.0,,,,,Hispanic/Latino,Vashi et al.,
+hispanic_latino,increased_bizygomatic_width,baseline_morphology,1.0,,,,,Hispanic/Latino,Vashi et al.,
+hispanic_latino,receded_chin,baseline_morphology,1.0,,,,,Hispanic/Latino,Vashi et al.,
+hispanic_latino,deep_nasolabial_folds,more_prone_to,1.0,entire face,,,,Hispanic/Latino,Benton,
+hispanic_latino,hyperpigmentation,more_prone_to,1.0,entire face,,,,Hispanic/Latino,Benton,
+hispanic_latino,inconsistent_facial_pigmentation,more_prone_to,1.0,entire face,,,,Hispanic/Latino,Vashi et al.,
+men,crow_feet,more_prone_to,1.0,eye corners,,,male,,Flament et al.,
+men,forehead_wrinkles,more_prone_to,1.0,forehead,20.0,60.0,male,,Flament et al.,
+protein_deficiency,lanugo_like_hair,associated_with,1.0,forehead and ears,,,,,Wong et al.,
+smoking,darkened_lips,increases_risk,1.0,lips,,,,,Chauhan et al. (PMC),
+smoking,dry_skin,increases_risk,1.0,entire face,,,,,Swift et al.,
+smoking,facial_wrinkles,increases_risk,1.0,entire face,20.0,,,,Koh et al.,Can become visible from around age 20
+smoking,jowls,increases_risk,1.0,lower cheek and jaw,,,,,Flament et al.,
+smoking,nodular_elastosis,increases_risk,1.0,entire face,,,,,Chauhan et al.,
+smoking,tooth_decay,increases_risk,1.0,mouth,,,,,Cleveland Clinic,
+smoking,uneven_skin_tone,increases_risk,1.0,entire face,,,,,Swift et al.,
+stress,acne,increases_risk,1.0,entire face,,,,,Bobok et al.,
+stress,dry_skin,increases_risk,1.0,entire face,,,,,Bobok et al.,
+stress,dull_skin_tone,increases_risk,1.0,entire face,35.0,,,,Bobok et al.,Specific to age 35+
+stress,enlarged_pores,increases_risk,1.0,entire face,,,,,Bobok et al.,
+stress,hyperpigmentation,increases_risk,1.0,entire face,,,,,Bobok et al.,
+stress,nasolabial_folds,increases_risk,1.0,nasolabial region,35.0,,,,Bobok et al.,Pronounced nasolabial folds; specific to age 35+
+stress,under_eye_circles,increases_risk,1.0,under-eye,,,,,Bobok et al.,
+stress,uneven_skin_tone,increases_risk,1.0,entire face,35.0,,,,Bobok et al.,Dull and uneven skin tone; specific to age 35+
+uv_exposure,dry_skin,increases_risk,1.0,entire face,,,,,Swift et al.,
+uv_exposure,jowls,increases_risk,1.0,lower cheek and jaw,,,,,Flament et al.,
+uv_exposure,spider_veins,increases_risk,1.0,cheek,,,,,Swift et al.,
+uv_exposure,sunspots,increases_risk,1.0,"cheekbones, nose, forehead",,,,,Hussein et al.,"Exposure may be asymmetric, e.g. driving"
+uv_exposure,uneven_skin_tone,increases_risk,1.0,entire face,,,,,Swift et al.,
+vitamin_a_deficiency,dry_skin,associated_with,1.0,entire face,,,,,Wong et al.,
+vitamin_a_deficiency,ocular_xerosis,associated_with,1.0,eyes,,,,,Wong et al.,
+vitamin_a_excess,yellow_orange_pigmentation,associated_with,1.0,nasolabial folds and forehead,,,,,Wong et al.,
+vitamin_b12_deficiency,hyperpigmentation,associated_with,1.0,entire face,,,,,Wong et al.,
+vitamin_b2_deficiency,alopecia,associated_with,1.0,hair,,,,,Wong et al.,
+vitamin_b2_deficiency,cheilitis,associated_with,1.0,lips,,,,,Wong et al.,
+vitamin_b2_deficiency,desquamation,associated_with,1.0,entire face,,,,,Wong et al.,
+vitamin_b6_deficiency,seborrheic_eruption,associated_with,1.0,nasolabial folds and eyebrows,,,,,Wong et al.,
+women,lower_face_sagging,more_prone_to,1.0,lower face,,,female,,Flament et al.,
+women,marionette_lines,more_prone_to,1.0,mouth and chin,18.0,40.0,female,,Flament et al.,
+smoking,oxidative_stress,activates_mechanism,1.0,entire face,,,,,"Morita 2007, PMID: 17951030",Seed mechanism edge; qualitative weight only.
+smoking,mmp_activity,activates_mechanism,1.0,dermis,,,,,"Knuutinen et al. 2002, PMID: 11966688",Smoking associated with altered MMP/TIMP balance and reduced collagen synthesis.
+uv_exposure,oxidative_stress,activates_mechanism,1.0,entire face,,,,,"Hwang et al. 2014, PMID: 25131997",UVB-associated ROS production used as a qualitative seed edge.
+uv_exposure,mmp_activity,activates_mechanism,1.0,dermis,,,,,"Fisher et al. 1997, PMID: 9358139",Repeated UV exposure elevates collagen-degrading MMPs.
+uv_exposure,uv_dna_damage,causes_mechanism,1.0,epidermis,,,,,"Dong et al. 2008, PMID: 18459971",UVB DNA damage linked to MMP-1 induction.
+stress,skin_barrier_impairment,causes_mechanism,1.0,epidermis,,,,,"Altemus et al. 2001, PMID: 11511309",Psychosocial and sleep-deprivation stress disrupted barrier homeostasis.
+oxidative_stress,mmp_activity,promotes_mechanism,1.0,dermis,,,,,"Hwang et al. 2014, PMID: 25131997",ROS-associated upregulation of MMP activity.
+mmp_activity,collagen_degradation,causes_mechanism,1.0,dermis,,,,,"Fisher et al. 1997, PMID: 9358139",MMP elevation contributes to collagen degradation.
+mmp_activity,elastic_fiber_damage,contributes_to,1.0,dermis,,,,,"Morita 2007, PMID: 17951030",MMP elevation contributes to degradation of elastic fibers and ECM.
+uv_dna_damage,pigmentation_dysregulation,contributes_to,1.0,epidermis,,,,,Provisional pathway hypothesis,Retain as provisional until a directly matched primary source is added.
+collagen_degradation,facial_wrinkles,manifests_as,1.0,entire face,,,,,"Fisher et al. 1997, PMID: 9358139",Mechanistic rendering link.
+collagen_degradation,forehead_wrinkles,manifests_as,1.0,forehead,,,,,Mechanistic mapping,Renderer-oriented mapping; not a quantitative causal estimate.
+collagen_degradation,crow_feet,manifests_as,1.0,eye corners,,,,,Mechanistic mapping,Renderer-oriented mapping; not a quantitative causal estimate.
+collagen_degradation,deep_nasolabial_folds,contributes_to,1.0,nasolabial region,,,,,Mechanistic mapping,Renderer-oriented mapping; not a quantitative causal estimate.
+elastic_fiber_damage,lower_face_sagging,manifests_as,1.0,lower face,,,,,Mechanistic mapping,Renderer-oriented mapping; not a quantitative causal estimate.
+elastic_fiber_damage,jowls,contributes_to,1.0,jawline,,,,,Mechanistic mapping,Renderer-oriented mapping; not a quantitative causal estimate.
+pigmentation_dysregulation,sunspots,manifests_as,1.0,entire face,,,,,Mechanistic mapping,Provisional renderer-oriented mapping.
+pigmentation_dysregulation,uneven_skin_tone,manifests_as,1.0,entire face,,,,,Mechanistic mapping,Provisional renderer-oriented mapping.
+skin_barrier_impairment,dry_skin,manifests_as,1.0,entire face,,,,,Mechanistic mapping,Barrier impairment used as an explanatory parent for dryness.
+intrinsic_aging,nasal_support_weakening,drives_mechanism,1.0,nose,40,,,,"Edelstein 1996, DOI: 10.1097/00005537-199609001-00001",Qualitative age-related nasal support and morphology pathway.
+nasal_support_weakening,nasal_tip_ptosis,manifests_as,1.0,nose,40,,,,"Edelstein 1996, DOI: 10.1097/00005537-199609001-00001",Nasal-tip descent is a characteristic age-related morphological change.
+nasal_support_weakening,increased_nasal_length,manifests_as,0.9,nose,40,,,,"Edelstein 1996, DOI: 10.1097/00005537-199609001-00001",Represents apparent nasal elongation rather than continued biological growth.
+intrinsic_aging,auricular_tissue_laxity,drives_mechanism,1.0,ears,40,,,,Azaria et al. 2003; Schellinck et al. 2008,Qualitative age-related auricular and earlobe deformation pathway.
+auricular_tissue_laxity,earlobe_elongation,manifests_as,1.0,earlobes,40,,,,"Azaria et al. 2003, Plastic and Reconstructive Surgery 111(7), 2398-2402",Large adult morphometric study supports association between age and earlobe length.
+auricular_tissue_laxity,earlobe_ptosis,manifests_as,0.9,earlobes,40,,,,"Waked et al. 2025, Plastic and Reconstructive Surgery - Global Open, 13, e6547",Systematic review describes age-related elongation and ptosis.

@@ -1,0 +1,81 @@
+﻿id,label,layer,category,region,renderable,aging_related,status,notes
+african_american,African American,factor,demographic_ethnicity,,False,False,active,
+asian,Asian,factor,demographic_ethnicity,,False,False,active,
+caucasian,Caucasian,factor,demographic_ethnicity,,False,False,active,
+hispanic_latino,Hispanic/Latino,factor,demographic_ethnicity,,False,False,active,
+men,Men,factor,demographic_sex,,False,True,active,
+women,Women,factor,demographic_sex,,False,True,active,
+general_diet_quality,General diet quality,factor,dietary_subfactor,,False,True,active,
+protein_deficiency,Protein deficiency,factor,dietary_subfactor,,False,True,active,
+vitamin_a_deficiency,Vitamin A deficiency,factor,dietary_subfactor,,False,True,active,
+vitamin_a_excess,Vitamin A excess,factor,dietary_subfactor,,False,True,active,
+vitamin_b12_deficiency,Vitamin B12 deficiency,factor,dietary_subfactor,,False,True,active,
+vitamin_b2_deficiency,Vitamin B2 deficiency,factor,dietary_subfactor,,False,True,active,
+vitamin_b6_deficiency,Vitamin B6 deficiency,factor,dietary_subfactor,,False,True,active,
+alcohol,Alcohol,factor,lifestyle_factor,,False,True,active,
+diet,Diet,factor,lifestyle_factor,,False,True,active,
+smoking,Smoking,factor,lifestyle_factor,,False,True,active,
+stress,Stress,factor,lifestyle_factor,,False,True,active,
+uv_exposure,UV exposure,factor,lifestyle_factor,,False,True,active,
+crow_feet,Crow's feet,feature,aging_feature,eye corners,True,True,active,
+deep_nasolabial_folds,Deep nasolabial folds,feature,aging_feature,nasolabial region,True,True,active,
+dry_skin,Dry/coarse skin,feature,aging_feature,entire face,True,True,active,
+dull_skin_tone,Dull skin tone,feature,aging_feature,entire face,True,True,active,
+facial_puffiness,Facial puffiness,feature,aging_feature,entire face,True,True,active,
+facial_wrinkles,Facial wrinkles,feature,aging_feature,entire face,True,True,active,
+forehead_wrinkles,Forehead wrinkles,feature,aging_feature,forehead,True,True,active,
+jowls,Jowls,feature,aging_feature,lower cheek and jaw,True,True,active,
+lower_face_sagging,Lower-face sagging,feature,aging_feature,lower face,True,True,active,
+marionette_lines,Marionette lines,feature,aging_feature,mouth and chin,True,True,active,
+nasolabial_folds,Nasolabial folds,feature,aging_feature,nasolabial region,True,True,active,
+under_eye_circles,Under-eye circles,feature,aging_feature,under-eye,True,True,active,
+uneven_skin_tone,Uneven skin tone,feature,aging_feature,entire face,True,True,active,
+cheilitis,Cheilitis,feature,clinical_condition,lips,True,False,active,
+ocular_xerosis,Conjunctival/corneal xerosis,feature,clinical_condition,eyes,False,False,active,
+bimaxillary_protrusion,Bimaxillary protrusion,feature,facial_morphology,mouth and jaw,True,False,active,
+broad_nasal_base,Broad nasal base,feature,facial_morphology,nose,True,False,active,
+broad_nose,Broad nose,feature,facial_morphology,nose,True,False,active,
+broad_rounded_face,Broad rounded face,feature,facial_morphology,entire face,True,False,active,
+flat_midface,Flat midface,feature,facial_morphology,midface,True,False,active,
+full_upper_eyelids,Full upper eyelids,feature,facial_morphology,upper eyelids,True,False,active,
+high_eyebrows,High eyebrows,feature,facial_morphology,eyebrows,True,False,active,
+increased_bizygomatic_width,Increased bizygomatic width,feature,facial_morphology,cheekbones,True,False,active,
+low_lip_volume,Lower lip volume,feature,facial_morphology,lips,True,False,active,
+low_nasal_bridge,Low nasal bridge,feature,facial_morphology,nose,True,False,active,
+narrow_nasal_base,Narrow nasal base,feature,facial_morphology,nose,True,False,active,
+orbital_proptosis,Orbital proptosis,feature,facial_morphology,eyes,True,False,active,
+prominent_lips,Prominent lips,feature,facial_morphology,lips,True,False,active,
+receded_chin,Receded chin,feature,facial_morphology,chin,True,False,active,
+reduced_nasal_projection,Reduced nasal projection,feature,facial_morphology,nose,True,False,active,
+wide_round_face,Wide/round face,feature,facial_morphology,entire face,True,False,active,
+alopecia,Alopecia,feature,hair_feature,hair,True,False,active,
+lanugo_like_hair,Lanugo-like hair,feature,hair_feature,forehead and ears,True,False,active,
+tooth_decay,Tooth decay,feature,oral_health_condition,mouth,False,False,active,
+darkened_lips,Blue/blackish lips,feature,pigmentation_feature,lips,True,False,active,
+hyperpigmentation,Hyperpigmentation,feature,pigmentation_feature,entire face,True,True,active,
+inconsistent_facial_pigmentation,Inconsistent facial pigmentation,feature,pigmentation_feature,entire face,True,True,active,
+sunspots,Sunspots,feature,pigmentation_feature,"cheekbones, nose, forehead",True,True,active,
+yellow_orange_pigmentation,Yellow/orange pigmentation,feature,pigmentation_feature,nasolabial folds and forehead,True,False,active,
+acne,Acne,feature,skin_condition,T-zone or entire face,True,False,active,
+desquamation,Desquamation,feature,skin_condition,entire face,True,False,active,
+eczema,Eczema,feature,skin_condition,"cheeks, eyes, mouth",True,False,active,
+nodular_elastosis,Nodular elastosis,feature,skin_condition,entire face,True,True,active,
+seborrheic_eruption,Seborrheic eruption,feature,skin_condition,nasolabial folds and eyebrows,True,False,active,
+enlarged_pores,Enlarged pores,feature,skin_texture_feature,entire face,True,True,active,
+broken_capillaries,Broken capillaries,feature,vascular_feature,entire face,True,True,active,
+facial_redness,Facial redness,feature,vascular_feature,nose and neck,True,True,active,
+spider_veins,Spider veins,feature,vascular_feature,cheek,True,True,active,
+oxidative_stress,Oxidative stress,mechanism,cellular_mechanism,,False,True,active,Reactive oxygen species imbalance contributing to skin aging.
+mmp_activity,Matrix metalloproteinase activity,mechanism,ecm_mechanism,dermis,False,True,active,Increased activity of collagen-degrading matrix metalloproteinases.
+collagen_degradation,Collagen degradation,mechanism,ecm_mechanism,dermis,False,True,active,Loss and fragmentation of dermal collagen.
+elastic_fiber_damage,Elastic fiber damage,mechanism,ecm_mechanism,dermis,False,True,active,Damage or abnormal remodeling of dermal elastic fibers.
+uv_dna_damage,UV-induced DNA damage,mechanism,cellular_mechanism,epidermis,False,True,active,DNA photodamage caused by ultraviolet exposure.
+pigmentation_dysregulation,Pigmentation dysregulation,mechanism,pigmentation_mechanism,epidermis,False,True,active,Irregular regulation or distribution of skin pigmentation.
+skin_barrier_impairment,Skin barrier impairment,mechanism,barrier_mechanism,epidermis,False,True,active,Reduced epidermal permeability-barrier function or recovery.
+intrinsic_aging,Intrinsic aging,factor,age_factor,,False,True,active,Derived automatically from current age and target age; adult-aging activation is normalized from age 20 to 80.
+nasal_support_weakening,Nasal support weakening,mechanism,morphological_mechanism,nose,False,True,active,Age-related weakening and remodeling of cartilage and soft-tissue support in the nose.
+auricular_tissue_laxity,Auricular tissue laxity,mechanism,morphological_mechanism,ears,False,True,active,Age-related loss of elastic support and gravitational deformation of the auricle and earlobe.
+nasal_tip_ptosis,Nasal tip ptosis,feature,morphological_aging_feature,nose,True,True,active,Subtle age-related descent of the nasal tip; renderer should avoid exaggeration.
+increased_nasal_length,Increased nasal length,feature,morphological_aging_feature,nose,True,True,active,"Apparent age-related increase in nasal length caused by structural remodeling and tip descent, not continued true growth."
+earlobe_elongation,Earlobe elongation,feature,morphological_aging_feature,earlobes,True,True,active,Subtle lengthening of the earlobes with age.
+earlobe_ptosis,Earlobe ptosis,feature,morphological_aging_feature,earlobes,True,True,active,Mild age-related sagging of the earlobes; renderer should avoid exaggeration.

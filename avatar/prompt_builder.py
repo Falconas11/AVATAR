@@ -9,7 +9,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BUILDER_VERSION = "1.0.0"
+BUILDER_VERSION = "1.1.0"
 
 
 @dataclass(frozen=True)
@@ -51,6 +51,10 @@ FEATURE_PHRASES: dict[str, str] = {
     "cheek_volume_loss": "reduced cheek volume",
     "skin_laxity": "reduced skin firmness",
     "hair_whitening": "natural gray hair",
+    "nasal_tip_ptosis": "a subtly lowered nasal tip consistent with normal aging",
+    "increased_nasal_length": "a slight apparent increase in nasal length",
+    "earlobe_elongation": "slightly elongated earlobes",
+    "earlobe_ptosis": "mild age-related earlobe sagging",
 }
 
 
@@ -80,6 +84,10 @@ REGION_ALIASES: dict[str, str] = {
     "lower cheek jaw": "lower cheek and jaw",
     "lower_cheek_jaw": "lower cheek and jaw",
     "nasolabial": "nasolabial region",
+    "ear": "ears",
+    "earlobes": "earlobes",
+    "ear lobe": "earlobes",
+    "ear lobes": "earlobes",
 }
 
 
@@ -92,6 +100,9 @@ REGION_ORDER: tuple[str, ...] = (
     "nasolabial region",
     "lower face",
     "lower cheek and jaw",
+    "nose",
+    "earlobes",
+    "ears",
     "nose and neck",
     "entire face",
 )
@@ -105,7 +116,28 @@ MECHANISM_VISIBLE_EFFECTS: dict[str, str] = {
     "mmp_activity": "gradual collagen loss and reduced skin firmness",
     "melanin_dysregulation": "uneven pigmentation and localized age spots",
     "microvascular_damage": "subtle visible capillaries and uneven redness",
+    "nasal_support_weakening": "subtle age-related nasal-tip descent and apparent nasal elongation",
+    "auricular_tissue_laxity": "subtle earlobe elongation and mild earlobe sagging",
 }
+
+
+MORPHOLOGICAL_FEATURES: frozenset[str] = frozenset({
+    "nasal_tip_ptosis",
+    "increased_nasal_length",
+    "earlobe_elongation",
+    "earlobe_ptosis",
+})
+
+
+def morphology_intensity(feature_id: str, score: float) -> str:
+    """Keep structural aging visible but anatomically conservative."""
+    if feature_id not in MORPHOLOGICAL_FEATURES:
+        return intensity_label(score)
+    if score >= 0.85:
+        return "mild to moderate"
+    if score >= 0.40:
+        return "subtle"
+    return "very subtle"
 
 
 def clamp_score(value: Any) -> float:
@@ -332,7 +364,7 @@ def select_nonredundant_features(
             score=score,
             region=region,
             category=category,
-            intensity=intensity_label(score),
+            intensity=morphology_intensity(feature_id, score),
             phrase=feature_phrase(feature_id, label),
             priority=priority_label(score),
         )
@@ -479,7 +511,8 @@ def build_prompt_plan(
                 "profile_target_age_resolution_age_anchor_age_typical_features_"
                 "salt_and_pepper_hair_regional_pore_control_vascular_visibility_"
                 "intrinsic_aging_consistency_perceptual_priority_feature_metadata_filtering_region_"
-                "normalization_redundancy_suppression_priority_tiering"
+                "normalization_redundancy_suppression_priority_tiering_"
+                "morphological_aging_intensity_caps_anatomy_preservation"
             ),
         },
     }
@@ -490,6 +523,31 @@ def render_regional_instruction(
     features: list[PromptFeature],
 ) -> str:
     feature_ids = {feature.feature_id for feature in features}
+
+    morphology = [
+        feature for feature in features
+        if feature.feature_id in MORPHOLOGICAL_FEATURES
+    ]
+    remaining_after_morphology = [
+        feature for feature in features
+        if feature.feature_id not in MORPHOLOGICAL_FEATURES
+    ]
+
+    if morphology:
+        changes = [feature.phrase for feature in morphology]
+        sentences = [
+            f"In the {region}, introduce only subtle, anatomically plausible "
+            f"age-related structural change: {join_items(changes)}. Preserve the "
+            "person's recognizable baseline anatomy and avoid exaggerated growth, "
+            "cartoonish drooping, or surgical-looking deformation."
+        ]
+        if remaining_after_morphology:
+            other_changes = [
+                f"{feature.intensity} {feature.phrase}"
+                for feature in remaining_after_morphology
+            ]
+            sentences.append(f"Also add {join_items(other_changes)}.")
+        return " ".join(sentences)
 
     # Enlarged pores should be localized rather than spread uniformly over the face.
     if "enlarged_pores" in feature_ids:
@@ -593,8 +651,9 @@ def build_aging_prompt(
 
     prompt_sections.append(
         "IDENTITY PRESERVATION: Preserve the subject's identity, facial bone "
-        "structure, ethnicity, sex presentation, eye shape, nose shape, mouth "
-        "shape, hairstyle, expression, pose, camera angle, lighting, clothing, "
+        "structure, ethnicity, sex presentation, eye shape, recognizable baseline "
+        "nose and ear anatomy, mouth shape, hairstyle, expression, pose, camera "
+        "angle, lighting, clothing, "
         "background, and image composition."
     )
 
@@ -651,8 +710,9 @@ def build_aging_prompt(
         prompt_sections.append(
             "BIOLOGICAL CONSISTENCY: The visible appearance should reflect normal "
             "intrinsic aging, including gradual collagen loss, reduced skin "
-            "elasticity, age-related facial soft-tissue descent, and natural facial "
-            f"volume redistribution.{personalized_clause} Express these mechanisms "
+            "elasticity, age-related facial soft-tissue descent, natural facial "
+            "volume redistribution, and subtle remodeling of nasal and auricular "
+            f"support structures.{personalized_clause} Express these mechanisms "
             "only through realistic visible facial and skin changes. Do not introduce "
             "dermatological disease, medical annotations, pathological lesions, or "
             "anatomical overlays."
@@ -665,8 +725,10 @@ def build_aging_prompt(
     )
 
     prompt_sections.append(
-        "NEGATIVE CONSTRAINTS: Do not alter identity or facial proportions. "
-        "Avoid duplicated facial features, extra eyes or nostrils, warped anatomy, "
+        "NEGATIVE CONSTRAINTS: Do not alter identity or make broad, unrelated changes "
+        "to facial proportions. Permit only the subtle age-related nasal or earlobe "
+        "changes explicitly requested above. Avoid duplicated facial features, extra "
+        "eyes or nostrils, warped anatomy, "
         "extreme asymmetry, caricature-like aging, uniform wrinkle overlays, "
         "plastic skin, heavy makeup, illustration, text, or watermarks. "
         "Do not create baldness, an altered hairline, reduced hair density, or "
