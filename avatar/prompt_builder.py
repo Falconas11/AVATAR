@@ -9,7 +9,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BUILDER_VERSION = "1.1.0"
+BUILDER_VERSION = "1.2.0"
 
 
 @dataclass(frozen=True)
@@ -218,9 +218,10 @@ def build_age_typical_features(target_age: int) -> list[str]:
     if target_age >= 70:
         return [
             (
-                "a naturally advanced salt-and-pepper hair pattern, with gray hairs "
-                "distributed unevenly and somewhat denser around the temples, while "
-                "preserving the original hairstyle, hairline, and overall hair density"
+                "predominantly dark hair with approximately 35 to 45 percent "
+                "naturally distributed gray hairs, somewhat denser around the temples "
+                "and frontal hairline, while preserving the original hairstyle, "
+                "hairline, and overall hair density"
             ),
             "moderate generalized skin laxity, especially in the cheeks and jawline",
             "moderate age-related facial volume loss in the mid-face",
@@ -231,9 +232,11 @@ def build_age_typical_features(target_age: int) -> list[str]:
     if target_age >= 60:
         return [
             (
-                "a natural salt-and-pepper hair pattern, with gray hairs scattered "
-                "throughout and slightly denser graying around the temples, while "
-                "preserving the original hairstyle, hairline, and overall hair density"
+                "predominantly black hair with approximately 20 to 30 percent naturally "
+                "distributed gray hairs, concentrated mainly around the temples and "
+                "frontal hairline while remaining sparsely scattered throughout the "
+                "rest of the hair; preserve the original hairstyle, hairline, and "
+                "overall hair density, with black hair remaining the clearly dominant hair color. Gray hairs should appear as individual strands rather than large continuous patches."
             ),
             "mild to moderate generalized skin laxity, especially in the cheeks and jawline",
             "mild age-related facial volume loss in the mid-face",
@@ -244,9 +247,9 @@ def build_age_typical_features(target_age: int) -> list[str]:
     if target_age >= 50:
         return [
             (
-                "early natural salt-and-pepper graying, with a few gray hairs scattered "
-                "throughout and slightly more near the temples, while preserving the "
-                "original hairstyle, hairline, and overall hair density"
+                "predominantly black hair with approximately 10 to 20 percent "
+                "naturally distributed gray hairs, especially near the temples, while "
+                "preserving the original hairstyle, hairline, and overall hair density"
             ),
             "mild skin laxity in the cheeks and lower face",
             "slight mid-face volume loss",
@@ -255,9 +258,11 @@ def build_age_typical_features(target_age: int) -> list[str]:
 
     if target_age >= 40:
         return [
-            "a small amount of natural gray hair without changing hairstyle or hair density",
-            "very mild lower-face laxity",
-            "slightly more visible nasolabial folds",
+            (
+                "predominantly black hair with only a few scattered gray strands, "
+                "mainly near the temples, without changing the hairstyle, hairline, "
+                "or hair density"
+            ),
         ]
 
     return []
@@ -731,9 +736,11 @@ def build_aging_prompt(
         "eyes or nostrils, warped anatomy, "
         "extreme asymmetry, caricature-like aging, uniform wrinkle overlays, "
         "plastic skin, heavy makeup, illustration, text, or watermarks. "
-        "Do not create baldness, an altered hairline, reduced hair density, or "
-        "artificial-looking uniformly white hair. Gray hair should remain unevenly "
-        "distributed in a realistic salt-and-pepper pattern."
+        "Do not create baldness, an altered hairline, or reduced hair density. "
+        "Do not make the hair predominantly gray, white, or silver. Maintain black "
+        "as the dominant hair color, with only the age-appropriate proportion of "
+        "naturally scattered gray hairs specified above. Avoid uniformly white hair, "
+        "large solid gray patches, or exaggerated temple whitening."
     )
 
     return "\n\n".join(prompt_sections), plan

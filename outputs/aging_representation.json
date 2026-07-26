@@ -20,6 +20,7 @@
     "diet": 0.3,
     "men": 1.0,
     "asian": 1.0,
+    "intrinsic_aging": 0.75,
     "general_diet_quality": 0.3,
     "protein_deficiency": 0.3,
     "vitamin_a_deficiency": 0.3,
@@ -29,6 +30,40 @@
     "vitamin_b6_deficiency": 0.3
   },
   "mechanisms": {
+    "auricular_tissue_laxity": {
+      "label": "Auricular tissue laxity",
+      "score": 0.75,
+      "category": "morphological_mechanism",
+      "region": "ears",
+      "contributions": [
+        {
+          "source": "intrinsic_aging",
+          "source_layer": "factor",
+          "source_activation": 0.75,
+          "relation": "drives_mechanism",
+          "weight": 1.0,
+          "contribution": 0.75,
+          "evidence": "Azaria et al. 2003; Schellinck et al. 2008"
+        }
+      ]
+    },
+    "nasal_support_weakening": {
+      "label": "Nasal support weakening",
+      "score": 0.75,
+      "category": "morphological_mechanism",
+      "region": "nose",
+      "contributions": [
+        {
+          "source": "intrinsic_aging",
+          "source_layer": "factor",
+          "source_activation": 0.75,
+          "relation": "drives_mechanism",
+          "weight": 1.0,
+          "contribution": 0.75,
+          "evidence": "Edelstein 1996, DOI: 10.1097/00005537-199609001-00001"
+        }
+      ]
+    },
     "skin_barrier_impairment": {
       "label": "Skin barrier impairment",
       "score": 0.6,
@@ -177,18 +212,24 @@
     }
   },
   "aging_representation": {
+    "earlobe_elongation": 0.75,
+    "earlobe_ptosis": 0.75,
+    "increased_nasal_length": 0.75,
+    "nasal_tip_ptosis": 0.75,
     "crow_feet": 0.6,
+    "dull_skin_tone": 0.6,
     "enlarged_pores": 0.6,
-    "forehead_wrinkles": 0.6,
+    "lower_face_sagging": 0.6,
+    "nasolabial_folds": 0.6,
     "under_eye_circles": 0.6,
     "hyperpigmentation": 0.45,
     "spider_veins": 0.4,
     "sunspots": 0.4,
+    "uneven_skin_tone": 0.35,
     "dry_skin": 0.3286,
-    "uneven_skin_tone": 0.2667,
     "deep_nasolabial_folds": 0.2,
+    "forehead_wrinkles": 0.2,
     "jowls": 0.2,
-    "lower_face_sagging": 0.2,
     "broken_capillaries": 0.1,
     "facial_puffiness": 0.1,
     "facial_redness": 0.1,
@@ -329,6 +370,82 @@
       "renderable": true,
       "aging_related": false
     },
+    "earlobe_elongation": {
+      "label": "Earlobe elongation",
+      "score": 0.75,
+      "category": "morphological_aging_feature",
+      "region": "earlobes",
+      "contributions": [
+        {
+          "source": "auricular_tissue_laxity",
+          "source_layer": "mechanism",
+          "source_activation": 0.75,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.75,
+          "evidence": "Azaria et al. 2003, Plastic and Reconstructive Surgery 111(7), 2398-2402"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "earlobe_ptosis": {
+      "label": "Earlobe ptosis",
+      "score": 0.75,
+      "category": "morphological_aging_feature",
+      "region": "earlobes",
+      "contributions": [
+        {
+          "source": "auricular_tissue_laxity",
+          "source_layer": "mechanism",
+          "source_activation": 0.75,
+          "relation": "manifests_as",
+          "weight": 0.9,
+          "contribution": 0.675,
+          "evidence": "Waked et al. 2025, Plastic and Reconstructive Surgery - Global Open, 13, e6547"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "increased_nasal_length": {
+      "label": "Increased nasal length",
+      "score": 0.75,
+      "category": "morphological_aging_feature",
+      "region": "nose",
+      "contributions": [
+        {
+          "source": "nasal_support_weakening",
+          "source_layer": "mechanism",
+          "source_activation": 0.75,
+          "relation": "manifests_as",
+          "weight": 0.9,
+          "contribution": 0.675,
+          "evidence": "Edelstein 1996, DOI: 10.1097/00005537-199609001-00001"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "nasal_tip_ptosis": {
+      "label": "Nasal tip ptosis",
+      "score": 0.75,
+      "category": "morphological_aging_feature",
+      "region": "nose",
+      "contributions": [
+        {
+          "source": "nasal_support_weakening",
+          "source_layer": "mechanism",
+          "source_activation": 0.75,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.75,
+          "evidence": "Edelstein 1996, DOI: 10.1097/00005537-199609001-00001"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
     "crow_feet": {
       "label": "Crow's feet",
       "score": 0.6,
@@ -357,6 +474,25 @@
       "renderable": true,
       "aging_related": true
     },
+    "dull_skin_tone": {
+      "label": "Dull skin tone",
+      "score": 0.6,
+      "category": "aging_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
     "enlarged_pores": {
       "label": "Enlarged pores",
       "score": 0.6,
@@ -376,14 +512,14 @@
       "renderable": true,
       "aging_related": true
     },
-    "forehead_wrinkles": {
-      "label": "Forehead wrinkles",
+    "lower_face_sagging": {
+      "label": "Lower-face sagging",
       "score": 0.6,
       "category": "aging_feature",
-      "region": "forehead",
+      "region": "lower face",
       "contributions": [
         {
-          "source": "men",
+          "source": "asian",
           "source_layer": "factor",
           "source_activation": 1.0,
           "relation": "more_prone_to",
@@ -392,13 +528,32 @@
           "evidence": "Flament et al."
         },
         {
-          "source": "collagen_degradation",
+          "source": "elastic_fiber_damage",
           "source_layer": "mechanism",
           "source_activation": 0.2,
           "relation": "manifests_as",
           "weight": 1.0,
           "contribution": 0.2,
           "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "nasolabial_folds": {
+      "label": "Nasolabial folds",
+      "score": 0.6,
+      "category": "aging_feature",
+      "region": "nasolabial region",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
         }
       ],
       "renderable": true,
@@ -521,6 +676,52 @@
           "weight": 1.0,
           "contribution": 0.4,
           "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "uneven_skin_tone": {
+      "label": "Uneven skin tone",
+      "score": 0.35,
+      "category": "aging_feature",
+      "region": "entire face",
+      "contributions": [
+        {
+          "source": "stress",
+          "source_layer": "factor",
+          "source_activation": 0.6,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.6,
+          "evidence": "Bobok et al."
+        },
+        {
+          "source": "uv_exposure",
+          "source_layer": "factor",
+          "source_activation": 0.4,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Swift et al."
+        },
+        {
+          "source": "pigmentation_dysregulation",
+          "source_layer": "mechanism",
+          "source_activation": 0.4,
+          "relation": "manifests_as",
+          "weight": 1.0,
+          "contribution": 0.4,
+          "evidence": "Mechanistic mapping"
+        },
+        {
+          "source": "smoking",
+          "source_layer": "factor",
+          "source_activation": 0.0,
+          "relation": "increases_risk",
+          "weight": 1.0,
+          "contribution": 0.0,
+          "evidence": "Swift et al."
         }
       ],
       "renderable": true,
@@ -751,43 +952,6 @@
       "renderable": true,
       "aging_related": false
     },
-    "uneven_skin_tone": {
-      "label": "Uneven skin tone",
-      "score": 0.2667,
-      "category": "aging_feature",
-      "region": "entire face",
-      "contributions": [
-        {
-          "source": "uv_exposure",
-          "source_layer": "factor",
-          "source_activation": 0.4,
-          "relation": "increases_risk",
-          "weight": 1.0,
-          "contribution": 0.4,
-          "evidence": "Swift et al."
-        },
-        {
-          "source": "pigmentation_dysregulation",
-          "source_layer": "mechanism",
-          "source_activation": 0.4,
-          "relation": "manifests_as",
-          "weight": 1.0,
-          "contribution": 0.4,
-          "evidence": "Mechanistic mapping"
-        },
-        {
-          "source": "smoking",
-          "source_layer": "factor",
-          "source_activation": 0.0,
-          "relation": "increases_risk",
-          "weight": 1.0,
-          "contribution": 0.0,
-          "evidence": "Swift et al."
-        }
-      ],
-      "renderable": true,
-      "aging_related": true
-    },
     "deep_nasolabial_folds": {
       "label": "Deep nasolabial folds",
       "score": 0.2,
@@ -799,6 +963,25 @@
           "source_layer": "mechanism",
           "source_activation": 0.2,
           "relation": "contributes_to",
+          "weight": 1.0,
+          "contribution": 0.2,
+          "evidence": "Mechanistic mapping"
+        }
+      ],
+      "renderable": true,
+      "aging_related": true
+    },
+    "forehead_wrinkles": {
+      "label": "Forehead wrinkles",
+      "score": 0.2,
+      "category": "aging_feature",
+      "region": "forehead",
+      "contributions": [
+        {
+          "source": "collagen_degradation",
+          "source_layer": "mechanism",
+          "source_activation": 0.2,
+          "relation": "manifests_as",
           "weight": 1.0,
           "contribution": 0.2,
           "evidence": "Mechanistic mapping"
@@ -839,25 +1022,6 @@
           "weight": 1.0,
           "contribution": 0.0,
           "evidence": "Flament et al."
-        }
-      ],
-      "renderable": true,
-      "aging_related": true
-    },
-    "lower_face_sagging": {
-      "label": "Lower-face sagging",
-      "score": 0.2,
-      "category": "aging_feature",
-      "region": "lower face",
-      "contributions": [
-        {
-          "source": "elastic_fiber_damage",
-          "source_layer": "mechanism",
-          "source_activation": 0.2,
-          "relation": "manifests_as",
-          "weight": 1.0,
-          "contribution": 0.2,
-          "evidence": "Mechanistic mapping"
         }
       ],
       "renderable": true,
@@ -1007,9 +1171,9 @@
     }
   },
   "metadata": {
-    "engine_version": "0.2.0",
-    "propagation": "topological_multi_hop_weighted_mean",
-    "node_count": 73,
-    "edge_count": 92
+    "engine_version": "0.3.0",
+    "propagation": "topological_multi_hop_weighted_mean_with_target_age_activation",
+    "node_count": 80,
+    "edge_count": 98
   }
 }

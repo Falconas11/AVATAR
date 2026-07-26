@@ -16,6 +16,46 @@
   ],
   "selected_features": [
     {
+      "feature_id": "earlobe_elongation",
+      "label": "Earlobe elongation",
+      "score": 0.75,
+      "region": "earlobes",
+      "category": "morphological_aging_feature",
+      "intensity": "subtle",
+      "phrase": "slightly elongated earlobes",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "earlobe_ptosis",
+      "label": "Earlobe ptosis",
+      "score": 0.75,
+      "region": "earlobes",
+      "category": "morphological_aging_feature",
+      "intensity": "subtle",
+      "phrase": "mild age-related earlobe sagging",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "increased_nasal_length",
+      "label": "Increased nasal length",
+      "score": 0.75,
+      "region": "nose",
+      "category": "morphological_aging_feature",
+      "intensity": "subtle",
+      "phrase": "a slight apparent increase in nasal length",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "nasal_tip_ptosis",
+      "label": "Nasal tip ptosis",
+      "score": 0.75,
+      "region": "nose",
+      "category": "morphological_aging_feature",
+      "intensity": "subtle",
+      "phrase": "a subtly lowered nasal tip consistent with normal aging",
+      "priority": "primary"
+    },
+    {
       "feature_id": "crow_feet",
       "label": "Crow's feet",
       "score": 0.6,
@@ -23,6 +63,16 @@
       "category": "aging_feature",
       "intensity": "moderate to strong",
       "phrase": "crow's feet",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "dull_skin_tone",
+      "label": "Dull skin tone",
+      "score": 0.6,
+      "region": "entire face",
+      "category": "aging_feature",
+      "intensity": "moderate to strong",
+      "phrase": "dull skin tone",
       "priority": "primary"
     },
     {
@@ -36,13 +86,23 @@
       "priority": "primary"
     },
     {
-      "feature_id": "forehead_wrinkles",
-      "label": "Forehead wrinkles",
+      "feature_id": "lower_face_sagging",
+      "label": "Lower-face sagging",
       "score": 0.6,
-      "region": "forehead",
+      "region": "lower face",
       "category": "aging_feature",
       "intensity": "moderate to strong",
-      "phrase": "horizontal forehead wrinkles",
+      "phrase": "lower-face skin laxity and sagging",
+      "priority": "primary"
+    },
+    {
+      "feature_id": "nasolabial_folds",
+      "label": "Nasolabial folds",
+      "score": 0.6,
+      "region": "nasolabial region",
+      "category": "aging_feature",
+      "intensity": "moderate to strong",
+      "phrase": "nasolabial folds",
       "priority": "primary"
     },
     {
@@ -74,31 +134,9 @@
       "intensity": "moderate",
       "phrase": "sunspots and age spots",
       "priority": "secondary"
-    },
-    {
-      "feature_id": "dry_skin",
-      "label": "Dry/coarse skin",
-      "score": 0.3286,
-      "region": "entire face",
-      "category": "aging_feature",
-      "intensity": "subtle",
-      "phrase": "dry, slightly coarse skin texture",
-      "priority": "supporting"
     }
   ],
   "regional_groups": {
-    "forehead": [
-      {
-        "feature_id": "forehead_wrinkles",
-        "label": "Forehead wrinkles",
-        "score": 0.6,
-        "region": "forehead",
-        "category": "aging_feature",
-        "intensity": "moderate to strong",
-        "phrase": "horizontal forehead wrinkles",
-        "priority": "primary"
-      }
-    ],
     "eye corners": [
       {
         "feature_id": "crow_feet",
@@ -147,7 +185,85 @@
         "priority": "secondary"
       }
     ],
+    "nasolabial region": [
+      {
+        "feature_id": "nasolabial_folds",
+        "label": "Nasolabial folds",
+        "score": 0.6,
+        "region": "nasolabial region",
+        "category": "aging_feature",
+        "intensity": "moderate to strong",
+        "phrase": "nasolabial folds",
+        "priority": "primary"
+      }
+    ],
+    "lower face": [
+      {
+        "feature_id": "lower_face_sagging",
+        "label": "Lower-face sagging",
+        "score": 0.6,
+        "region": "lower face",
+        "category": "aging_feature",
+        "intensity": "moderate to strong",
+        "phrase": "lower-face skin laxity and sagging",
+        "priority": "primary"
+      }
+    ],
+    "nose": [
+      {
+        "feature_id": "increased_nasal_length",
+        "label": "Increased nasal length",
+        "score": 0.75,
+        "region": "nose",
+        "category": "morphological_aging_feature",
+        "intensity": "subtle",
+        "phrase": "a slight apparent increase in nasal length",
+        "priority": "primary"
+      },
+      {
+        "feature_id": "nasal_tip_ptosis",
+        "label": "Nasal tip ptosis",
+        "score": 0.75,
+        "region": "nose",
+        "category": "morphological_aging_feature",
+        "intensity": "subtle",
+        "phrase": "a subtly lowered nasal tip consistent with normal aging",
+        "priority": "primary"
+      }
+    ],
+    "earlobes": [
+      {
+        "feature_id": "earlobe_elongation",
+        "label": "Earlobe elongation",
+        "score": 0.75,
+        "region": "earlobes",
+        "category": "morphological_aging_feature",
+        "intensity": "subtle",
+        "phrase": "slightly elongated earlobes",
+        "priority": "primary"
+      },
+      {
+        "feature_id": "earlobe_ptosis",
+        "label": "Earlobe ptosis",
+        "score": 0.75,
+        "region": "earlobes",
+        "category": "morphological_aging_feature",
+        "intensity": "subtle",
+        "phrase": "mild age-related earlobe sagging",
+        "priority": "primary"
+      }
+    ],
     "entire face": [
+      {
+        "feature_id": "dull_skin_tone",
+        "label": "Dull skin tone",
+        "score": 0.6,
+        "region": "entire face",
+        "category": "aging_feature",
+        "intensity": "moderate to strong",
+        "phrase": "dull skin tone",
+        "priority": "primary"
+      },
       {
         "feature_id": "enlarged_pores",
         "label": "Enlarged pores",
@@ -157,20 +273,24 @@
         "intensity": "moderate to strong",
         "phrase": "enlarged pores",
         "priority": "primary"
-      },
-      {
-        "feature_id": "dry_skin",
-        "label": "Dry/coarse skin",
-        "score": 0.3286,
-        "region": "entire face",
-        "category": "aging_feature",
-        "intensity": "subtle",
-        "phrase": "dry, slightly coarse skin texture",
-        "priority": "supporting"
       }
     ]
   },
   "active_mechanisms": [
+    {
+      "id": "auricular_tissue_laxity",
+      "label": "Auricular tissue laxity",
+      "visible_effect": "subtle earlobe elongation and mild earlobe sagging",
+      "score": 0.75,
+      "region": "ears"
+    },
+    {
+      "id": "nasal_support_weakening",
+      "label": "Nasal support weakening",
+      "visible_effect": "subtle age-related nasal-tip descent and apparent nasal elongation",
+      "score": 0.75,
+      "region": "nose"
+    },
     {
       "id": "skin_barrier_impairment",
       "label": "Skin barrier impairment",
@@ -180,9 +300,9 @@
     }
   ],
   "builder_metadata": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "minimum_score": 0.3,
     "max_features": 12,
-    "strategy": "profile_target_age_resolution_age_anchor_age_typical_features_salt_and_pepper_hair_regional_pore_control_vascular_visibility_intrinsic_aging_consistency_perceptual_priority_feature_metadata_filtering_region_normalization_redundancy_suppression_priority_tiering"
+    "strategy": "profile_target_age_resolution_age_anchor_age_typical_features_salt_and_pepper_hair_regional_pore_control_vascular_visibility_intrinsic_aging_consistency_perceptual_priority_feature_metadata_filtering_region_normalization_redundancy_suppression_priority_tiering_morphological_aging_intensity_caps_anatomy_preservation"
   }
 }
