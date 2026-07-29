@@ -9,7 +9,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BUILDER_VERSION = "1.2.0"
+BUILDER_VERSION = "1.2.1"
 
 
 @dataclass(frozen=True)
@@ -202,8 +202,12 @@ def build_age_anchor(target_age: int) -> str:
     elif target_age >= 40:
         age_class = "a middle-aged adult"
         contrast = "not a young adult"
+    elif target_age >= 30:
+        age_class = "an adult in their thirties"
+        contrast = "not a teenager or very young adult"
     else:
         age_class = f"an adult of approximately {target_age}"
+        contrast = "consistent with the requested age"
 
     return (
         f"AGE ANCHOR: The subject must be immediately perceived as approximately "
@@ -263,6 +267,16 @@ def build_age_typical_features(target_age: int) -> list[str]:
                 "mainly near the temples, without changing the hairstyle, hairline, "
                 "or hair density"
             ),
+        ]
+    if target_age >= 30:
+        return [
+            (
+                "the original natural hair color with no required graying, while "
+                "preserving the original hairstyle, hairline, and overall hair density"
+            ),
+            "subtle early adult skin texture maturation without pronounced wrinkles",
+            "very faint expression lines around the eyes or forehead only where naturally appropriate",
+            "slight under-eye definition while preserving a healthy and age-appropriate appearance",
         ]
 
     return []
