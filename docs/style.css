@@ -533,6 +533,14 @@ button:disabled {
 .consent-decline {
   border: 1px solid #c9ced6;
   background: #ffffff;
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.consent-decline:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: var(--text-primary);
+  box-shadow: none;
 }
 
 .consent-accept {
