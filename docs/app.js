@@ -63,7 +63,7 @@ form.addEventListener("submit", async (event) => {
   const profile = {
     age: Number(document.querySelector("#age").value),
     target_age: Number(document.querySelector("#target-age").value),
-    sex: document.querySelector("#sex").value,
+    sex: document.querySelector("#sex").value.trim(),
     ethnicity: document.querySelector("#ethnicity").value.trim(),
     factors: factorValues,
   };
