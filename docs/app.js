@@ -16,6 +16,7 @@ const originalPreview = document.querySelector("#original-preview");
 const agedResult = document.querySelector("#aged-result");
 const featureList = document.querySelector("#feature-list");
 const generateButton = document.querySelector("#generate-button");
+const downloadButton = document.querySelector("#download-button");
 const consentModal = document.querySelector("#consent-modal");
 const consentRead = document.querySelector("#consent-read");
 const consentImage = document.querySelector("#consent-image");
@@ -23,6 +24,7 @@ const consentAge = document.querySelector("#consent-age");
 const acceptConsent = document.querySelector("#accept-consent");
 const declineConsent = document.querySelector("#decline-consent");
 const consentMessage = document.querySelector("#consent-message");
+
 
 
 function hasAcceptedConsent() {
@@ -151,6 +153,7 @@ form.addEventListener("submit", async (event) => {
   originalPreview.src = URL.createObjectURL(image);
   resultsElement.classList.add("hidden");
   generateButton.disabled = true;
+  let latestGeneratedImage = null;
 
   featureList.innerHTML =
   '<li class="feature-empty">Analyzing aging features...</li>';
@@ -173,6 +176,7 @@ form.addEventListener("submit", async (event) => {
 
     agedResult.src =
       `data:${data.image.mime_type};base64,${data.image.base64}`;
+    downloadButton.disabled = false;
 
     featureList.replaceChildren();
 
@@ -246,4 +250,44 @@ form.addEventListener("submit", async (event) => {
   } finally {
     generateButton.disabled = false;
   }
+});
+
+downloadButton.addEventListener("click", () => {
+  if (!latestGeneratedImage) {
+    statusElement.textContent =
+      "Please generate an aged portrait before downloading.";
+    return;
+  }
+
+  const now = new Date();
+
+  const timestamp = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+    "_",
+    String(now.getHours()).padStart(2, "0"),
+    String(now.getMinutes()).padStart(2, "0"),
+    String(now.getSeconds()).padStart(2, "0"),
+  ].join("");
+
+  const extension =
+    latestGeneratedImage.mimeType === "image/jpeg"
+      ? "jpg"
+      : latestGeneratedImage.mimeType === "image/webp"
+        ? "webp"
+        : "png";
+
+  const downloadLink = document.createElement("a");
+
+  downloadLink.href =
+    `data:${latestGeneratedImage.mimeType};base64,` +
+    latestGeneratedImage.base64;
+
+  downloadLink.download =
+    `AVATAR_aged_portrait_${timestamp}.${extension}`;
+
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
 });

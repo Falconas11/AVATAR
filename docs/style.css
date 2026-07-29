@@ -572,3 +572,24 @@ button:disabled {
     width: 100%;
   }
 }
+
+.results-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.results-actions button {
+  width: min(320px, 100%);
+}
+
+#download-button {
+  background: var(--illinois-blue);
+  box-shadow: 0 8px 18px rgb(19 41 75 / 20%);
+}
+
+#download-button:hover:not(:disabled) {
+  background: #0d1f3a;
+  box-shadow: 0 10px 24px rgb(19 41 75 / 26%);
+}
