@@ -16,6 +16,82 @@ const originalPreview = document.querySelector("#original-preview");
 const agedResult = document.querySelector("#aged-result");
 const featureList = document.querySelector("#feature-list");
 const generateButton = document.querySelector("#generate-button");
+const consentModal = document.querySelector("#consent-modal");
+const consentRead = document.querySelector("#consent-read");
+const consentImage = document.querySelector("#consent-image");
+const consentAge = document.querySelector("#consent-age");
+const acceptConsent = document.querySelector("#accept-consent");
+const declineConsent = document.querySelector("#decline-consent");
+const consentMessage = document.querySelector("#consent-message");
+
+
+function hasAcceptedConsent() {
+  return sessionStorage.getItem("avatar-pilot-consent") === "accepted";
+}
+
+function updateConsentButton() {
+  const allChecked =
+    consentRead.checked &&
+    consentImage.checked &&
+    consentAge.checked;
+
+  acceptConsent.disabled = !allChecked;
+}
+
+function openConsentModal() {
+  consentModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function closeConsentModal() {
+  consentModal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+}
+
+consentRead.addEventListener("change", updateConsentButton);
+consentImage.addEventListener("change", updateConsentButton);
+consentAge.addEventListener("change", updateConsentButton);
+
+acceptConsent.addEventListener("click", () => {
+  if (
+    !consentRead.checked ||
+    !consentImage.checked ||
+    !consentAge.checked
+  ) {
+    consentMessage.textContent =
+      "Please confirm all three statements before continuing.";
+    return;
+  }
+
+  sessionStorage.setItem("avatar-pilot-consent", "accepted");
+  consentMessage.textContent = "";
+  closeConsentModal();
+});
+
+declineConsent.addEventListener("click", () => {
+  sessionStorage.removeItem("avatar-pilot-consent");
+
+  const consentCard = document.querySelector(".consent-card");
+
+  consentCard.innerHTML = `
+    <h2>Participation declined</h2>
+
+    <p>
+      You have chosen not to participate in the AVATAR pilot study.
+      No image has been uploaded or processed.
+    </p>
+
+    <p>
+      You may close this page.
+    </p>
+  `;
+});
+
+if (hasAcceptedConsent()) {
+  closeConsentModal();
+} else {
+  openConsentModal();
+}
 
 for (const [key, label, initialValue] of factors) {
   const wrapper = document.createElement("div");
@@ -162,12 +238,6 @@ form.addEventListener("submit", async (event) => {
       featureList.append(emptyItem);
     }
 
-    if (features.length === 0) {
-      const emptyItem = document.createElement("li");
-      emptyItem.className = "feature-empty";
-      emptyItem.textContent = "No profile-specific aging features.";
-      featureList.append(emptyItem);
-    }
 
     resultsElement.classList.remove("hidden");
     statusElement.textContent = "Generation complete.";

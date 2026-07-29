@@ -23,6 +23,149 @@
 </head>
 
 <body>
+  <div
+    id="consent-modal"
+    class="consent-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="consent-title"
+  >
+    <div class="consent-card">
+      <img
+        class="consent-logo"
+        src="./assets/avatar-logo.png"
+        alt="AVATAR logo"
+      />
+
+      <h2 id="consent-title">
+        AVATAR Pilot Study
+      </h2>
+
+      <p class="consent-subtitle">
+        Research Participation and Image Processing Information
+      </p>
+
+      <div class="consent-text">
+        <p>
+          You are invited to participate in a pilot study of AVATAR,
+          an academic research prototype developed at the University
+          of Illinois Urbana-Champaign.
+        </p>
+
+        <h3>What you will do</h3>
+
+        <p>
+          You will upload a portrait, enter profile information,
+          generate an age-progressed image, and complete a short
+          feedback questionnaire.
+        </p>
+
+        <h3>Use of your image</h3>
+
+        <p>
+          Your uploaded image will be used only to generate an
+          age-progressed portrait for this academic pilot study.
+          The image will be transmitted to the AVATAR system and
+          an external image-generation service for processing.
+        </p>
+
+        <p>
+          The research team will not intentionally retain your
+          original or generated image after the generation session.
+          Your image will not be published, presented, or included
+          in research materials without your separate explicit
+          permission.
+        </p>
+
+        <p>
+          Please upload only a photograph of yourself or an image
+          that you have permission to use.
+        </p>
+
+        <h3>Risks and limitations</h3>
+
+        <p>
+          Uploading a facial image involves a potential privacy risk.
+          Complete confidentiality cannot be guaranteed when data
+          is transmitted through online and third-party services.
+        </p>
+
+        <p>
+          The generated portrait is an experimental visualization.
+          It is not a medical diagnosis or a certain prediction of
+          how you will look in the future.
+        </p>
+
+        <h3>Voluntary participation</h3>
+
+        <p>
+          Participation is voluntary. You may decline to participate
+          or stop at any time without penalty.
+        </p>
+      </div>
+
+      <div class="consent-options">
+        <label class="consent-checkbox">
+          <input
+            id="consent-read"
+            type="checkbox"
+          />
+
+          <span>
+            I have read and understood the study information.
+          </span>
+        </label>
+
+        <label class="consent-checkbox">
+          <input
+            id="consent-image"
+            type="checkbox"
+          />
+
+          <span>
+            I consent to the processing of my uploaded image for
+            this pilot study.
+          </span>
+        </label>
+
+        <label class="consent-checkbox">
+          <input
+            id="consent-age"
+            type="checkbox"
+          />
+
+          <span>
+            I confirm that I am at least 18 years old.
+          </span>
+        </label>
+      </div>
+
+      <p
+        id="consent-message"
+        class="consent-message"
+        aria-live="polite"
+      ></p>
+
+      <div class="consent-actions">
+        <button
+          id="decline-consent"
+          class="consent-decline"
+          type="button"
+        >
+          I Do Not Agree
+        </button>
+
+        <button
+          id="accept-consent"
+          class="consent-accept"
+          type="button"
+          disabled
+        >
+          I Agree and Continue
+        </button>
+      </div>
+    </div>
+  </div>
   <main class="container">
 
     <header>
@@ -85,8 +228,6 @@
           <input
             id="sex"
             type="text"
-            value="Male"
-            placeholder="e.g. male, female, non-binary"
           />
         </label>
 
@@ -96,7 +237,6 @@
           <input
             id="ethnicity"
             type="text"
-            value="Asian"
           />
         </label>
 
