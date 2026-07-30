@@ -573,7 +573,7 @@ button:disabled {
   }
 }
 
-.results-actions {
+/* .results-actions {
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;
@@ -592,4 +592,31 @@ button:disabled {
 #download-button:hover:not(:disabled) {
   background: #0d1f3a;
   box-shadow: 0 10px 24px rgb(19 41 75 / 26%);
+} */
+
+.save-notice {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgb(19 41 75 / 14%);
+  border-radius: 12px;
+  background: rgb(19 41 75 / 5%);
+}
+
+.save-notice strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--illinois-blue);
+  font-size: 0.9rem;
+}
+
+.save-notice p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+#aged-result {
+  -webkit-touch-callout: default;
+  user-select: auto;
 }

@@ -16,7 +16,7 @@ const originalPreview = document.querySelector("#original-preview");
 const agedResult = document.querySelector("#aged-result");
 const featureList = document.querySelector("#feature-list");
 const generateButton = document.querySelector("#generate-button");
-const downloadButton = document.querySelector("#download-button");
+// const downloadButton = document.querySelector("#download-button");
 const consentModal = document.querySelector("#consent-modal");
 const consentRead = document.querySelector("#consent-read");
 const consentImage = document.querySelector("#consent-image");
@@ -25,7 +25,7 @@ const acceptConsent = document.querySelector("#accept-consent");
 const declineConsent = document.querySelector("#decline-consent");
 const consentMessage = document.querySelector("#consent-message");
 
-let latestGeneratedImage = null;
+// let latestGeneratedImage = null;
 
 function hasAcceptedConsent() {
   return sessionStorage.getItem("avatar-pilot-consent") === "accepted";
@@ -153,8 +153,8 @@ form.addEventListener("submit", async (event) => {
   originalPreview.src = URL.createObjectURL(image);
   resultsElement.classList.add("hidden");
   generateButton.disabled = true;
-  downloadButton.disabled = true;
-  latestGeneratedImage = null;
+  // downloadButton.disabled = true;
+  // latestGeneratedImage = null;
 
   featureList.innerHTML =
   '<li class="feature-empty">Analyzing aging features...</li>';
@@ -178,10 +178,10 @@ form.addEventListener("submit", async (event) => {
     agedResult.src =
       `data:${data.image.mime_type};base64,${data.image.base64}`;
 
-    latestGeneratedImage = {
-      mimeType: data.image.mime_type,
-      base64: data.image.base64,
-    };
+    // latestGeneratedImage = {
+    //   mimeType: data.image.mime_type,
+    //   base64: data.image.base64,
+    // };
 
 downloadButton.disabled = false;
 
@@ -259,70 +259,70 @@ downloadButton.disabled = false;
   }
 });
 
-downloadButton.addEventListener("click", () => {
-  if (!latestGeneratedImage?.base64) {
-    statusElement.textContent =
-      "No generated image is available to download.";
-    return;
-  }
+// downloadButton.addEventListener("click", () => {
+//   if (!latestGeneratedImage?.base64) {
+//     statusElement.textContent =
+//       "No generated image is available to download.";
+//     return;
+//   }
 
-  try {
-    const binaryString = atob(latestGeneratedImage.base64);
-    const bytes = new Uint8Array(binaryString.length);
+//   try {
+//     const binaryString = atob(latestGeneratedImage.base64);
+//     const bytes = new Uint8Array(binaryString.length);
 
-    for (let index = 0; index < binaryString.length; index += 1) {
-      bytes[index] = binaryString.charCodeAt(index);
-    }
+//     for (let index = 0; index < binaryString.length; index += 1) {
+//       bytes[index] = binaryString.charCodeAt(index);
+//     }
 
-    const mimeType =
-      latestGeneratedImage.mimeType || "image/png";
+//     const mimeType =
+//       latestGeneratedImage.mimeType || "image/png";
 
-    const imageBlob = new Blob(
-      [bytes],
-      { type: mimeType }
-    );
+//     const imageBlob = new Blob(
+//       [bytes],
+//       { type: mimeType }
+//     );
 
-    const objectUrl = URL.createObjectURL(imageBlob);
+//     const objectUrl = URL.createObjectURL(imageBlob);
 
-    const extension =
-      mimeType === "image/jpeg"
-        ? "jpg"
-        : mimeType === "image/webp"
-          ? "webp"
-          : "png";
+//     const extension =
+//       mimeType === "image/jpeg"
+//         ? "jpg"
+//         : mimeType === "image/webp"
+//           ? "webp"
+//           : "png";
 
-    const now = new Date();
+//     const now = new Date();
 
-    const timestamp = [
-      now.getFullYear(),
-      String(now.getMonth() + 1).padStart(2, "0"),
-      String(now.getDate()).padStart(2, "0"),
-      "_",
-      String(now.getHours()).padStart(2, "0"),
-      String(now.getMinutes()).padStart(2, "0"),
-      String(now.getSeconds()).padStart(2, "0"),
-    ].join("");
+//     const timestamp = [
+//       now.getFullYear(),
+//       String(now.getMonth() + 1).padStart(2, "0"),
+//       String(now.getDate()).padStart(2, "0"),
+//       "_",
+//       String(now.getHours()).padStart(2, "0"),
+//       String(now.getMinutes()).padStart(2, "0"),
+//       String(now.getSeconds()).padStart(2, "0"),
+//     ].join("");
 
-    const downloadLink = document.createElement("a");
+//     const downloadLink = document.createElement("a");
 
-    downloadLink.href = objectUrl;
-    downloadLink.download =
-      `AVATAR_aged_portrait_${timestamp}.${extension}`;
+//     downloadLink.href = objectUrl;
+//     downloadLink.download =
+//       `AVATAR_aged_portrait_${timestamp}.${extension}`;
 
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    downloadLink.remove();
+//     document.body.appendChild(downloadLink);
+//     downloadLink.click();
+//     downloadLink.remove();
 
-    setTimeout(() => {
-      URL.revokeObjectURL(objectUrl);
-    }, 1000);
+//     setTimeout(() => {
+//       URL.revokeObjectURL(objectUrl);
+//     }, 1000);
 
-    statusElement.textContent =
-      "Aged portrait downloaded successfully.";
-  } catch (error) {
-    console.error("Download failed:", error);
+//     statusElement.textContent =
+//       "Aged portrait downloaded successfully.";
+//   } catch (error) {
+//     console.error("Download failed:", error);
 
-    statusElement.textContent =
-      "The portrait could not be downloaded. Please try again.";
-  }
-});
+//     statusElement.textContent =
+//       "The portrait could not be downloaded. Please try again.";
+//   }
+// });
