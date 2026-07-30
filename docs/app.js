@@ -1,5 +1,19 @@
 const API_BASE_URL = "https://avatar-722b.onrender.com";
 
+const GOOGLE_FORM_BASE_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfd0SfEgYtIe8uOUszcq6-Cu_qaUArEBAoa42Warz-BnGeBOA/viewform";
+
+const GOOGLE_FORM_FIELDS = {
+  currentAge: "entry.1014704484",
+  gender: "entry.1166027910",
+  ethnicity: "entry.739325734",
+  smoking: "entry.1869532955",
+  uvExposure: "entry.950627133",
+  alcohol: "entry.158385039",
+  stress: "entry.1193685801",
+  diet: "entry.265219643",
+};
+
 const factors = [
   ["smoking", "Smoking", 0.0],
   ["uv_exposure", "UV exposure", 0.4],
@@ -24,6 +38,10 @@ const consentAge = document.querySelector("#consent-age");
 const acceptConsent = document.querySelector("#accept-consent");
 const declineConsent = document.querySelector("#decline-consent");
 const consentMessage = document.querySelector("#consent-message");
+const feedbackButton =
+  document.querySelector("#feedback-button");
+
+let latestFeedbackData = null;
 
 // let latestGeneratedImage = null;
 
@@ -37,7 +55,7 @@ function updateConsentButton() {
     consentImage.checked &&
     consentAge.checked;
 
-  acceptConsent.disabled = !allChecked;
+  acceptConsent.disabled = !allChecked; 
 }
 
 function openConsentModal() {
@@ -155,6 +173,8 @@ form.addEventListener("submit", async (event) => {
   generateButton.disabled = true;
   // downloadButton.disabled = true;
   // latestGeneratedImage = null;
+  feedbackButton.disabled = true;
+  latestFeedbackData = null;
 
   featureList.innerHTML =
   '<li class="feature-empty">Analyzing aging features...</li>';
@@ -177,6 +197,21 @@ form.addEventListener("submit", async (event) => {
 
     agedResult.src =
       `data:${data.image.mime_type};base64,${data.image.base64}`;
+    
+    latestFeedbackData = {
+      currentAge: profile.age,
+      gender: profile.sex,
+      ethnicity: profile.ethnicity,
+
+      smoking: Math.round(profile.factors.smoking * 10),
+      uvExposure: Math.round(profile.factors.uv_exposure * 10),
+      alcohol: Math.round(profile.factors.alcohol * 10),
+      stress: Math.round(profile.factors.stress * 10),
+      diet: Math.round(profile.factors.diet * 10),
+    };
+
+feedbackButton.disabled = false;
+
 
     // latestGeneratedImage = {
     //   mimeType: data.image.mime_type,
@@ -326,3 +361,60 @@ form.addEventListener("submit", async (event) => {
 //       "The portrait could not be downloaded. Please try again.";
 //   }
 // });
+
+feedbackButton.addEventListener("click", () => {
+  if (!latestFeedbackData) {
+    statusElement.textContent =
+      "Please generate an aged portrait before continuing.";
+    return;
+  }
+
+  const params = new URLSearchParams();
+
+  params.set("usp", "pp_url");
+
+  params.set(
+    GOOGLE_FORM_FIELDS.currentAge,
+    String(latestFeedbackData.currentAge)
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.gender,
+    latestFeedbackData.gender
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.ethnicity,
+    latestFeedbackData.ethnicity
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.smoking,
+    String(latestFeedbackData.smoking)
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.uvExposure,
+    String(latestFeedbackData.uvExposure)
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.alcohol,
+    String(latestFeedbackData.alcohol)
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.stress,
+    String(latestFeedbackData.stress)
+  );
+
+  params.set(
+    GOOGLE_FORM_FIELDS.diet,
+    String(latestFeedbackData.diet)
+  );
+
+  const feedbackUrl =
+    `${GOOGLE_FORM_BASE_URL}?${params.toString()}`;
+
+  window.open(feedbackUrl, "_blank", "noopener");
+});
