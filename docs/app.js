@@ -183,7 +183,7 @@ form.addEventListener("submit", async (event) => {
     //   base64: data.image.base64,
     // };
 
-downloadButton.disabled = false;
+// downloadButton.disabled = false;
 
     featureList.replaceChildren();
 
