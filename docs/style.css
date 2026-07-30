@@ -600,6 +600,7 @@ button:disabled {
   border: 1px solid rgb(19 41 75 / 14%);
   border-radius: 12px;
   background: rgb(19 41 75 / 5%);
+  grid-column: 1 / -1;
 }
 
 .save-notice strong {
@@ -619,4 +620,21 @@ button:disabled {
 #aged-result {
   -webkit-touch-callout: default;
   user-select: auto;
+}
+
+.results-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+#feedback-button {
+  width: 100%;
+  max-width: 420px;
+}
+
+#feedback-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
