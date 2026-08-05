@@ -107,11 +107,14 @@ declineConsent.addEventListener("click", () => {
   `;
 });
 
-if (hasAcceptedConsent()) {
-  closeConsentModal();
-} else {
-  openConsentModal();
-}
+// if (hasAcceptedConsent()) {
+//   closeConsentModal();
+// } else {
+//   openConsentModal();
+// }
+
+// Temporarily disabled before IRB approval
+closeConsentModal();
 
 for (const [key, label, initialValue] of factors) {
   const wrapper = document.createElement("div");
