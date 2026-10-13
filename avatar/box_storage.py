@@ -55,20 +55,20 @@ def upload_study_image(
     access_token: str | None = None,
     folder_id: str | None = None,
     timeout: int = 30,
+    token_provider=None,
 ) -> BoxUploadResult:
     """Upload an image to a preconfigured Box folder; never return a public URL.
 
-    A short-lived access token may be supplied by an approved server-side token
-    provider. BOX_ACCESS_TOKEN is suitable for a development smoke test only:
-    production must manage token renewal securely.
+    Provide token_provider=BoxOAuthClient(durable_store) in production.
+    BOX_ACCESS_TOKEN is suitable for a development smoke test only.
     """
     filename = _validated_name(participant_id, image_kind, content_type)
-    if not image or len(image) > MAX_IMAGE_BYTES:
-        raise ValueError("Image must be between 1 byte and 10 MiB")
     if not isinstance(image, bytes):
         raise TypeError("image must be bytes")
+    if not image or len(image) > MAX_IMAGE_BYTES:
+        raise ValueError("Image must be between 1 byte and 10 MiB")
 
-    token = access_token or os.environ.get("BOX_ACCESS_TOKEN")
+    token = access_token or (token_provider.access_token() if token_provider else None) or os.environ.get("BOX_ACCESS_TOKEN")
     parent_id = folder_id or os.environ.get("BOX_STUDY_FOLDER_ID")
     if not token or not parent_id or not parent_id.isdecimal():
         raise BoxStorageError("Box storage is not configured")
