@@ -14,6 +14,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from avatar.image_renderer import render_portrait
 from avatar.knowledge_engine_v02 import KnowledgeEngine
 from avatar.prompt_builder import build_aging_prompt
+from avatar.box_oauth import BoxOAuthClient
+from avatar.box_token_store import PostgresBoxTokenStore
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 NODES_PATH = ROOT_DIR / "data" / "nodes_v02.csv"
@@ -23,6 +25,18 @@ MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
 app = FastAPI(title="AVATAR API", version="1.0.0", description="Biomedical knowledge-guided facial aging inference and portrait synthesis API.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
+
+def get_box_token_provider() -> BoxOAuthClient:
+    """Lazy provider construction; does not upload images."""
+    if os.getenv("AVATAR_BOX_STORAGE_ENABLED") != "true":
+        raise RuntimeError("Box storage is disabled")
+    if os.getenv("AVATAR_IRB_COLLECTION_APPROVED") != "true":
+        raise RuntimeError("IRB approval gate is not enabled")
+    provider = getattr(app.state, "box_token_provider", None)
+    if provider is None:
+        provider = BoxOAuthClient(PostgresBoxTokenStore())
+        app.state.box_token_provider = provider
+    return provider
 
 try:
     engine = KnowledgeEngine(nodes_path=NODES_PATH, edges_path=EDGES_PATH)
