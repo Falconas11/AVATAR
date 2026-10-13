@@ -8,3 +8,6 @@ openai
 numpy
 pandas
 networkx
+# Encrypted Box OAuth token storage (server only)
+psycopg[binary]>=3.2,<4
+cryptography>=43,<47
