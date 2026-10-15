@@ -111,3 +111,18 @@ def upload_study_image(
         # Do not log response bodies or tokens: they may contain sensitive data.
         raise BoxStorageError("Box image upload failed; storage is not confirmed") from exc
     return BoxUploadResult(file_id=file_id, participant_id=participant_id, image_kind=image_kind)
+
+def delete_study_image(file_id: str, *, token_provider, timeout: int = 30) -> None:
+    """Compensating deletion of a Box file by validated ID."""
+    if not file_id.isdecimal():
+        raise ValueError("Invalid Box file ID")
+    request = urllib.request.Request(
+        f"https://api.box.com/2.0/files/{file_id}",
+        headers={"Authorization": f"Bearer {token_provider.access_token()}"},
+        method="DELETE",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout):
+            pass
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+        raise BoxStorageError("Box cleanup failed; manual reconciliation required") from exc
