@@ -1,0 +1,16 @@
+# Local secrets and environment configuration
+.env
+.env.*
+!.env.example
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Local OS/editor
+.DS_Store
+Thumbs.db
