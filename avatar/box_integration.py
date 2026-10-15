@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from avatar.box_storage import BoxUploadResult, new_participant_id, upload_study_image
+from avatar.box_storage import BoxUploadResult, new_participant_id, upload_study_image, delete_study_image
 
 
 @dataclass(frozen=True)
@@ -30,7 +30,17 @@ def store_pair(*, original: bytes, aged: bytes,
     first = upload_study_image(original, participant_id=pid,
                                image_kind="original", content_type=original_content_type,
                                token_provider=token_provider)
-    second = upload_study_image(aged, participant_id=pid,
-                                image_kind="aged", content_type=aged_content_type,
-                                token_provider=token_provider)
+    try:
+        second = upload_study_image(aged, participant_id=pid,
+                                    image_kind="aged", content_type=aged_content_type,
+                                    token_provider=token_provider)
+    except Exception:
+        try:
+            delete_study_image(first.file_id, token_provider=token_provider)
+        except Exception as cleanup_exc:
+            raise RuntimeError(
+                f"Box pair incomplete; cleanup failed for participant {pid}, "
+                f"original file {first.file_id}. Manual reconciliation required."
+            ) from cleanup_exc
+        raise
     return StoredImagePair(participant_id=pid, original=first, aged=second)
