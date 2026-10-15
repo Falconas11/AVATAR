@@ -14,6 +14,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from avatar.image_renderer import render_portrait
 from avatar.knowledge_engine_v02 import KnowledgeEngine
 from avatar.prompt_builder import build_aging_prompt
+from avatar.box_integration import store_pair
+from avatar.box_oauth import BoxOAuthClient
+from avatar.box_token_store import PostgresBoxTokenStore
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 NODES_PATH = ROOT_DIR / "data" / "nodes_v02.csv"
@@ -23,6 +26,18 @@ MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
 app = FastAPI(title="AVATAR API", version="1.0.0", description="Biomedical knowledge-guided facial aging inference and portrait synthesis API.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
+
+def get_box_token_provider() -> BoxOAuthClient:
+    """Lazy provider construction; does not upload images."""
+    if os.getenv("AVATAR_BOX_STORAGE_ENABLED") != "true":
+        raise RuntimeError("Box storage is disabled")
+    if os.getenv("AVATAR_IRB_COLLECTION_APPROVED") != "true":
+        raise RuntimeError("IRB approval gate is not enabled")
+    provider = getattr(app.state, "box_token_provider", None)
+    if provider is None:
+        provider = BoxOAuthClient(PostgresBoxTokenStore())
+        app.state.box_token_provider = provider
+    return provider
 
 try:
     engine = KnowledgeEngine(nodes_path=NODES_PATH, edges_path=EDGES_PATH)
@@ -86,11 +101,29 @@ async def generate(image: UploadFile = File(...), profile_json: str = Form(...))
             if not saved_path.exists():
                 raise RuntimeError(f"Renderer did not create output image: {saved_path}")
             encode_start = time.perf_counter()
-            encoded_image = base64.b64encode(saved_path.read_bytes()).decode("utf-8")
+            aged_bytes = saved_path.read_bytes()
+            encoded_image = base64.b64encode(aged_bytes).decode("utf-8")
             print(f"[AVATAR PROFILE] Response image encoding: {time.perf_counter() - encode_start:.3f}s", flush=True)
 
+        participant_id = None
+        storage_status = "disabled"
+        if (os.getenv("AVATAR_BOX_STORAGE_ENABLED") == "true"
+                and os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true"):
+            try:
+                stored = store_pair(
+                    original=image_bytes, aged=aged_bytes,
+                    original_content_type=image.content_type,
+                    aged_content_type="image/png",
+                    token_provider=get_box_token_provider(),
+                )
+                participant_id = stored.participant_id
+                storage_status = "stored"
+            except Exception as storage_exc:
+                storage_status = "failed"
+                print(f"[AVATAR STORAGE] Upload failed: {type(storage_exc).__name__}", flush=True)
+
         print(f"[AVATAR PROFILE] TOTAL generation: {time.perf_counter() - total_start:.3f}s", flush=True)
-        return {"success": True, "image": {"mime_type": "image/png", "base64": encoded_image}, "profile": profile, "aging_representation": knowledge_result.get("aging_representation", {}), "features": knowledge_result.get("features", []), "mechanisms": knowledge_result.get("mechanisms", {}), "factor_activations": knowledge_result.get("factor_activations", {}), "prompt": prompt, "prompt_plan": prompt_plan, "usage": usage}
+        return {"success": True, "participant_id": participant_id, "storage_status": storage_status, "image": {"mime_type": "image/png", "base64": encoded_image}, "profile": profile, "aging_representation": knowledge_result.get("aging_representation", {}), "features": knowledge_result.get("features", []), "mechanisms": knowledge_result.get("mechanisms", {}), "factor_activations": knowledge_result.get("factor_activations", {}), "prompt": prompt, "prompt_plan": prompt_plan, "usage": usage}
     except HTTPException:
         raise
     except Exception as exc:
