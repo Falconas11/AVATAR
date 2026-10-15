@@ -4,6 +4,7 @@ const GOOGLE_FORM_BASE_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfd0SfEgYtIe8uOUszcq6-Cu_qaUArEBAoa42Warz-BnGeBOA/viewform";
 
 const GOOGLE_FORM_FIELDS = {
+  participantId: "entry.1264573501",
   currentAge: "entry.1014704484",
   gender: "entry.1166027910",
   ethnicity: "entry.739325734",
@@ -201,7 +202,8 @@ form.addEventListener("submit", async (event) => {
     agedResult.src =
       `data:${data.image.mime_type};base64,${data.image.base64}`;
     
-    latestFeedbackData = {
+    latestFeedbackData = data.storage_status === "stored" && /^P-[a-f0-9]{32}$/.test(data.participant_id || "") ? { 
+      participantId: data.participant_id,
       currentAge: profile.age,
       gender: profile.sex,
       ethnicity: profile.ethnicity,
@@ -211,9 +213,9 @@ form.addEventListener("submit", async (event) => {
       alcohol: Math.round(profile.factors.alcohol * 10),
       stress: Math.round(profile.factors.stress * 10),
       diet: Math.round(profile.factors.diet * 10),
-    };
+    } : null;
 
-feedbackButton.disabled = false;
+feedbackButton.disabled = !latestFeedbackData;
 
 
     // latestGeneratedImage = {
@@ -289,7 +291,9 @@ feedbackButton.disabled = false;
 
 
     resultsElement.classList.remove("hidden");
-    statusElement.textContent = "Generation complete.";
+    statusElement.textContent = latestFeedbackData
+      ? "Generation complete. Images saved; feedback is ready."
+      : "Generation complete, but images were not saved to approved study storage. Linked research feedback is unavailable.";
   } catch (error) {
     statusElement.textContent = error.message;
   } finally {
@@ -375,6 +379,7 @@ feedbackButton.addEventListener("click", () => {
   const params = new URLSearchParams();
 
   params.set("usp", "pp_url");
+  params.set(GOOGLE_FORM_FIELDS.participantId, latestFeedbackData.participantId);
 
   params.set(
     GOOGLE_FORM_FIELDS.currentAge,
