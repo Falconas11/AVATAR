@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from avatar.image_renderer import render_portrait
@@ -19,6 +19,26 @@ from avatar.box_oauth import BoxOAuthClient
 from avatar.box_token_store import PostgresBoxTokenStore
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
+if not os.getenv("RENDER"):
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(ROOT_DIR / ".env", override=True)
+    except ImportError:
+        pass
+
+SYNTHETIC_TEST_FOLDER_ID = "426895667507"
+
+def synthetic_box_test_allowed(request: Request) -> bool:
+    """Local synthetic-only testing; never use with actual participant images."""
+    client_host = request.client.host if request.client else None
+    return (
+        os.getenv("AVATAR_BOX_SYNTHETIC_TEST") == "true"
+        and os.getenv("AVATAR_ENV") == "local"
+        and not os.getenv("RENDER")
+        and client_host in ("127.0.0.1", "::1")
+        and os.getenv("BOX_STUDY_FOLDER_ID") == SYNTHETIC_TEST_FOLDER_ID
+    )
+
 NODES_PATH = ROOT_DIR / "data" / "nodes_v02.csv"
 EDGES_PATH = ROOT_DIR / "data" / "edges_v02.csv"
 SUPPORTED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
@@ -27,22 +47,12 @@ MAX_IMAGE_SIZE = 10 * 1024 * 1024
 app = FastAPI(title="AVATAR API", version="1.0.0", description="Biomedical knowledge-guided facial aging inference and portrait synthesis API.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
 
-def synthetic_test_mode():
-    return (
-        os.getenv("AVATAR_BOX_SYNTHETIC_TEST") == "true"
-        and os.getenv("AVATAR_ENV") == "local"
-        and os.getenv("BOX_STUDY_FOLDER_ID") == "426895667507"
-    )
-
-def get_box_token_provider() -> BoxOAuthClient:
+def get_box_token_provider(*, synthetic_test: bool = False) -> BoxOAuthClient:
     """Lazy provider construction; does not upload images."""
     if os.getenv("AVATAR_BOX_STORAGE_ENABLED") != "true":
         raise RuntimeError("Box storage is disabled")
-    if not (
-        os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true"
-        or synthetic_test_mode()
-    ):
-        raise RuntimeError("Box storage is not authorized")
+    if os.getenv("AVATAR_IRB_COLLECTION_APPROVED") != "true" and not synthetic_test:
+        raise RuntimeError("IRB approval gate is not enabled")
     provider = getattr(app.state, "box_token_provider", None)
     if provider is None:
         provider = BoxOAuthClient(PostgresBoxTokenStore())
@@ -66,7 +76,7 @@ def health() -> dict[str, Any]:
     return {"status": "healthy" if engine is not None else "degraded", "openai_key_configured": bool(os.getenv("OPENAI_API_KEY")), "nodes_file_found": NODES_PATH.exists(), "edges_file_found": EDGES_PATH.exists(), "knowledge_engine_loaded": engine is not None, "knowledge_engine_error": engine_startup_error}
 
 @app.post("/api/generate")
-async def generate(image: UploadFile = File(...), profile_json: str = Form(...)) -> dict[str, Any]:
+async def generate(request: Request, image: UploadFile = File(...), profile_json: str = Form(...)) -> dict[str, Any]:
     total_start = time.perf_counter()
     print("[AVATAR PROFILE] Request received", flush=True)
 
@@ -117,19 +127,15 @@ async def generate(image: UploadFile = File(...), profile_json: str = Form(...))
 
         participant_id = None
         storage_status = "disabled"
-        if (
-            os.getenv("AVATAR_BOX_STORAGE_ENABLED") == "true"
-            and (
-                os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true"
-                or synthetic_test_mode()
-            )
-        ):
+        synthetic_test = synthetic_box_test_allowed(request)
+        if (os.getenv("AVATAR_BOX_STORAGE_ENABLED") == "true"
+                and (os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true" or synthetic_test)):
             try:
                 stored = store_pair(
                     original=image_bytes, aged=aged_bytes,
                     original_content_type=image.content_type,
                     aged_content_type="image/png",
-                    token_provider=get_box_token_provider(),
+                    token_provider=get_box_token_provider(synthetic_test=synthetic_test),
                 )
                 participant_id = stored.participant_id
                 storage_status = "stored"
