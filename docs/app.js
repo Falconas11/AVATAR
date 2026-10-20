@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://avatar-722b.onrender.com";
+const API_BASE_URL = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  ? "http://127.0.0.1:8000"
+  : "https://avatar-722b.onrender.com";
 
 const GOOGLE_FORM_BASE_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfd0SfEgYtIe8uOUszcq6-Cu_qaUArEBAoa42Warz-BnGeBOA/viewform";
