@@ -27,12 +27,22 @@ MAX_IMAGE_SIZE = 10 * 1024 * 1024
 app = FastAPI(title="AVATAR API", version="1.0.0", description="Biomedical knowledge-guided facial aging inference and portrait synthesis API.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
 
+def synthetic_test_mode():
+    return (
+        os.getenv("AVATAR_BOX_SYNTHETIC_TEST") == "true"
+        and os.getenv("AVATAR_ENV") == "local"
+        and os.getenv("BOX_STUDY_FOLDER_ID") == "426895667507"
+    )
+
 def get_box_token_provider() -> BoxOAuthClient:
     """Lazy provider construction; does not upload images."""
     if os.getenv("AVATAR_BOX_STORAGE_ENABLED") != "true":
         raise RuntimeError("Box storage is disabled")
-    if os.getenv("AVATAR_IRB_COLLECTION_APPROVED") != "true":
-        raise RuntimeError("IRB approval gate is not enabled")
+    if not (
+        os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true"
+        or synthetic_test_mode()
+    ):
+        raise RuntimeError("Box storage is not authorized")
     provider = getattr(app.state, "box_token_provider", None)
     if provider is None:
         provider = BoxOAuthClient(PostgresBoxTokenStore())
@@ -107,8 +117,13 @@ async def generate(image: UploadFile = File(...), profile_json: str = Form(...))
 
         participant_id = None
         storage_status = "disabled"
-        if (os.getenv("AVATAR_BOX_STORAGE_ENABLED") == "true"
-                and os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true"):
+        if (
+            os.getenv("AVATAR_BOX_STORAGE_ENABLED") == "true"
+            and (
+                os.getenv("AVATAR_IRB_COLLECTION_APPROVED") == "true"
+                or synthetic_test_mode()
+            )
+        ):
             try:
                 stored = store_pair(
                     original=image_bytes, aged=aged_bytes,
