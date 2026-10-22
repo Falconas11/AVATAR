@@ -292,6 +292,53 @@ feedbackButton.disabled = !latestFeedbackData;
     }
 
 
+    // Evidence-linked Aging Layers: display only paths returned by the engine.
+    // Never describe these as the image model's internal reasoning.
+    let layersPanel = document.querySelector("#aging-layers");
+    if (!layersPanel) {
+      layersPanel = document.createElement("section");
+      layersPanel.id = "aging-layers";
+      layersPanel.className = "features-panel";
+      featureList.parentElement.insertAdjacentElement("afterend", layersPanel);
+    }
+    layersPanel.replaceChildren();
+    const heading = document.createElement("h2");
+    heading.textContent = "Why these changes?";
+    layersPanel.append(heading);
+    const disclaimer = document.createElement("p");
+    disclaimer.textContent = "These are literature-linked knowledge-engine decisions, not a medical prediction or an explanation of the image model's internal processing.";
+    layersPanel.append(disclaimer);
+    const traces = data.feature_traces || {};
+    for (const feature of features) {
+      const trace = traces[feature.name];
+      if (!trace) continue;
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = trace.label + (trace.region ? " — " + trace.region : "");
+      details.append(summary);
+      if (!trace.paths || trace.paths.length === 0) {
+        const missing = document.createElement("p");
+        missing.textContent = "No active, traceable evidence path is available.";
+        details.append(missing);
+      }
+      for (const path of (trace.paths || []).slice(0, 3)) {
+        const pathText = document.createElement("p");
+        pathText.textContent = path.nodes.join(" → ");
+        details.append(pathText);
+        const status = document.createElement("p");
+        status.textContent = path.evidence_status === "documented"
+          ? "Cited graph pathway (not proof of individual causation)"
+          : "Incomplete or provisional evidence — interpret cautiously";
+        details.append(status);
+        for (const citation of path.citations || []) {
+          const source = document.createElement("p");
+          source.textContent = "Source: " + citation;
+          details.append(source);
+        }
+      }
+      layersPanel.append(details);
+    }
+
     resultsElement.classList.remove("hidden");
     statusElement.textContent = latestFeedbackData
       ? "Generation complete. Images saved; feedback is ready."
