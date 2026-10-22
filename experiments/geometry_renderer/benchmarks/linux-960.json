@@ -1,0 +1,29 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.11.17",
+  "cpu": "",
+  "logical_cpus_visible": 5,
+  "opencv_threads": 1,
+  "size": [
+    960,
+    960
+  ],
+  "iterations": 20,
+  "triangles": 966,
+  "cold_detection_including_import_ms": 1149.96,
+  "warm_detection_5_samples": {
+    "p50_ms": 19.77,
+    "p95_ms": 25.82
+  },
+  "mesh_preparation_ms": 4.61,
+  "cached_landmark_warp": {
+    "p50_ms": 106.41,
+    "p95_ms": 122.89
+  },
+  "overlay": {
+    "p50_ms": 3.09,
+    "p95_ms": 4.56
+  },
+  "safety_scale": 1.0,
+  "scope": "Server CPU only; excludes browser transport/display. Public-domain NASA fixture, full strengths, 20\u219280 slider years. Not a scientific aging model."
+}
