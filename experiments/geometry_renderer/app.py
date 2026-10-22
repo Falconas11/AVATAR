@@ -10,7 +10,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import streamlit as st
-from experiments.geometry_renderer.core import render, overlay
+from experiments.geometry_renderer.core import render, overlay, DEFAULT_STRENGTH
+from experiments.geometry_renderer.comparison import (applied_shifts, crop_view,
+    difference_view, face_crop_bounds, wipe_view)
 from experiments.geometry_renderer.session import DemoSession
 
 st.set_page_config(page_title='AVATAR Geometry Renderer v0.1', layout='wide')
@@ -54,9 +56,13 @@ with st.sidebar:
     if st.session_state.get('target_age', current) < current:
         st.session_state.target_age = current
     target = st.slider('Illustrative target age', current, 100, max(current, 65), key='target_age')
-    nose = st.slider('Nasal tip ptosis — downward tip shift', 0.0, 1.0, .5, .05, key='nose')
-    cheeks = st.slider('Cheek / midface descent', 0.0, 1.0, .5, .05, key='cheeks')
-    jowls = st.slider('Lower-face / jowl sagging', 0.0, 1.0, .5, .05, key='jowls')
+    nose = st.slider('Nasal tip ptosis — downward tip shift', 0.0, 1.0, DEFAULT_STRENGTH, .05, key='nose')
+    cheeks = st.slider('Cheek / midface descent', 0.0, 1.0, DEFAULT_STRENGTH, .05, key='cheeks')
+    jowls = st.slider('Lower-face / jowl sagging', 0.0, 1.0, DEFAULT_STRENGTH, .05, key='jowls')
+    st.caption('Strengths control visual demonstration intensity, not clinical severity or a calibrated age effect.')
+    st.header('Inspect changes')
+    focus = st.checkbox('Focus on face', value=True, key='focus_face')
+    view = st.selectbox('Comparison view', ['Side by side', 'Before / after wipe', 'Pixel difference ×4'], key='comparison_view')
     mesh = st.checkbox('Show mesh and landmarks', key='show_mesh')
     st.button('Reset deformation', on_click=reset_deformation)
 
@@ -86,16 +92,42 @@ except Exception:
     st.error('Local renderer could not initialize. Check the isolated dependencies; try a clearer portrait.')
     st.stop()
 
-left, right = st.columns(2)
-with left:
-    st.subheader(f'Original — stated current age {current}')
-    st.image(overlay(prepared.image, prepared.points, prepared.triangles) if mesh else prepared.image,
-             use_container_width=True)
-with right:
-    st.subheader(f'Illustrative geometry — selected age {target}')
-    st.image(overlay(result.image, result.points, prepared.triangles) if mesh else result.image,
-             use_container_width=True)
-    st.caption('This is a geometric warp of the same image, not a generated or calibrated future portrait.')
+shifts = applied_shifts(prepared, result.points)
+metrics = st.columns(3)
+for column, (region, label) in zip(metrics, [('nose', 'Nose-tip shift'), ('cheeks', 'Cheek shift'), ('jowls', 'Jowl shift')]):
+    column.metric(label, f'{shifts[region]:.2f} px')
+st.caption('Applied landmark shifts after triangle safety limiting, measured in resized input pixels, '
+           'not anatomical millimeters. Stronger defaults make the geometry visible; they are not calibrated age estimates.')
+
+original = overlay(prepared.image, prepared.points, prepared.triangles) if mesh else prepared.image
+warped = overlay(result.image, result.points, prepared.triangles) if mesh else result.image
+bounds = face_crop_bounds(prepared) if focus else (0, 0, prepared.image.shape[1], prepared.image.shape[0])
+original_view, warped_view = crop_view(original, bounds), crop_view(warped, bounds)
+if focus:
+    st.caption('Face detail: identical crop and zoom for both images. Uncheck “Focus on face” to inspect the full portrait.')
+if view == 'Side by side':
+    left, right = st.columns(2)
+    with left:
+        st.subheader(f'Original — stated current age {current}')
+        st.image(original_view, use_container_width=True)
+    with right:
+        st.subheader(f'Illustrative geometry — selected age {target}')
+        st.image(warped_view, use_container_width=True)
+        st.caption('Geometric demonstration, not a generated or calibrated future portrait.')
+elif view == 'Before / after wipe':
+    st.subheader('Aligned before / after comparison')
+    split = st.slider('Wipe position — original left, warped right', 0, 100, 50, key='wipe_position')
+    st.image(wipe_view(original_view, warped_view, split), use_container_width=True)
+    st.caption('The wipe only reveals the two existing images; it does not change the geometry.')
+else:
+    st.subheader('Pixel difference ×4 — diagnostic view')
+    # Use unpainted pixels so the diagnostic measures deformation, not mesh ink.
+    st.image(difference_view(crop_view(prepared.image,bounds), crop_view(result.image,bounds)), use_container_width=True)
+    st.caption('Amplified absolute RGB difference. Black means identical pixels. This diagnostic is not an aged portrait.')
+
+if shifts['maximum'] < 1:
+    st.info('Subpixel / zero deformation: the maximum applied landmark shift is below 1 input pixel. '
+            'Increase a region strength or the target age to inspect the geometry, or use the wipe/difference view.')
 
 if result.safety_scale < 1:
     st.info(f'Triangle safety limiter applied: {result.safety_scale:.3f} × requested displacement.')

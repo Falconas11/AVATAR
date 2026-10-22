@@ -54,10 +54,16 @@ the detector. See [third-party licenses and model provenance](THIRD_PARTY.md).
    These are slider parameters, not an estimate of the subject's actual age.
 3. Independently adjust **nasal tip ptosis**, **cheek/midface descent**, and
    **lower-face/jowl sagging**. Zero strengths return the original pixels exactly.
-4. Toggle the mesh/landmarks to inspect the mapping on both images. Original and
-   warped views stay side by side. **Reset deformation** sets strengths to zero,
+4. **Focus on face** is enabled by default, using exactly the same source-based
+   crop and scale in both views. Uncheck it to inspect the full portrait. Select
+   **Before / after wipe** for aligned inspection, or **Pixel difference ×4** for
+   an explicitly labelled diagnostic. These views do not add more deformation.
+5. Toggle the mesh/landmarks to inspect the mapping on both images. Applied
+   nose-tip/cheek/jowl shifts are displayed in resized input pixels after safety
+   limiting. A subpixel notice appears when the maximum shift is below 1 pixel.
+   **Reset deformation** sets strengths to zero,
    target age to current age, and disables the overlay without detecting again.
-5. **Clear image from this session** clears the selected source and retained
+6. **Clear image from this session** clears the selected source and retained
    processing state. Selecting new content replaces the old mesh.
 
 JPEG/PNG contents must match their extension, be nonempty, ≤10 MiB, have at least
@@ -88,9 +94,19 @@ licensed fixture is used to create the committed screenshots.
 
 | Hypothesis | Landmark anchors | Maximum authored downward shift | Compact field radius |
 |---|---|---|---|
-| Nose tip ptosis | 1, 2, 4 | 0.012 × detected face height | 0.18 × detected face width |
-| Cheek/midface descent | 50, 101, 205, 280, 330, 425 | 0.018 × face height | 0.28 × face width |
-| Lower-face/jowl sagging | 172, 136, 150, 397, 365, 379 | 0.022 × face height | 0.25 × face width |
+| Nose tip ptosis | 1, 2, 4 | 0.048 × detected face height | 0.18 × detected face width |
+| Cheek/midface descent | 50, 101, 205, 280, 330, 425 | 0.072 × face height | 0.28 × face width |
+| Lower-face/jowl sagging | 172, 136, 150, 397, 365, 379 | 0.088 × face height | 0.25 × face width |
+
+Defaults were increased to strength **0.7** with the above 4× amplitude revision.
+The first version's half-strength 30→66 settings moved the NASA sample's nose
+only ~0.37 input pixel and jowls ~0.68 pixel; the face is just 93×103 pixels inside
+that 512-pixel portrait. The revised defaults at the same selected age produce
+~2.08 / 3.12 / 3.82 pixel nose / cheek / jowl shifts. This change makes an authored
+**demonstration** visible; it does not establish a scientifically realistic age
+progression. The compact radii were retained to avoid spreading changes into eyes
+and mouth corners. The default view crops both images identically; it does not
+warp either image again to emphasize the result.
 
 These **unitless visual design parameters are not millimeters-per-decade rates**
 and are not empirical evidence. Strength multiplies each compact Wendland C2
@@ -122,11 +138,15 @@ python -m experiments.geometry_renderer.benchmark --iterations 20 --size 512
 python -m experiments.geometry_renderer.benchmark --iterations 20 --size 960
 ```
 
-Validation on 2026-10-22: **34 tests passed**, including pixel-exact identity,
+Validation on 2026-10-22: **38 tests passed**, including pixel-exact identity,
 strength/age scaling, bounded coordinates, pinned image borders, positive triangle
 areas, full inverse-map coverage, real MediaPipe single/no/multiple faces, corrupt
 and oversized images, orientation/resize, session reuse, and Streamlit AppTest
-controls/reset/clear. The existing main-branch `tests/` suite also passed (3 tests)
+controls/reset/clear. Visibility regressions verify the licensed fixture's default
+nose shift exceeds 1 input pixel and total shift exceeds 2% of face height, while
+remaining below 10%. Aligned crops, exact wipe endpoints, difference identity,
+unchanged source pixels, inspection-mode caching and zero-shift metrics are tested.
+These thresholds validate software visibility, not human aging. The existing main-branch `tests/` suite also passed (3 tests)
 in its original environment; production dependencies were not changed.
 
 CPU: AMD EPYC 9V74, Linux x86-64/glibc 2.41, Python 3.11.17; 5 logical CPUs visible,
@@ -137,13 +157,16 @@ fixture, 966 triangles, full strengths, 20→80 illustrative age interval,
 
 | Measurement | 512 × 512 | 960 × 960 |
 |---|---:|---:|
-| First detection, including lazy imports | 1166 ms | 1150 ms |
-| Warm detection p50 / p95 | 17.8 / 20.4 ms | 19.8 / 25.8 ms |
-| One-time mesh preparation | 2.7 ms | 4.6 ms |
-| Cached-landmark warp p50 / p95 | **69.6 / 80.8 ms** | **106.4 / 122.9 ms** |
-| Overlay p50 / p95 | 2.0 / 2.7 ms | 3.1 / 4.6 ms |
+| First detection, including lazy imports | 1157 ms | 1140 ms |
+| Warm detection p50 / p95 | 17.9 / 21.5 ms | 18.7 / 24.9 ms |
+| One-time mesh preparation | 3.1 ms | 4.2 ms |
+| Cached-landmark warp p50 / p95 | **67.7 / 70.7 ms** | **111.4 / 114.6 ms** |
+| Overlay p50 / p95 | 1.9 / 2.9 ms | 2.7 / 2.8 ms |
 
 [Raw 512 results](benchmarks/linux-512.json) · [Raw 960 results](benchmarks/linux-960.json).
+The full-strength 960-pixel run activated the triangle limiter (safety scale
+**0.5**); the 512 run used scale **1.0**. Timings reflect these actual safe outputs,
+not an assumption that every requested displacement was applied unchanged.
 These are server compute timings, not browser frame rates. An observed local
 Chromium run took ~0.81 s for one slider's complete Streamlit/browser round trip;
 initial page + first sample ~3.13 s (warm-process repeat ~1.63 s). Streamlit reruns,
@@ -158,8 +181,8 @@ node experiments/geometry_renderer/tests/browser_smoke.cjs
 ```
 
 `CHROMIUM_PATH` overrides the script's `/usr/bin/chromium` default. It verifies a
-rendered sample, slider update, cached detection, overlay, reset, clear, corrupt
-file handling, no browser exceptions, and **zero external browser requests**.
+rendered sample, visible default displacement, face crop, slider update, cached
+detection, wipe, difference, full-frame view, overlay, reset, clear, corrupt file handling, no browser exceptions, and **zero external browser requests**.
 It intentionally regenerates only the two licensed-fixture screenshots below.
 Browser dependencies are not part of the production or Python demo requirements.
 
@@ -193,6 +216,7 @@ Explicitly captured from the public-domain NASA fixture, never participant photo
 - `core.py`: region indices, authored fields, mesh validation, inverse map, overlay.
 - `detection.py`: bounded JPEG/PNG decode and offline CPU MediaPipe detection.
 - `session.py`: per-session in-memory detection/triangulation reuse.
+- `comparison.py`: shared face crops, wipe, diagnostic differences and applied shifts.
 - `app.py`, `launch.py`: local Streamlit UI and loopback-only launch settings.
 - `requirements*.txt` / `*.lock`, `THIRD_PARTY.md`: isolated dependencies/provenance.
 - `tests/`: pure functions, real detector, session/UI validation, licensed fixture,

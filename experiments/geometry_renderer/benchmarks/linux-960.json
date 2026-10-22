@@ -10,20 +10,20 @@
   ],
   "iterations": 20,
   "triangles": 966,
-  "cold_detection_including_import_ms": 1149.96,
+  "cold_detection_including_import_ms": 1139.53,
   "warm_detection_5_samples": {
-    "p50_ms": 19.77,
-    "p95_ms": 25.82
+    "p50_ms": 18.72,
+    "p95_ms": 24.9
   },
-  "mesh_preparation_ms": 4.61,
+  "mesh_preparation_ms": 4.23,
   "cached_landmark_warp": {
-    "p50_ms": 106.41,
-    "p95_ms": 122.89
+    "p50_ms": 111.44,
+    "p95_ms": 114.59
   },
   "overlay": {
-    "p50_ms": 3.09,
-    "p95_ms": 4.56
+    "p50_ms": 2.65,
+    "p95_ms": 2.79
   },
-  "safety_scale": 1.0,
+  "safety_scale": 0.5,
   "scope": "Server CPU only; excludes browser transport/display. Public-domain NASA fixture, full strengths, 20\u219280 slider years. Not a scientific aging model."
 }

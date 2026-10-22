@@ -18,7 +18,11 @@ REGIONS = {
     "jowls": (172, 136, 150, 397, 365, 379),  # paired lower facial contour
 }
 # (vertical shift / face height at full strength, radius / face width)
-FIELDS = {"nose": (0.012, 0.18), "cheeks": (0.018, 0.28), "jowls": (0.022, 0.25)}
+# Deliberately visible DEMONSTRATION amplitudes, not anthropometric aging rates.
+# Previous .012/.018/.022 amplitudes with half strengths produced <1 px shifts
+# on the licensed sample and made the demo appear unchanged.
+FIELDS = {"nose": (0.048, 0.18), "cheeks": (0.072, 0.28), "jowls": (0.088, 0.25)}
+DEFAULT_STRENGTH = 0.7
 
 
 @dataclass(frozen=True)
@@ -162,7 +166,8 @@ def inverse_maps(source: np.ndarray, destination: np.ndarray, triangles: np.ndar
 
 
 def render(prepared: PreparedFace, *, current_age: int, target_age: int,
-           nose: float = .5, cheeks: float = .5, jowls: float = .5) -> WarpResult:
+           nose: float = DEFAULT_STRENGTH, cheeks: float = DEFAULT_STRENGTH,
+           jowls: float = DEFAULT_STRENGTH) -> WarpResult:
     delta = displacement_field(prepared.points, prepared.face_count, current_age=current_age,
                                target_age=target_age, nose=nose, cheeks=cheeks, jowls=jowls)
     destination, scale = safe_destination(prepared, delta)

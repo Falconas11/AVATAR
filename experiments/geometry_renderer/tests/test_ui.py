@@ -13,6 +13,18 @@ def test_streamlit_sample_sliders_cache_overlay_reset_and_clear():
     session = app.session_state['demo_session']
     prepared = session.prepared
     assert prepared is not None and session.detection_count == 1
+    assert app.checkbox(key='focus_face').value
+    assert app.slider(key='nose').value == .7
+    assert float(next(metric.value for metric in app.metric if metric.label == 'Nose-tip shift').split()[0]) > 1
+    app.selectbox(key='comparison_view').select('Before / after wipe').run()
+    assert not app.exception and not app.error
+    app.slider(key='wipe_position').set_value(30).run()
+    app.selectbox(key='comparison_view').select('Pixel difference ×4').run()
+    assert any('diagnostic view' in heading.value for heading in app.subheader)
+    app.checkbox(key='focus_face').uncheck().run()
+    app.selectbox(key='comparison_view').select('Side by side').run()
+    app.checkbox(key='focus_face').check().run()
+    assert session.prepared is prepared and session.detection_count == 1
     app.slider(key='target_age').set_value(85).run()
     app.slider(key='nose').set_value(.9).run()
     app.checkbox(key='show_mesh').check().run()
