@@ -12,7 +12,7 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from avatar.image_renderer import render_portrait
-from avatar.knowledge_engine_v02 import KnowledgeEngine
+from avatar.knowledge_engine_v03 import KnowledgeEngine
 from avatar.prompt_builder import build_aging_prompt
 from avatar.box_integration import store_pair
 from avatar.explainability import build_feature_traces
@@ -40,8 +40,8 @@ def synthetic_box_test_allowed(request: Request) -> bool:
         and os.getenv("BOX_STUDY_FOLDER_ID") == SYNTHETIC_TEST_FOLDER_ID
     )
 
-NODES_PATH = ROOT_DIR / "data" / "nodes_v02.csv"
-EDGES_PATH = ROOT_DIR / "data" / "edges_v02.csv"
+NODES_PATH = ROOT_DIR / "data" / "nodes_v03.csv"
+EDGES_PATH = ROOT_DIR / "data" / "edges_v03.csv"
 SUPPORTED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
