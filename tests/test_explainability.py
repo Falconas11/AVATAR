@@ -47,3 +47,34 @@ class TraceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_real_engine_traces_and_missing_citations():
+    from pathlib import Path
+    from avatar.knowledge_engine_v03 import KnowledgeEngine
+    root = Path(__file__).resolve().parents[1]
+    engine = KnowledgeEngine(root/'data/nodes_v03.csv', root/'data/edges_v03.csv')
+    result = engine.infer({"age": 20, "target_age": 65, "factors": {"uv_exposure": .7}})
+    traces = build_feature_traces(engine, result)
+    assert traces
+    assert any(step['provisional'] for trace in traces.values() for path in trace['paths'] for step in path['steps'])
+    assert all('Provisional pathway hypothesis' not in path['citations'] for trace in traces.values() for path in trace['paths'])
+
+
+def test_missing_citation_and_zero_contribution():
+    fixture = TraceTests(); fixture.setUp()
+    fixture.engine.edges[1].evidence = 'N/A'
+    path = build_feature_traces(fixture.engine, fixture.inference)['wrinkles']['paths'][0]
+    assert path['missing_citation_steps'] == [1]
+    assert path['evidence_status'] == 'incomplete_or_provisional'
+    fixture.inference['features']['wrinkles']['contributions'][0]['contribution'] = 0
+    assert build_feature_traces(fixture.engine, fixture.inference)['wrinkles']['paths'] == []
+
+
+def test_duplicate_edges_do_not_fabricate_citation():
+    fixture = TraceTests(); fixture.setUp()
+    fixture.engine.edges.append(Edge('damage', 'wrinkles', 'contributes_to', evidence='Wrong paper'))
+    assert build_feature_traces(fixture.engine, fixture.inference)['wrinkles']['paths'] == []
+    fixture.inference['features']['wrinkles']['contributions'][0]['edge_index'] = 1
+    path = build_feature_traces(fixture.engine, fixture.inference, max_hops=2)['wrinkles']['paths'][0]
+    assert path['citations'] == ['Paper A', 'Paper B']

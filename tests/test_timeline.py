@@ -35,3 +35,16 @@ class TimelineTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_short_interval_never_includes_current_age():
+    result = build_timeline(FakeEngine(), {"age": 64, "target_age": 65}, stages=12)
+    assert [s['age'] for s in result['snapshots']] == [65]
+
+
+def test_preview_does_not_mutate_profile():
+    profile = {"age": 20, "target_age": 65, "factors": {"smoking": .5}}
+    import copy
+    before = copy.deepcopy(profile)
+    build_timeline(FakeEngine(), profile)
+    assert profile == before

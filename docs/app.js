@@ -58,7 +58,7 @@ function updateConsentButton() {
     consentImage.checked &&
     consentAge.checked;
 
-  acceptConsent.disabled = !allChecked; 
+  acceptConsent.disabled = !allChecked;
 }
 
 function openConsentModal() {
@@ -145,88 +145,74 @@ for (const [key, label, initialValue] of factors) {
   factorControls.append(wrapper);
 }
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+const ageSlider = document.querySelector("#timeline-age");
+const ageOutput = document.querySelector("#timeline-age-value");
+const knowledgeStatus = document.querySelector("#knowledge-status");
+const portraitLabel = document.querySelector("#portrait-label");
+let previewVersion = 0;
+let previewTimer;
+let previewController;
 
-  const imageInput = document.querySelector("#image");
-  const image = imageInput.files[0];
-
-  if (!image) {
-    statusElement.textContent = "Please select a portrait.";
-    return;
-  }
-
-  const factorValues = {};
-
-  for (const slider of document.querySelectorAll("[data-factor]")) {
-    factorValues[slider.dataset.factor] = Number(slider.value);
-  }
-
-  const profile = {
+function readProfile() {
+  return {
     age: Number(document.querySelector("#age").value),
-    target_age: Number(document.querySelector("#target-age").value),
+    target_age: Number(ageSlider.value),
     sex: document.querySelector("#sex").value.trim(),
     ethnicity: document.querySelector("#ethnicity").value.trim(),
-    factors: factorValues,
+    factors: Object.fromEntries(Array.from(document.querySelectorAll("[data-factor]"), el => [el.dataset.factor, Number(el.value)])),
   };
+}
 
-  const formData = new FormData();
-  formData.append("image", image);
-  formData.append("profile_json", JSON.stringify(profile));
+function invalidatePreview() {
+  previewVersion += 1;
+  clearTimeout(previewTimer);
+  if (previewController) previewController.abort();
+  return previewVersion;
+}
 
-  originalPreview.src = URL.createObjectURL(image);
-  resultsElement.classList.add("hidden");
-  generateButton.disabled = true;
-  // downloadButton.disabled = true;
-  // latestGeneratedImage = null;
-  feedbackButton.disabled = true;
-  latestFeedbackData = null;
-
-  featureList.innerHTML =
-  '<li class="feature-empty">Analyzing aging features...</li>';
-  statusElement.textContent =
-    "Generating portrait. The first request may take longer while the server wakes up.";
-
+async function previewKnowledge(version) {
+  previewController = new AbortController();
+  const profile = readProfile();
+  knowledgeStatus.textContent = `Loading knowledge estimates at age ${profile.target_age}… Previous scores are stale.`;
   try {
-    const response = await fetch(`${API_BASE_URL}/api/generate`, {
+    const response = await fetch(`${API_BASE_URL}/api/timeline`, {
       method: "POST",
-      body: formData,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({profile, stages: 1}),
+      signal: previewController.signal,
     });
-
     const data = await response.json();
-    console.log("Response keys:", Object.keys(data));
-    console.log("Knowledge keys:", Object.keys(data.knowledge || {}));
-
-    if (!response.ok) {
-      throw new Error(data.detail || "Generation failed.");
+    if (version !== previewVersion) return;
+    if (!response.ok) throw new Error(data.detail || "Knowledge preview failed");
+    const snapshot = data.snapshots[data.snapshots.length - 1];
+    renderKnowledge(snapshot);
+    knowledgeStatus.textContent = `Knowledge estimates at age ${snapshot.age}. Graph activation scores are not probabilities or a personalized prediction. No image was generated or uploaded.`;
+  } catch (error) {
+    if (version === previewVersion && error.name !== "AbortError") {
+      knowledgeStatus.textContent = `Preview unavailable: ${error.message}. Previous scores are stale.`;
     }
+  }
+}
 
-    agedResult.src =
-      `data:${data.image.mime_type};base64,${data.image.base64}`;
-    
-    latestFeedbackData = data.storage_status === "stored" && /^P-[a-f0-9]{32}$/.test(data.participant_id || "") ? { 
-      participantId: data.participant_id,
-      currentAge: profile.age,
-      gender: profile.sex,
-      ethnicity: profile.ethnicity,
+function schedulePreview() {
+  const version = invalidatePreview();
+  ageSlider.min = String(Number(document.querySelector("#age").value) + 1);
+  ageOutput.textContent = ageSlider.value;
+  knowledgeStatus.textContent = "Knowledge inputs changed; previous scores are stale.";
+  previewTimer = setTimeout(() => previewKnowledge(version), 200);
+}
 
-      smoking: Math.round(profile.factors.smoking * 10),
-      uvExposure: Math.round(profile.factors.uv_exposure * 10),
-      alcohol: Math.round(profile.factors.alcohol * 10),
-      stress: Math.round(profile.factors.stress * 10),
-      diet: Math.round(profile.factors.diet * 10),
-    } : null;
+ageSlider.addEventListener("input", schedulePreview);
+document.querySelector("#preview-button").addEventListener("click", () => previewKnowledge(invalidatePreview()));
+for (const el of document.querySelectorAll("#age, #sex, #ethnicity, [data-factor]")) {
+  el.addEventListener("input", schedulePreview);
+}
+document.querySelector("#target-age").addEventListener("input", event => {
+  ageSlider.value = event.target.value;
+  schedulePreview();
+});
 
-feedbackButton.disabled = !latestFeedbackData;
-
-
-    // latestGeneratedImage = {
-    //   mimeType: data.image.mime_type,
-    //   base64: data.image.base64,
-    // };
-
-// downloadButton.disabled = false;
-
+function renderKnowledge(data) {
     featureList.replaceChildren();
 
     const formatFeatureName = (name) =>
@@ -241,8 +227,8 @@ feedbackButton.disabled = !latestFeedbackData;
       data.output?.aging_representation ||
       {};
 
-    console.log("Full API response:", data);
-    console.log("Resolved aging representation:", representation);
+
+
 
     const features = Object.entries(representation)
       .map(([name, score]) => ({
@@ -299,7 +285,7 @@ feedbackButton.disabled = !latestFeedbackData;
       layersPanel = document.createElement("section");
       layersPanel.id = "aging-layers";
       layersPanel.className = "features-panel";
-      featureList.parentElement.insertAdjacentElement("afterend", layersPanel);
+      document.querySelector("#knowledge-preview").append(layersPanel);
     }
     layersPanel.replaceChildren();
     const heading = document.createElement("h2");
@@ -314,7 +300,7 @@ feedbackButton.disabled = !latestFeedbackData;
       if (!trace) continue;
       const details = document.createElement("details");
       const summary = document.createElement("summary");
-      summary.textContent = trace.label + (trace.region ? " — " + trace.region : "");
+      summary.textContent = (trace.label || feature.name) + (trace.region ? " — " + trace.region : "");
       details.append(summary);
       if (!trace.paths || trace.paths.length === 0) {
         const missing = document.createElement("p");
@@ -330,15 +316,124 @@ feedbackButton.disabled = !latestFeedbackData;
           ? "Cited graph pathway (not proof of individual causation)"
           : "Incomplete or provisional evidence — interpret cautiously";
         details.append(status);
+        for (const step of path.steps || []) {
+          if (step.provisional || step.missing_citation || !step.evidence) {
+            const warning = document.createElement("p");
+            warning.textContent = `${step.source} → ${step.target}: ${step.provisional ? "provisional evidence" : "missing citation"}${step.notes ? " — " + step.notes : ""}`;
+            details.append(warning);
+          }
+        }
         for (const citation of path.citations || []) {
           const source = document.createElement("p");
-          source.textContent = "Source: " + citation;
+          source.textContent = "Source label (not independently verified): " + citation;
+          const doi = citation.match(/10\.\d{4,9}\/[-._;()/:A-Z0-9]+/i);
+          if (doi) {
+            const link = document.createElement("a");
+            link.href = `https://doi.org/${doi[0]}`;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = " Open DOI source";
+            source.append(link);
+          }
           details.append(source);
         }
       }
       layersPanel.append(details);
     }
 
+ }
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const generationVersion = invalidatePreview();
+
+  const imageInput = document.querySelector("#image");
+  const image = imageInput.files[0];
+
+  if (!image) {
+    statusElement.textContent = "Please select a portrait.";
+    return;
+  }
+
+  const factorValues = {};
+
+  for (const slider of document.querySelectorAll("[data-factor]")) {
+    factorValues[slider.dataset.factor] = Number(slider.value);
+  }
+
+  const profile = {
+    age: Number(document.querySelector("#age").value),
+    target_age: Number(document.querySelector("#target-age").value),
+    sex: document.querySelector("#sex").value.trim(),
+    ethnicity: document.querySelector("#ethnicity").value.trim(),
+    factors: factorValues,
+  };
+
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("profile_json", JSON.stringify(profile));
+
+  originalPreview.src = URL.createObjectURL(image);
+  resultsElement.classList.add("hidden");
+  generateButton.disabled = true;
+  // downloadButton.disabled = true;
+  // latestGeneratedImage = null;
+  feedbackButton.disabled = true;
+  latestFeedbackData = null;
+
+  knowledgeStatus.textContent = "Generation in progress. Previous knowledge scores and Layers are stale.";
+  featureList.innerHTML =
+  '<li class="feature-empty">Analyzing aging features...</li>';
+  statusElement.textContent =
+    "Generating portrait. The first request may take longer while the server wakes up.";
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/generate`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Generation failed.");
+    }
+
+    agedResult.src =
+      `data:${data.image.mime_type};base64,${data.image.base64}`;
+
+    latestFeedbackData = data.storage_status === "stored" && /^P-[a-f0-9]{32}$/.test(data.participant_id || "") ? {
+      participantId: data.participant_id,
+      currentAge: profile.age,
+      gender: profile.sex,
+      ethnicity: profile.ethnicity,
+
+      smoking: Math.round(profile.factors.smoking * 10),
+      uvExposure: Math.round(profile.factors.uv_exposure * 10),
+      alcohol: Math.round(profile.factors.alcohol * 10),
+      stress: Math.round(profile.factors.stress * 10),
+      diet: Math.round(profile.factors.diet * 10),
+    } : null;
+
+feedbackButton.disabled = !latestFeedbackData;
+
+
+    // latestGeneratedImage = {
+    //   mimeType: data.image.mime_type,
+    //   base64: data.image.base64,
+    // };
+
+// downloadButton.disabled = false;
+
+    portraitLabel.textContent = `Generated portrait at age ${profile.target_age}. Moving the knowledge slider does not change this image.`;
+    if (generationVersion === previewVersion) {
+      renderKnowledge(data);
+      knowledgeStatus.textContent = `Knowledge estimates at age ${profile.target_age}; scores are graph activations, not probabilities.`;
+      ageSlider.min = String(profile.age + 1);
+      ageSlider.value = String(profile.target_age);
+      ageOutput.textContent = ageSlider.value;
+    }
     resultsElement.classList.remove("hidden");
     statusElement.textContent = latestFeedbackData
       ? "Generation complete. Images saved; feedback is ready."
