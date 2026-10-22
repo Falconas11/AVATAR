@@ -15,6 +15,7 @@ from avatar.image_renderer import render_portrait
 from avatar.knowledge_engine_v02 import KnowledgeEngine
 from avatar.prompt_builder import build_aging_prompt
 from avatar.box_integration import store_pair
+from avatar.explainability import build_feature_traces
 from avatar.box_oauth import BoxOAuthClient
 from avatar.box_token_store import PostgresBoxTokenStore
 
@@ -144,7 +145,7 @@ async def generate(request: Request, image: UploadFile = File(...), profile_json
                 print(f"[AVATAR STORAGE] Upload failed: {type(storage_exc).__name__}", flush=True)
 
         print(f"[AVATAR PROFILE] TOTAL generation: {time.perf_counter() - total_start:.3f}s", flush=True)
-        return {"success": True, "participant_id": participant_id, "storage_status": storage_status, "image": {"mime_type": "image/png", "base64": encoded_image}, "profile": profile, "aging_representation": knowledge_result.get("aging_representation", {}), "features": knowledge_result.get("features", []), "mechanisms": knowledge_result.get("mechanisms", {}), "factor_activations": knowledge_result.get("factor_activations", {}), "prompt": prompt, "prompt_plan": prompt_plan, "usage": usage}
+        return {"success": True, "participant_id": participant_id, "storage_status": storage_status, "image": {"mime_type": "image/png", "base64": encoded_image}, "profile": profile, "aging_representation": knowledge_result.get("aging_representation", {}), "features": knowledge_result.get("features", []), "mechanisms": knowledge_result.get("mechanisms", {}), "factor_activations": knowledge_result.get("factor_activations", {}), "feature_traces": build_feature_traces(engine, knowledge_result), "prompt": prompt, "prompt_plan": prompt_plan, "usage": usage}
     except HTTPException:
         raise
     except Exception as exc:
