@@ -257,6 +257,20 @@
       aria-live="polite"
     ></section>
 
+    <section id="knowledge-preview" class="card">
+      <h2>Aging Timeline — knowledge only</h2>
+      <p>Explore evidence-linked Aging Layers without a photo. This does not generate or modify a portrait and does not explain GPT model internals.</p>
+      <label for="timeline-age">Preview age: <output id="timeline-age-value" for="timeline-age">65</output></label>
+      <input id="timeline-age" type="range" min="21" max="120" step="1" value="65" aria-describedby="knowledge-status" />
+      <button id="preview-button" type="button">Preview knowledge estimates</button>
+      <p id="knowledge-status" role="status">No knowledge preview loaded. Scores are illustrative graph activations, not medical predictions.</p>
+      <div class="features-panel">
+        <h2>Knowledge-based feature scores</h2>
+
+        <ol id="feature-list"></ol>
+      </div>
+    </section>
+
     <section
       id="results"
       class="results hidden"
@@ -271,7 +285,8 @@
       </div>
 
       <div class="image-panel">
-        <h2>Aged portrait</h2>
+        <h2>Generated aged portrait</h2>
+        <p id="portrait-label">No generated portrait.</p>
 
         <img
           id="aged-result"
@@ -287,11 +302,6 @@
         </p>
       </div>
 
-      <div class="features-panel">
-        <h2>Top aging features</h2>
-
-        <ol id="feature-list"></ol>
-      </div>
       <!-- <div class="results-actions">
         <button
           id="download-button"

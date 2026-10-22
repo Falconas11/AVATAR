@@ -39,6 +39,7 @@ class KnowledgeEngine:
         self.edges_path = Path(edges_path)
         self.nodes = self._load_nodes(self.nodes_path)
         self.edges = self._load_edges(self.edges_path)
+        self._edge_indices = {id(edge): index for index, edge in enumerate(self.edges)}
         self._validate_graph()
         self.topological_order = self._topological_sort()
 
@@ -220,6 +221,8 @@ class KnowledgeEngine:
                     "weight": round(edge.weight, 4),
                     "contribution": round(contribution, 4),
                     "evidence": edge.evidence,
+                    "notes": edge.notes,
+                    "edge_index": self._edge_indices[id(edge)],
                 })
 
             if denominator > 0:

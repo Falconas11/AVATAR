@@ -12,9 +12,11 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from avatar.image_renderer import render_portrait
-from avatar.knowledge_engine_v02 import KnowledgeEngine
+from avatar.knowledge_engine_v03 import KnowledgeEngine
 from avatar.prompt_builder import build_aging_prompt
 from avatar.box_integration import store_pair
+from avatar.explainability import build_feature_traces
+from avatar.timeline import build_timeline
 from avatar.box_oauth import BoxOAuthClient
 from avatar.box_token_store import PostgresBoxTokenStore
 
@@ -39,8 +41,8 @@ def synthetic_box_test_allowed(request: Request) -> bool:
         and os.getenv("BOX_STUDY_FOLDER_ID") == SYNTHETIC_TEST_FOLDER_ID
     )
 
-NODES_PATH = ROOT_DIR / "data" / "nodes_v02.csv"
-EDGES_PATH = ROOT_DIR / "data" / "edges_v02.csv"
+NODES_PATH = ROOT_DIR / "data" / "nodes_v03.csv"
+EDGES_PATH = ROOT_DIR / "data" / "edges_v03.csv"
 SUPPORTED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
@@ -74,6 +76,25 @@ def root() -> dict[str, Any]:
 @app.get("/api/health")
 def health() -> dict[str, Any]:
     return {"status": "healthy" if engine is not None else "degraded", "openai_key_configured": bool(os.getenv("OPENAI_API_KEY")), "nodes_file_found": NODES_PATH.exists(), "edges_file_found": EDGES_PATH.exists(), "knowledge_engine_loaded": engine is not None, "knowledge_engine_error": engine_startup_error}
+
+@app.post("/api/timeline")
+def timeline_preview(payload: dict[str, Any]) -> dict[str, Any]:
+    """Knowledge only: no photo, rendering, credentials, or study storage."""
+    if engine is None:
+        raise HTTPException(status_code=503, detail="Knowledge engine unavailable")
+    profile = payload.get("profile")
+    if not isinstance(profile, dict):
+        raise HTTPException(status_code=400, detail="profile must be a JSON object")
+    profile = {**profile, "factors": profile.get("factors", {})}
+    validate_profile(profile)
+    for name in profile["factors"]:
+        if name not in engine.nodes or engine.nodes[name].get("layer") != "factor":
+            raise HTTPException(status_code=400, detail=f"Unknown factor: {name}")
+    stages = payload.get("stages", 4)
+    if type(stages) is not int or not 1 <= stages <= 12:
+        raise HTTPException(status_code=400, detail="stages must be an integer between 1 and 12")
+    return build_timeline(engine, profile, stages=stages)
+
 
 @app.post("/api/generate")
 async def generate(request: Request, image: UploadFile = File(...), profile_json: str = Form(...)) -> dict[str, Any]:
@@ -144,7 +165,7 @@ async def generate(request: Request, image: UploadFile = File(...), profile_json
                 print(f"[AVATAR STORAGE] Upload failed: {type(storage_exc).__name__}", flush=True)
 
         print(f"[AVATAR PROFILE] TOTAL generation: {time.perf_counter() - total_start:.3f}s", flush=True)
-        return {"success": True, "participant_id": participant_id, "storage_status": storage_status, "image": {"mime_type": "image/png", "base64": encoded_image}, "profile": profile, "aging_representation": knowledge_result.get("aging_representation", {}), "features": knowledge_result.get("features", []), "mechanisms": knowledge_result.get("mechanisms", {}), "factor_activations": knowledge_result.get("factor_activations", {}), "prompt": prompt, "prompt_plan": prompt_plan, "usage": usage}
+        return {"success": True, "participant_id": participant_id, "storage_status": storage_status, "image": {"mime_type": "image/png", "base64": encoded_image}, "profile": profile, "aging_representation": knowledge_result.get("aging_representation", {}), "features": knowledge_result.get("features", []), "mechanisms": knowledge_result.get("mechanisms", {}), "factor_activations": knowledge_result.get("factor_activations", {}), "feature_traces": build_feature_traces(engine, knowledge_result), "prompt": prompt, "prompt_plan": prompt_plan, "usage": usage}
     except HTTPException:
         raise
     except Exception as exc:
@@ -166,9 +187,13 @@ def validate_profile(profile: dict[str, Any]) -> None:
     if missing_fields:
         raise HTTPException(status_code=400, detail=f"Missing profile fields: {sorted(missing_fields)}")
     try:
+        for field in ("age", "target_age"):
+            value = profile[field]
+            if isinstance(value, bool) or not isinstance(value, (int, float, str)) or float(value) != int(value):
+                raise ValueError("Age must be integral")
         current_age = int(profile["age"])
         target_age = int(profile["target_age"])
-    except (TypeError, ValueError) as exc:
+    except (TypeError, ValueError, OverflowError) as exc:
         raise HTTPException(status_code=400, detail="age and target_age must be integers.") from exc
     if not 1 <= current_age <= 120:
         raise HTTPException(status_code=400, detail="age must be between 1 and 120.")
