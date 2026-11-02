@@ -1,0 +1,94 @@
+{
+  "experiment": "hair_review_v041",
+  "reference": "v040",
+  "target": 75,
+  "source_age": 30,
+  "samples": [
+    {
+      "id": "S01",
+      "safety_scale": 1.0,
+      "seconds": 1.687,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 93112,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 2.5425400733947754,
+        "mode": "conservative_tonal_gray",
+        "retained_source_fraction": 0.1222398831514735,
+        "protected_bright_pixels": 8902,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 9.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 33.53141784667969,
+        "mean_luminance_after": 34.97563934326172
+      }
+    },
+    {
+      "id": "S02",
+      "safety_scale": 1.0,
+      "seconds": 1.175,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 36564,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 1.2156492471694946,
+        "mode": "conservative_tonal_gray",
+        "retained_source_fraction": 0.12145826496007002,
+        "protected_bright_pixels": 2878,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 9.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 28.518402099609375,
+        "mean_luminance_after": 29.723793029785156
+      }
+    },
+    {
+      "id": "S03",
+      "safety_scale": 1.0,
+      "seconds": 1.063,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 60285,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 1.247170329093933,
+        "mode": "conservative_tonal_gray",
+        "retained_source_fraction": 0.1497719167288712,
+        "protected_bright_pixels": 7193,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 9.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 32.78590393066406,
+        "mean_luminance_after": 33.93105697631836
+      }
+    },
+    {
+      "id": "S04",
+      "safety_scale": 1.0,
+      "seconds": 0.975,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 45189,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 5.371809005737305,
+        "mode": "conservative_tonal_gray",
+        "retained_source_fraction": 0.09820974130872558,
+        "protected_bright_pixels": 3628,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 9.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 55.69955062866211,
+        "mean_luminance_after": 58.47296905517578
+      }
+    }
+  ],
+  "source_code_sha256": {
+    "hair_layers.py": "bc1e1f31880f3003583e0606c611d2578aa848689aa3e8d7c4ab5501195ae6f7",
+    "mechanism_layers.py": "da6ff78642cf8d1c4472b65f9d1db35903f8eae85c01f0644fc0b690d0d4aa11",
+    "skin_layers.py": "e00915c086551919710baf3018675fe9e20ea3ccfcb23cb0eab886f4de99d5f6",
+    "pipeline.py": "d82961d032d25b4d34fea48fd85c3a7646aeffb50b75a64eded7f3d00dbf6fc7"
+  }
+}
