@@ -1,0 +1,14 @@
+{
+  "experiment_tests": 160,
+  "api_tests": 3,
+  "chromium": "passed; full render, same-age UV/smoking reuse one age proposal, wipe/reset/clear, zero external requests/errors",
+  "source_digests_checked": true,
+  "fictional_inputs": 4,
+  "all_mesh_safety_scales": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "limitations": "Manual qualitative comparison only, not real-user portrait or perceptual-age/clinical validation."
+}

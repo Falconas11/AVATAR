@@ -1,0 +1,72 @@
+{
+  "provenance": "Generated fictional adult portraits using OpenAI image generation in this conversation; not real people or research participants.",
+  "source_chart_sha256": "2e37b9a997a6c6ada584b1bd229c202e470d0026f06dcd1ffded0dc0767b8bb7",
+  "source_chart_size": [
+    1254,
+    1254
+  ],
+  "generation_scope": "Baseline young-adult inputs only. Aged outputs must come exclusively from repository renderer.",
+  "age_note": "30 is a common test control, not an estimated or true age. Synthetic inputs do not validate real-world age accuracy.",
+  "samples": [
+    {
+      "id": "S01",
+      "file": "S01.png",
+      "sha256": "09068def48bc9b7f81c7c35d6f7faaf68a8ce5e760650495d7a09c33ecd1735a",
+      "size": [
+        627,
+        627
+      ],
+      "source_chart_bounds": [
+        0,
+        0,
+        627,
+        627
+      ]
+    },
+    {
+      "id": "S02",
+      "file": "S02.png",
+      "sha256": "af4aa380c37fe67431ddaa9c2de8d26d26e0fcd6c13663c3e90c1a503f59206a",
+      "size": [
+        627,
+        627
+      ],
+      "source_chart_bounds": [
+        627,
+        0,
+        1254,
+        627
+      ]
+    },
+    {
+      "id": "S03",
+      "file": "S03.png",
+      "sha256": "3c4fad6382e5b1641bb309d8f279c6c237c47c874d0467868c14c4ddf8dc6803",
+      "size": [
+        627,
+        627
+      ],
+      "source_chart_bounds": [
+        0,
+        627,
+        627,
+        1254
+      ]
+    },
+    {
+      "id": "S04",
+      "file": "S04.png",
+      "sha256": "274a57fcf49e9acc234c2a63aaa8c8cfcbdd051a41b9e6add2c39f47f372e7d9",
+      "size": [
+        627,
+        627
+      ],
+      "source_chart_bounds": [
+        627,
+        627,
+        1254,
+        1254
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "experiment": "balanced_C",
+  "target": 75,
+  "source_age": 30,
+  "samples": [
+    {
+      "id": "S01",
+      "safety_scale": 1.0,
+      "seconds": 1.975,
+      "hair": {
+        "hair_pixels": 93112,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 19.082979202270508,
+        "mode": "source_flow_salt_and_pepper",
+        "retained_source_fraction": 0.16860340235415414,
+        "selection_mean": 0.5891153216362,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 33.53141784667969,
+        "mean_luminance_after": 52.64295196533203
+      }
+    },
+    {
+      "id": "S02",
+      "safety_scale": 1.0,
+      "seconds": 1.119,
+      "hair": {
+        "hair_pixels": 36564,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 17.830734252929688,
+        "mode": "source_flow_salt_and_pepper",
+        "retained_source_fraction": 0.16838967290230827,
+        "selection_mean": 0.5895894169807434,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 28.518402099609375,
+        "mean_luminance_after": 46.449058532714844
+      }
+    },
+    {
+      "id": "S03",
+      "safety_scale": 1.0,
+      "seconds": 1.031,
+      "hair": {
+        "hair_pixels": 60285,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 18.363174438476562,
+        "mode": "source_flow_salt_and_pepper",
+        "retained_source_fraction": 0.17092145641536038,
+        "selection_mean": 0.5899142026901245,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 32.78590393066406,
+        "mean_luminance_after": 51.2629508972168
+      }
+    },
+    {
+      "id": "S04",
+      "safety_scale": 1.0,
+      "seconds": 1.009,
+      "hair": {
+        "hair_pixels": 45189,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 23.102230072021484,
+        "mode": "source_flow_salt_and_pepper",
+        "retained_source_fraction": 0.1686693664387351,
+        "selection_mean": 0.58958500623703,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 55.69955062866211,
+        "mean_luminance_after": 78.56443786621094
+      }
+    }
+  ],
+  "source_code_sha256": {
+    "hair_layers.py": "ad03823100696310a2a57fadd55833d22f61fae061c165fefe6fb0d696348b07",
+    "mechanism_layers.py": "da6ff78642cf8d1c4472b65f9d1db35903f8eae85c01f0644fc0b690d0d4aa11",
+    "skin_layers.py": "f028ef84e3577a6abb4e7f7106eec33167e2674f7ed8d1ef95fc724103f1d99a",
+    "pipeline.py": "e49c1f35cea6d0a6e850c702ecfefe4333e6b7f24751a86036ffed967bf7db28"
+  }
+}

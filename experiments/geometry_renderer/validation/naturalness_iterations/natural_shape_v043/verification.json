@@ -1,0 +1,31 @@
+{
+  "experiment_tests": 167,
+  "existing_api_tests": 3,
+  "dataset_images_downloaded": 0,
+  "dataset_training_or_age_calibration": false,
+  "sources_checked": 5,
+  "source_digests_verified": true,
+  "samples": {
+    "S01": {
+      "jaw_cheek_relative_change_percent": 0.38250572188740506,
+      "shape_guard_scale": 1.0,
+      "mesh_safety_scale": 1.0
+    },
+    "S02": {
+      "jaw_cheek_relative_change_percent": 0.5293859460160144,
+      "shape_guard_scale": 1.0,
+      "mesh_safety_scale": 1.0
+    },
+    "S03": {
+      "jaw_cheek_relative_change_percent": 0.5834728624781071,
+      "shape_guard_scale": 1.0,
+      "mesh_safety_scale": 1.0
+    },
+    "S04": {
+      "jaw_cheek_relative_change_percent": 0.4683090691717684,
+      "shape_guard_scale": 1.0,
+      "mesh_safety_scale": 1.0
+    }
+  },
+  "chromium": "Passed full render, same-age UV/smoking reuse one proposal, wipe/reset/clear; zero external requests/browser errors."
+}

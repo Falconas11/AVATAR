@@ -1,0 +1,235 @@
+{
+  "controls": {
+    "current_age": 30,
+    "target_ages": [
+      60,
+      75
+    ],
+    "quality": "ultra",
+    "geometry_strengths": {
+      "nose": 0.65,
+      "cheeks": 0.65,
+      "jowls": 0.65
+    },
+    "skin_strength": 1.0,
+    "hair_strength": 1.0,
+    "lifestyle": {
+      "smoking": 0.0,
+      "uv_exposure": 0.0
+    },
+    "all_mechanism_controls": 1.0,
+    "per_image_tuning": false
+  },
+  "provenance": "Generated fictional adult portraits using OpenAI image generation in this conversation; not real people or research participants.",
+  "age_note": "30 is a common test control, not an estimated or true age. Synthetic inputs do not validate real-world age accuracy.",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "opencv_threads": 4,
+  "samples": [
+    {
+      "id": "S01",
+      "input_sha256": "09068def48bc9b7f81c7c35d6f7faaf68a8ce5e760650495d7a09c33ecd1735a",
+      "input_size": [
+        627,
+        627
+      ],
+      "native_face_height_px": 332.4,
+      "working_face_height_px": 332.4,
+      "working_scale": 1.0,
+      "source_crop_bounds": [
+        46,
+        0,
+        593,
+        627
+      ],
+      "targets": {
+        "60": {
+          "seconds": 13.534,
+          "output_sha256": "5f64c5b2792459b4b6a7abb646ac2946218f20edc5ffd08bd61dded2979599b7",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 94083,
+          "hair_changed_pixels": 93143,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        },
+        "75": {
+          "seconds": 13.224,
+          "output_sha256": "a8bb66f7663baf17f6abc4eeb39b439ca4b30595ee1501f1a07f7d8210d8f3fa",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 95392,
+          "hair_changed_pixels": 93203,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        }
+      },
+      "status": "completed",
+      "elapsed_seconds": 28.173,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "appearance_passes": 2
+    },
+    {
+      "id": "S02",
+      "input_sha256": "af4aa380c37fe67431ddaa9c2de8d26d26e0fcd6c13663c3e90c1a503f59206a",
+      "input_size": [
+        627,
+        627
+      ],
+      "native_face_height_px": 350.1,
+      "working_face_height_px": 350.1,
+      "working_scale": 1.0,
+      "source_crop_bounds": [
+        30,
+        0,
+        609,
+        627
+      ],
+      "targets": {
+        "60": {
+          "seconds": 14.108,
+          "output_sha256": "0fb4f6ac9f18c46120581b1ba9490253f7682d82ce52095e933f554da8d3d730",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 102418,
+          "hair_changed_pixels": 36562,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        },
+        "75": {
+          "seconds": 13.623,
+          "output_sha256": "4dcc78ee31d19e7a2c3f0d7f7b5cba1674e09fbde728570035cc9a84bf0978a8",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 103803,
+          "hair_changed_pixels": 36565,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        }
+      },
+      "status": "completed",
+      "elapsed_seconds": 28.587,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "appearance_passes": 2
+    },
+    {
+      "id": "S03",
+      "input_sha256": "3c4fad6382e5b1641bb309d8f279c6c237c47c874d0467868c14c4ddf8dc6803",
+      "input_size": [
+        627,
+        627
+      ],
+      "native_face_height_px": 344.2,
+      "working_face_height_px": 344.2,
+      "working_scale": 1.0,
+      "source_crop_bounds": [
+        27,
+        0,
+        602,
+        627
+      ],
+      "targets": {
+        "60": {
+          "seconds": 13.066,
+          "output_sha256": "d7a661b5cdd84d9b89da23dfb3d9537e1a6a24e7ccaaa6898794d34e5fed1177",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 99706,
+          "hair_changed_pixels": 60278,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        },
+        "75": {
+          "seconds": 13.612,
+          "output_sha256": "f5b3950f94cd766705ce6618c3f0bbbeabc97852ce7143212a50c73f3a601cc9",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 100990,
+          "hair_changed_pixels": 60279,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        }
+      },
+      "status": "completed",
+      "elapsed_seconds": 27.479,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "appearance_passes": 2
+    },
+    {
+      "id": "S04",
+      "input_sha256": "274a57fcf49e9acc234c2a63aaa8c8cfcbdd051a41b9e6add2c39f47f372e7d9",
+      "input_size": [
+        627,
+        627
+      ],
+      "native_face_height_px": 344.4,
+      "working_face_height_px": 344.4,
+      "working_scale": 1.0,
+      "source_crop_bounds": [
+        33,
+        0,
+        591,
+        627
+      ],
+      "targets": {
+        "60": {
+          "seconds": 12.559,
+          "output_sha256": "53cec3bcb68d281a60932acaaacbf78bf6b51441c5818195d70c499b813ba5b7",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 98321,
+          "hair_changed_pixels": 45179,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        },
+        "75": {
+          "seconds": 12.441,
+          "output_sha256": "862e3cfa188b2e5bb58b83d3a14a895d2d4fada51c92d86a73be68283a79e330",
+          "safety_scale": 1.0,
+          "ear_availability": true,
+          "source_feature_count": 25,
+          "mechanism_count": 9,
+          "skin_changed_pixels": 100274,
+          "hair_changed_pixels": 45191,
+          "hand_authored_crease_paths_used": false,
+          "skin_backend": "Optional FRAN-style age-conditioned skin / OpenCV CPU"
+        }
+      },
+      "status": "completed",
+      "elapsed_seconds": 25.768,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "appearance_passes": 2
+    }
+  ],
+  "commit": "f003c8f34270c2502e496f88af682f0c437c232b",
+  "completed": 4,
+  "failed": 0,
+  "limitations": "Four synthetic inputs under matched conditions; not a real-world, demographic, identity-preservation or exact-age accuracy study. All aged outputs are produced by repository code, not the image-generation tool.",
+  "renderer_code_sha256": {
+    "pipeline.py": "e49c1f35cea6d0a6e850c702ecfefe4333e6b7f24751a86036ffed967bf7db28",
+    "age_plan.py": "98329a221199d16c258a70ab340d103a54b884571b35a5d0f2f76c5b28e9f3f7",
+    "conditional_skin.py": "3a00dea6ada9a110da64e160abf0b8a78d7cd5e8ed077618cdca291845a39116",
+    "skin_layers.py": "0b570ef0b2e0ef85e6ecbf326c9e7d969b7fc8ec97b0d6cdab7b972614094416",
+    "hair_layers.py": "e97e016cc79b650e9584aaedd45cb7df34ff68cf819ae2b90f53c39e11d2893a",
+    "core.py": "69e6db51a1229b54e217abce214f658d419a8d3c4df83ed089a59d1d304e7490",
+    "session.py": "c4d34680a5058209a5cce0ec328ba877ab07648b544bf279b1dccdd33b78e778",
+    "detection.py": "635e6840e7932f91a8674bf6fbcb5c9ea2c670e663f1751f2dfdb4a244069c3b"
+  }
+}

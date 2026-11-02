@@ -1,0 +1,21 @@
+{
+  "fixture": "Authored color blocks only; not the user portrait",
+  "old_bright_region_changed_pixels": 6230,
+  "new_bright_region_changed_pixels": 0,
+  "metrics": {
+    "hair_pixels": 16100,
+    "strength": 1.0,
+    "applied": true,
+    "mean_change": 2.247826099395752,
+    "mode": "conservative_tonal_gray",
+    "retained_source_fraction": 0.3869565217391304,
+    "protected_bright_pixels": 6230,
+    "feather_pixels": 3.0,
+    "max_luminance_lift": 9.0,
+    "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+    "mean_luminance_before": 74.298095703125,
+    "mean_luminance_after": 75.61833953857422
+  },
+  "experiment_tests_passed": 158,
+  "api_tests_passed": 3
+}

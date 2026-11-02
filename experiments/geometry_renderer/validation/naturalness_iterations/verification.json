@@ -1,0 +1,29 @@
+{
+  "experiment_tests": {
+    "passed": 145,
+    "seconds": 41.7
+  },
+  "existing_api_tests": {
+    "passed": 3
+  },
+  "chromium": {
+    "passed": true,
+    "checks": [
+      "default render",
+      "wipe",
+      "same-age identity reset",
+      "clear",
+      "zero external requests",
+      "no browser errors"
+    ]
+  },
+  "selected_round": "source_locks_D",
+  "synthetic_samples": 4,
+  "safety_scales": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "limits": "Qualitative manual visual review; no perceptual age study or laptop timing guarantee."
+}

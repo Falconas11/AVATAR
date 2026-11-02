@@ -1,0 +1,89 @@
+{
+  "datasets": [
+    {
+      "id": "FFHQ-Aging",
+      "repo": "royorel/FFHQ-Aging-Dataset",
+      "images": 70000,
+      "annotations": "10 age groups with confidence; head pose; occlusion; semantic maps",
+      "use": "Preferred candidate for age/pose-filtered appearance and contour stress evaluation",
+      "license": "Dataset CC BY-NC-SA4.0; individual image licenses/attribution also apply",
+      "limitation": "Age groups and confidence are not longitudinal within-person measurements; cannot infer that a person becomes square with age",
+      "source": {
+        "url": "https://github.com/royorel/FFHQ-Aging-Dataset/blob/master/README.md",
+        "git_blob_sha": "2282356a7fa3a1b94a682e1b70d94478913f9fb5",
+        "readme_sha256": "064317e9626c53ba9eb751c117f8a68892b2b89d63b068047a8ec7b7cdcdeaa5",
+        "reviewed": "2026-11-02 America/Chicago",
+        "scope": "Official project README only; no image download or independent rights/label verification"
+      }
+    },
+    {
+      "id": "FFHQ",
+      "repo": "NVlabs/ffhq-dataset",
+      "images": 70000,
+      "resolution": "1024x1024",
+      "use": "Hair, lighting, backgrounds and high-resolution texture diversity",
+      "license": "Dataset CC BY-NC-SA4.0; mixed per-image permissions/attribution; author explicitly excludes face-recognition development",
+      "limitation": "Not an exact-age paired longitudinal dataset; Flickr selection bias",
+      "source": {
+        "url": "https://github.com/NVlabs/ffhq-dataset/blob/master/README.md",
+        "git_blob_sha": "a40d216a1955f1e0d085cc0ffccaa19dfdadcd1a",
+        "readme_sha256": "c12efdc2759654840c9b2f8fe1cd9a6716be218b831c27056e13e3ec5cd3d663",
+        "reviewed": "2026-11-02 America/Chicago",
+        "scope": "Official project README only; no image download or independent rights/label verification"
+      }
+    },
+    {
+      "id": "UTKFace",
+      "repo": "aicip/UTKFace",
+      "images": "20000+",
+      "age_range": "0-116",
+      "annotations": "age, gender, ethnicity;68-point landmarks",
+      "use": "Adult age/pose/landmark stress evaluation after license review",
+      "license": "Non-commercial research only; original owners retain image copyright",
+      "limitation": "Age labels estimated via DEX and human checked, not verified birth records; cross-sectional",
+      "source": {
+        "url": "https://github.com/aicip/UTKFace/blob/master/README.md",
+        "git_blob_sha": "3ec0fb367f844e5bcfe4769940ed1485719687a8",
+        "readme_sha256": "5e8a067ca936ec3d379e890e1c9088a029cc3766b70bbe1ecbe8e59e80eaadbc",
+        "reviewed": "2026-11-02 America/Chicago",
+        "scope": "Official project README only; no image download or independent rights/label verification"
+      }
+    },
+    {
+      "id": "All-Age-Faces",
+      "repo": "JingchunCheng/All-Age-Faces-Dataset",
+      "images": 13322,
+      "age_range": "2-80",
+      "annotations": "age, landmarks, aligned and original images",
+      "use": "Potential landmark/proportion audit; adult subset only",
+      "license": "Inspected README does not establish redistribution/adaptation permissions; clarify with provider before use",
+      "limitation": "README says mostly Asian and each image is a different individual; cannot derive within-person aging deformation",
+      "source": {
+        "url": "https://github.com/JingchunCheng/All-Age-Faces-Dataset/blob/master/README.md",
+        "git_blob_sha": "a4888315bae0691eecf6415c3203ac85dd3a11a9",
+        "readme_sha256": "889fd6e18af6a74e2a16c10e0ac283ec8da92dcc8ccad2e8e3afc01b89f77b3d",
+        "reviewed": "2026-11-02 America/Chicago",
+        "scope": "Official project README only; no image download or independent rights/label verification"
+      }
+    },
+    {
+      "id": "FairFace",
+      "repo": "joojs/fairface",
+      "annotations": "age and other attribute labels",
+      "use": "Future balanced evaluation strata; no runtime demographic inference",
+      "license": "README states CC BY4.0; confirm image provenance and intended use",
+      "limitation": "Attribute-group balance does not establish within-person longitudinal geometry or causal aging",
+      "source": {
+        "url": "https://github.com/joojs/fairface/blob/master/README.md",
+        "git_blob_sha": "cb9b36dad8377b21108fb11367a9ed0dba368aee",
+        "readme_sha256": "209e89e52c94c2200ca5c13ad9230b486f6c2e1081f9e2982f29ba84aff84681",
+        "reviewed": "2026-11-02 America/Chicago",
+        "scope": "Official project README only; no image download or independent rights/label verification"
+      }
+    }
+  ],
+  "image_downloads": 0,
+  "models_trained": 0,
+  "age_shape_calibration_performed": false,
+  "runtime_demographic_inference": false
+}
