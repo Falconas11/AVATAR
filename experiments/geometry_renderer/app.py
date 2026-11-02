@@ -15,8 +15,8 @@ from experiments.geometry_renderer.comparison import crop_view,difference_view,h
 from experiments.geometry_renderer.session import DemoSession
 from experiments.geometry_renderer.lifestyle import PRESETS
 
-st.set_page_config(page_title='AVATAR Local Aging v0.4',layout='wide')
-st.title('AVATAR Local Aging v0.4')
+st.set_page_config(page_title='AVATAR Local Aging v0.4.1',layout='wide')
+st.title('AVATAR Local Aging v0.4.1')
 st.caption('Age baseline → face geometry + learned skin appearance + segmented gray hair. All photo processing stays on this computer.')
 st.warning('Illustrative aging visualization. Target age is a control, not a calibrated prediction of how this person will look.')
 

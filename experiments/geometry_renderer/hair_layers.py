@@ -180,11 +180,11 @@ def conservative_hair_mask(image: np.ndarray, landmarks: np.ndarray) -> np.ndarr
 
 
 def gray_hair(image: np.ndarray, mask: np.ndarray, strength: float, *, seed: int = 2026) -> tuple[np.ndarray,dict]:
-    """Author silver/gray strand appearance while retaining source hair texture.
+    """Conservative tonal graying while retaining source hair texture.
 
     Strength is an illustration control, not a clinical fraction of gray hair.
-    Chroma moves toward neutral silver with deterministic elongated variation;
-    source luminance/detail remain visible rather than painting a white blob.
+    Chroma moves toward neutral with bounded luminance lift and no added noise.
+    Bright outliers and soft boundary pixels are protected from whitening.
     Pixels outside the supplied confident mask are bit-for-bit protected.
     """
     _validate_rgb(image)
@@ -201,45 +201,33 @@ def gray_hair(image: np.ndarray, mask: np.ndarray, strength: float, *, seed: int
         return image.copy(),metrics
     rgb=image.astype(np.float32)
     lum=rgb@np.array([.2126,.7152,.0722],np.float32)
-    base=cv2.GaussianBlur(lum,(0,0),1.3)
-    detail=lum-base
-    # Estimate local strand direction from the source structure tensor. Noise
-    # follows actual hair flow instead of painting a single vertical gray veil.
-    gx=cv2.Sobel(lum,cv2.CV_32F,1,0,ksize=3)
-    gy=cv2.Sobel(lum,cv2.CV_32F,0,1,ksize=3)
-    jxx=cv2.GaussianBlur(gx*gx,(0,0),1.8)
-    jyy=cv2.GaussianBlur(gy*gy,(0,0),1.8)
-    jxy=cv2.GaussianBlur(gx*gy,(0,0),1.8)
-    angle=.5*np.arctan2(2*jxy,jxx-jyy)
-    tx,ty=-np.sin(angle),np.cos(angle)
-    y,x=np.indices(mask.shape,dtype=np.float32)
-    noise=np.random.default_rng(seed).standard_normal(mask.shape).astype(np.float32)
-    flowing=np.zeros_like(noise)
-    for offset in (-4.,-2.,0.,2.,4.):
-        flowing+=cv2.remap(noise,x+offset*tx,y+offset*ty,cv2.INTER_LINEAR,borderMode=cv2.BORDER_REFLECT_101)
-    flowing=cv2.GaussianBlur(flowing/5,(0,0),3.)
-    # Anchor silver locks to existing illuminated strands. Random selection on
-    # its own produces a mottled wig; use only weak, smooth seed variation.
-    lo,hi=np.percentile(base[support],[15,85])
-    highlight=np.clip((base-float(lo))/max(float(hi-lo),8.),0,1)
-    variation=flowing/max(float(np.std(flowing[support])),1e-6)
-    selection=np.clip((highlight-.18)*1.35+variation*.04,0,1)*float(strength)
-    # Textureless hair has no observable locks: neutralize conservatively
-    # rather than silently skipping it or inventing random high contrast.
-    if float(hi-lo)<2.:
-        selection=np.full_like(mask,.8*float(strength))
+    # Never select silver patches from source highlights: bright background or
+    # forehead leakage otherwise becomes a white rim/strip through the fringe.
+    distance=cv2.distanceTransform(support.astype(np.uint8),cv2.DIST_L2,3)
+    feather=max(3.,min(10.,min(image.shape[:2])*.012))
+    core=support & (distance>feather+2) & (mask>.5)
+    if core.sum()<32:
+        metrics.update(mode='conservative_tonal_gray',reason='no_reliable_hair_interior')
+        return image.copy(),metrics
+    low,high=np.percentile(lum[core],[15,50])
+    cutoff=float(high)+max(18.,float(high-low)*2.)
+    # Bright outliers relative to the hair interior are protected, including
+    # skin/wall pixels confidently misclassified by the semantic parser.
+    brightness_gate=np.clip((cutoff+18-lum)/18,0,1)
     confidence=np.clip((mask-.5)/.10,0,1)
-    edge=cv2.distanceTransform(support.astype(np.uint8),cv2.DIST_L2,3)
-    edge=np.clip(edge/2.,0,1)
-    alpha=confidence*selection*edge*.75
-    silver=np.clip(30+1.45*base+detail,0,235)
+    edge=np.clip((distance-1)/feather,0,1)
+    alpha=confidence*edge*brightness_gate*.72*float(strength)
+    # Preserve source luminance, shadows and strands. Maximum target lift12
+    # levels (and effective lift<9); no white paint, noise or new strand texture.
+    silver=np.clip(lum+np.minimum(lum*.12,12),0,255)
     neutral=np.repeat(silver[...,None],3,axis=2)
     result=np.rint(np.clip(rgb*(1-alpha[...,None])+neutral*alpha[...,None],0,255)).astype(np.uint8)
     result[~support]=image[~support]
-    metrics.update(mode='source_illuminated_silver_locks',
+    metrics.update(mode='conservative_tonal_gray',
         retained_source_fraction=float(np.mean(np.all(result[support]==image[support],axis=1))),
-        selection_mean=float(selection[support].mean()),
-        selection_note='Authored strand-selection density, not measured gray-hair percentage.')
+        protected_bright_pixels=int(np.sum(support & (brightness_gate==0))),
+        feather_pixels=float(feather),max_luminance_lift=9.,
+        selection_note='Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.')
     metrics.update(applied=bool(np.any(result!=image)),
         mean_change=float(np.abs(result.astype(np.float32)-rgb)[support].mean()),
         mean_luminance_before=float(lum[support].mean()),

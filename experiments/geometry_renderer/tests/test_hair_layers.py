@@ -49,7 +49,7 @@ def test_deterministic_strands_reduce_chroma_and_preserve_contrast(synthetic_hai
     b,_=gray_hair(image,mask,1,seed=3)
     c,_=gray_hair(image,mask,1,seed=4)
     np.testing.assert_array_equal(a,b)
-    assert np.any(a[mask>0]!=c[mask>0])
+    np.testing.assert_array_equal(a,c)  # seed kept for compatibility; no painted random strands
     source=image[mask>0].astype(float)
     changed=a[mask>0].astype(float)
     # Mixed dark/silver locks should lose chroma without bleaching all hair.
@@ -68,7 +68,8 @@ def test_deterministic_strands_reduce_chroma_and_preserve_contrast(synthetic_hai
     new_detail=new_full-cv2.GaussianBlur(new_full,(0,0),2)
     assert np.corrcoef(old_detail[mask>0],new_detail[mask>0])[0,1]>.75
     retained=np.all(a[mask>0]==image[mask>0],axis=1).mean()
-    assert .1<retained<.5  # dark locks must actually remain, not a gray veil
+    assert 0<retained<.5  # feathered boundary is protected
+    assert np.max(new_lum-old_lum)<9.5  # no white-paint luminance lift
     assert new_lum.max()<245
 
 @pytest.mark.parametrize('strength',[-.1,1.1,float('nan')])
@@ -140,3 +141,25 @@ def test_real_verified_offline_parser_on_licensed_fixture(licensed_image,license
     changed,metrics=gray_hair(licensed_image,regions['hair'],1)
     assert metrics['applied'] and metrics['mean_change']>10
     np.testing.assert_array_equal(changed[regions['hair']<=.5],licensed_image[regions['hair']<=.5])
+
+
+def test_warm_background_halo_and_skin_leak_are_not_whitened():
+    # Deliberately wrong high-confidence parser output: includes a bright wall
+    # ring and a forehead strip. Use authored pixels, never the user's portrait.
+    image=np.full((160,180,3),[190,159,113],np.uint8)
+    image[30:125,30:150]=[28,22,17]
+    image[108:125,45:135]=[176,128,91]  # forehead under fringe
+    mask=np.zeros((160,180),np.float32);mask[20:135,20:160]=.99
+    out,metrics=gray_hair(image,mask,1)
+    bright=(image[...,0]>150)
+    np.testing.assert_array_equal(out[bright],image[bright])
+    assert metrics['protected_bright_pixels']>0
+    assert np.any(out[50:90,50:120]!=image[50:90,50:120])
+
+
+def test_thin_flyaway_mask_is_left_unchanged_without_a_reliable_interior():
+    image=np.full((90,90,3),[30,25,20],np.uint8)
+    mask=np.zeros((90,90),np.float32);mask[10:70,40:42]=1
+    out,metrics=gray_hair(image,mask,1)
+    np.testing.assert_array_equal(out,image)
+    assert not metrics['applied']

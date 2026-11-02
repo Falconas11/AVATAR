@@ -1,5 +1,11 @@
 # Naturalness iterations — fictional fixtures only
 
+**v0.4.1 update:** the historical D hair algorithm is superseded by conservative
+tonal gray with bright-outlier and boundary protection. See
+[hotfix comparison](hair_hotfix_v041/contact-sheet.jpg) and
+[deliberately leaky-mask regression](hair_hotfix_v041/warm-boundary-regression.png).
+These diagnostics do not use the user’s uploaded portrait.
+
 Four matched inputs, stated source age30 → illustrative target75, ultra neural
 proposal, default geometry/skin/hair controls and no per-input tuning. These are
 program outputs, not image-generator aging edits. Baseline is `synthetic_v03`.
@@ -9,7 +15,7 @@ program outputs, not image-generator aging edits. Baseline is `synthetic_v03`.
 | strand_hair_A | Rejected | Hard random lock selection produced a speckled gray wig. |
 | balanced_B | Intermediate | Softer source-relative gray, stronger cheek/jaw contour, attenuated fine skin residual. Hair too dark. |
 | balanced_C | Rejected hair variant | Brighter locks still looked mottled when enlarged. |
-| source_locks_D | Current default | Gray anchored to existing illuminated strands; weak smooth random variation. Retains dark locks/shadows, less uniform gray veil. |
+| source_locks_D | v0.4.0 default (superseded) | Gray anchored to existing illuminated strands; weak smooth random variation. Retains dark locks/shadows, less uniform gray veil. |
 
 ![Input / v0.3 / current candidate](source_locks_D/contact-sheet.jpg)
 

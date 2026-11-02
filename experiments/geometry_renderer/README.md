@@ -1,4 +1,4 @@
-# AVATAR mesh-first local aging v0.4
+# AVATAR mesh-first local aging v0.4.1
 
 Local CPU prototype: repository knowledge graph + explicit age baseline, fixed-border
 mesh geometry, optional age-conditioned skin residual, and segmented hair graying.
@@ -103,7 +103,7 @@ The FRAN model is a124MB public ONNX conversion; no GPL FaceStudio code is used.
 
 ![Generated fictional input, original and illustrative local aging](screenshots/local-aging-ui.png)
 
-Latest verification: **156 experiment tests passed**, plus3 existing API tests.
+Latest verification: **158 experiment tests passed**, plus3 existing API tests.
 Browser regression additionally verifies same-age UV/smoking comparison with one
 shared model proposal, reset/clear and zero external requests or browser errors.
 Historical detail-quality CPU evidence: the mirrored-parser/detail run took **8.878s** for the
@@ -183,3 +183,17 @@ compare UV, smoking, alcohol, exploratory stress, combined or custom modifiers.
 Age inference stays shared; diet and lifestyle-induced hair changes are not
 inferred. The four-fictional-input scenario batch and refreshed real UI screenshot
 are linked in that document. No new runtime models or dependencies.
+
+## v0.4.1 hair boundary hotfix
+
+Replaces highlight-selected silver patches with conservative tonal neutralization,
+bounded luminance lift and soft boundary protection. Bright wall/forehead outliers
+relative to the hair interior are protected; thin/uncertain regions with no
+reliable interior are left unchanged. No random strands or crease paths are added.
+Gray appearance is deliberately subtler; incorrect semantic masks can still cause
+errors. This does not fix remaining facial-skin naturalness limitations.
+
+The warm-background/leaky-mask regression uses authored color blocks, not the
+user's portrait. [Regression and four fictional inputs](validation/naturalness_iterations/hair_hotfix_v041/)
+include the final source digests. Full suite:158 experiment tests plus3 existing
+API tests passed. No new model or dependency.
