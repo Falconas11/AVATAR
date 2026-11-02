@@ -1,4 +1,4 @@
-# AVATAR mesh-first local aging v0.3
+# AVATAR mesh-first local aging v0.4
 
 Local CPU prototype: repository knowledge graph + explicit age baseline, fixed-border
 mesh geometry, optional age-conditioned skin residual, and segmented hair graying.
@@ -36,7 +36,7 @@ automatically used: the packaged OpenCV DNN backend is CPU, normally four thread
 The launcher binds only to loopback, disables telemetry, and caps input at10MiB.
 `--port` and `--threads` override local defaults.
 
-Select the public-domain NASA sample or a local JPEG/PNG; current age30 and target75
+Select a generated fictional test portrait, the NASA reference, or a local JPEG/PNG; current age30 and target75
 are demonstration defaults, not estimates of the sample subject's age. Compare
 all layers, disable skin/hair independently, inspect semantic masks, or use wipe
 and diagnostic difference views. Equal ages are pixel-exact identity in working
@@ -61,7 +61,7 @@ resolution. Clear releases session references, not secure memory erasure.
   a mirrored pass reduces left/right parsing bias. Gray blending retains source
   strand texture. Masks can still miss hair or have uneven boundaries; inspect them.
 - `session.py` caches detection/masks per image and appearance per age/quality;
-  comparison controls reuse the last result. Small faces are upsampled toward300px
+  two session-local compositions support baseline/scenario comparison without repeated inference. Small faces are upsampled toward300px
   face height, bounded by1536px canvas. This adds rasterization space, not recovered
   original detail. No global photo cache or photo files are written.
 
@@ -99,13 +99,14 @@ human age-perception study or clinical validation has been performed.
 [Third-party notices](THIRD_PARTY.md) and `models/*.json` record asset hashes,
 MIT author/release provenance, preprocessing and training-data limitations.
 The FRAN model is a124MB public ONNX conversion; no GPL FaceStudio code is used.
-[Fixture provenance](tests/fixtures/README.md): NASA public-domain image only,
-never participant photos. Tests/screenshots explicitly use that fixture.
+[Fixture provenance](tests/fixtures/README.md) and [generated fictional inputs](tests/fixtures/synthetic_portraits/README.md): never participant photos. Current screenshots use a generated fictional adult.
 
-![Licensed sample, original and illustrative local aging](screenshots/local-aging-ui.png)
+![Generated fictional input, original and illustrative local aging](screenshots/local-aging-ui.png)
 
-Latest verification: **114 experiment tests passed**, plus3 existing API tests.
-On the recorded cloud CPU the mirrored-parser/detail run took **8.878s** for the
+Latest verification: **156 experiment tests passed**, plus3 existing API tests.
+Browser regression additionally verifies same-age UV/smoking comparison with one
+shared model proposal, reset/clear and zero external requests or browser errors.
+Historical detail-quality CPU evidence: the mirrored-parser/detail run took **8.878s** for the
 first photo and **7.283s** for the next target age; the20-second gate passed.
 The real-browser smoke checks full rendering, wipe, identity reset, clear, no
 browser exceptions and no external browser requests. These are engineering and
@@ -173,3 +174,12 @@ volume changes within existing mesh safety checks and attenuates fine papery ski
 residuals. These are visual refinements, not calibrated age or naturalness claims.
 Launch remains `python -m experiments.geometry_renderer.launch`; no new model or
 runtime dependency is required. Research collection and deployment are unchanged.
+
+## v0.4 lifestyle scenarios
+
+[Scenario usage, routing, evidence and limitations](LIFESTYLE_SCENARIOS.md). Select
+**Lifestyle scenarios → Scenario** and **Compare baseline at the same age** to
+compare UV, smoking, alcohol, exploratory stress, combined or custom modifiers.
+Age inference stays shared; diet and lifestyle-induced hair changes are not
+inferred. The four-fictional-input scenario batch and refreshed real UI screenshot
+are linked in that document. No new runtime models or dependencies.

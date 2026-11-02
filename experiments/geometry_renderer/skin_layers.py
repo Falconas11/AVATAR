@@ -5,6 +5,7 @@ measured wrinkle depths, or a clinically calibrated age prediction. The module
 never detects faces, downloads models, saves images, or logs image data.
 """
 from __future__ import annotations
+from .lifestyle import regional_gain
 
 import cv2
 import numpy as np
@@ -325,7 +326,10 @@ def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
     # finest residual detail to reduce the papery texture of tiled inference.
     # No hand-authored crease paths run in this learned transfer.
     fine = residual-cv2.GaussianBlur(residual,(0,0),.9)
-    transferred = np.clip(residual-fine*.4,-55,55)
+    lifestyle_gain = regional_gain(image.shape,p,plan['features'])[y0:y1,x0:x1]
+    transferred = np.clip((residual-fine*.4)*lifestyle_gain,-55,55)
+    metadata['lifestyle_gain_max'] = float(lifestyle_gain.max())
+    metadata['lifestyle_localization'] = 'Authored regional gain on shared age proposal, not neural feature attribution.'
     edited_lab = source_lab.copy()
     edited_lab[...,0] = np.clip(np.rint(source_l+transferred),0,255).astype(np.uint8)
     candidate = cv2.cvtColor(edited_lab,cv2.COLOR_LAB2RGB).astype(np.float32)

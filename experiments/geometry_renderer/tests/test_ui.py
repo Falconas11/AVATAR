@@ -18,6 +18,24 @@ def test_streamlit_sample_sliders_cache_overlay_reset_and_clear():
     assert session.segmentation_count == 1
     assert session.proposal_count == 1
     app.selectbox(key='skin_quality').select('Fast (1 window)').run()
+    proposal_count=session.proposal_count
+    app.selectbox(key='lifestyle_scenario').select('UV exposure').run()
+    assert app.slider(key='uv_modifier').value==1.
+    assert app.slider(key='smoking_modifier').value==0.
+    app.checkbox(key='compare_scenarios').check().run()
+    assert any('Same-age lifestyle comparison' in heading.value for heading in app.subheader)
+    count=session.render_count
+    app.selectbox(key='lifestyle_reference').select('smoking').run()
+    assert session.render_count==count  # both compositions are cached
+    app.selectbox(key='lifestyle_scenario').select('Smoking').run()
+    assert session._render_result.plan['metadata']['lifestyle_values']=={'smoking':1.}
+    assert app.slider(key='smoking_modifier').value==1.
+    assert app.slider(key='uv_modifier').value==0.
+    app.selectbox(key='lifestyle_scenario').select('Custom').run()
+    app.slider(key='alcohol_modifier').set_value(.5).run()
+    assert session._render_result.plan['metadata']['lifestyle_values']['alcohol']==.5
+    assert session.proposal_count==proposal_count
+    app.checkbox(key='compare_scenarios').uncheck().run()
     app.selectbox(key='comparison_view').select('Before / after wipe').run()
     assert not app.exception and not app.error
     app.slider(key='wipe_position').set_value(30).run()
@@ -44,5 +62,5 @@ def test_streamlit_sample_sliders_cache_overlay_reset_and_clear():
     assert app.slider(key='target_age').value >= 90
     next(button for button in app.button if button.label == 'Clear image from this session').click().run()
     assert not app.exception and not app.error
-    assert session.prepared is None
+    assert session.prepared is None and not session._render_cache
     assert not app.checkbox(key='use_sample').value

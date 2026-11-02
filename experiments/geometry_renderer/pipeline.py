@@ -45,7 +45,7 @@ def render_local_aging(prepared: PreparedFace, regions: dict | None, current_age
     plan = build_age_plan(current_age,target_age,lifestyle=lifestyle,mechanism_strengths=mechanism_strengths,feature_strengths=feature_strengths)
     features = plan['features']
     for feature in features.values():
-        feature['age_score'] = feature['score']
+        feature['age_score'] = feature['baseline_score']
         feature['render_operator_enabled'] = False
     scores = {name: record['score'] for name,record in features.items()}
     delta = displacement_field(prepared.points,prepared.face_count,current_age=current_age,target_age=target_age,
@@ -87,13 +87,15 @@ def render_local_aging(prepared: PreparedFace, regions: dict | None, current_age
     # The FRAN proposal is already conditioned on source and target ages. Use
     # the plan as an age gate and relative regional control, not a second global
     # age fade that would turn a target-75 proposal back toward young skin.
-    appearance_score = max((record['score'] for record in features.values()
+    appearance_score = max((record['baseline_score'] for record in features.values()
         if record['render_channel'] in ('skin','wrinkle')),default=0)
     normalizer = appearance_score if learned_proposal is not None and appearance_score>0 else 1
     skin_plan = {**plan,'features':{name:{**record,'score':min(1.,record['score']/normalizer)*skin_strength}
         for name,record in features.items()}}
     if 'skin' in enabled:
-        skin_image,skin_metrics = render_skin(geometry_image,destination,skin_plan,
+        learned_plan = {**skin_plan,'features':{name:{**record,'score':min(1.,record['baseline_score']/normalizer)*skin_strength}
+            for name,record in features.items()}} if learned_proposal is not None else skin_plan
+        skin_image,skin_metrics = render_skin(geometry_image,destination,learned_plan,
             skin_mask=warped_regions.get('skin'),neck_mask=warped_regions.get('neck'),
             learned_proposal=warped_proposal)
     else:
@@ -149,6 +151,7 @@ def render_local_aging(prepared: PreparedFace, regions: dict | None, current_age
         'skin_changed_pixels':skin_changed,'hair_changed_pixels':hair_changed,
         'hair_mask_pixels':int((hair_mask>.5).sum()),'skin':skin_metrics,'hair':hair_metrics,
         'feature_coverage':coverage,'mechanisms':plan['mechanisms'],'ear_warp':ear_metrics,
+        'lifestyle_scenarios':plan['lifestyle_scenarios'],
         'surface':surface_metrics,'enabled_layers':sorted(enabled),'segmentation_backend':regions.get('backend','none') if regions else 'none',
         'learned_skin_used':bool(learned_proposal is not None and 'skin' in enabled and skin_changed),
         'disclaimer':'Per-feature flags mean requested operators, not neural feature attribution. Pixel/layer diagnostics validate execution, not perceived age or biological prediction.'}

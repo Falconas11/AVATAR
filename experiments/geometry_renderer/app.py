@@ -13,9 +13,10 @@ cv2.setNumThreads(min(4,os.cpu_count() or 1))
 from experiments.geometry_renderer.core import overlay
 from experiments.geometry_renderer.comparison import crop_view,difference_view,head_crop_bounds,wipe_view
 from experiments.geometry_renderer.session import DemoSession
+from experiments.geometry_renderer.lifestyle import PRESETS
 
-st.set_page_config(page_title='AVATAR Local Aging v0.3',layout='wide')
-st.title('AVATAR Local Aging v0.3')
+st.set_page_config(page_title='AVATAR Local Aging v0.4',layout='wide')
+st.title('AVATAR Local Aging v0.4')
 st.caption('Age baseline → face geometry + learned skin appearance + segmented gray hair. All photo processing stays on this computer.')
 st.warning('Illustrative aging visualization. Target age is a control, not a calibrated prediction of how this person will look.')
 
@@ -35,6 +36,14 @@ def clear_image():
     session.clear()
     st.session_state.use_sample = False
     st.session_state.upload_generation += 1
+
+
+def set_scenario_controls():
+    preset=PRESETS.get(st.session_state.get('lifestyle_scenario'))
+    if preset is not None:
+        for factor,key in [('uv_exposure','uv_modifier'),('smoking','smoking_modifier'),
+                           ('alcohol','alcohol_modifier'),('stress','stress_modifier')]:
+            st.session_state[key]=float(preset.get(factor,0))
 
 
 with st.sidebar:
@@ -57,13 +66,21 @@ with st.sidebar:
     hair_on = st.checkbox('Hair graying',value=True,key='hair_on')
     skin_strength = st.slider('Skin appearance strength',0.,1.,1.,.05,key='skin_strength')
     hair_strength = st.slider('Hair graying strength',0.,1.,1.,.05,key='hair_strength')
-    with st.expander('Geometry and lifestyle controls'):
+    with st.expander('Geometry controls'):
         nose = st.slider('Nasal tip ptosis — downward tip shift',0.,1.,.65,.05,key='nose')
         cheeks = st.slider('Cheek / midface descent',0.,1.,.65,.05,key='cheeks')
         jowls = st.slider('Lower-face / jowl sagging',0.,1.,.65,.05,key='jowls')
-        st.caption('Illustrative modifiers, not measured exposure or clinical risk. Zero modifiers still age.')
-        uv = st.slider('UV modifier',0.,1.,0.,.1,key='uv_modifier')
-        smoking = st.slider('Smoking modifier',0.,1.,0.,.1,key='smoking_modifier')
+    st.header('Lifestyle scenarios')
+    scenario = st.selectbox('Scenario',list(PRESETS)+['Custom'],key='lifestyle_scenario',on_change=set_scenario_controls)
+    st.caption('Illustrative added modifiers at the same age; not measured exposure, risk or a prediction. Baseline still ages.')
+    custom = scenario=='Custom'
+    uv = st.slider('UV modifier',0.,1.,0.,.1,key='uv_modifier',disabled=not custom)
+    smoking = st.slider('Smoking modifier',0.,1.,0.,.1,key='smoking_modifier',disabled=not custom)
+    alcohol = st.slider('Alcohol modifier',0.,1.,0.,.1,key='alcohol_modifier',disabled=not custom)
+    stress = st.slider('Stress modifier (exploratory)',0.,1.,0.,.1,key='stress_modifier',disabled=not custom)
+    lifestyle={'uv_exposure':uv,'smoking':smoking,'alcohol':alcohol,'stress':stress} if custom else dict(PRESETS[scenario])
+    compare_scenarios = st.checkbox('Compare baseline at the same age',key='compare_scenarios')
+    st.caption('Diet is not rendered: general diet quality does not establish a vitamin deficiency. No lifestyle-induced hair loss or graying is assumed.')
     st.header('Inspect changes')
     focus = st.checkbox('Focus on head and face',value=True,key='focus_face')
     view = st.selectbox('Comparison view',['Side by side','Before / after wipe','Pixel difference ×4'],key='comparison_view')
@@ -104,10 +121,11 @@ try:
     if skin_on and target>current and skin_strength>0:
         session.ensure_aged_proposal(current,target,quality=quality)
     enabled = tuple(name for name,on in [('geometry',geometry_on),('skin',skin_on),('hair',hair_on)] if on)
-    result = session.render_age(current,target,lifestyle={'uv_exposure':uv,'smoking':smoking},
-        geometry_strengths={'nose':nose,'cheeks':cheeks,'jowls':jowls},
+    render_controls=dict(geometry_strengths={'nose':nose,'cheeks':cheeks,'jowls':jowls},
         skin_strength=skin_strength,hair_strength=hair_strength,enabled_layers=enabled,
         mechanism_strengths=mechanism_strengths,feature_strengths=feature_strengths)
+    baseline = session.render_age(current,target,lifestyle={},**render_controls) if compare_scenarios else None
+    result = session.render_age(current,target,lifestyle=lifestyle,**render_controls)
 except ValueError as exc:
     st.error(str(exc))
     st.stop()
@@ -136,6 +154,34 @@ else:
     st.subheader('Pixel difference ×4 — diagnostic view')
     st.image(difference_view(crop_view(prepared.image,bounds),crop_view(result.image,bounds)),use_container_width=True)
     st.caption('Amplified RGB difference is an inspection tool, not a portrait or proof of perceived age.')
+
+if baseline is not None:
+    st.subheader(f'Same-age lifestyle comparison — target {target}')
+    left,right=st.columns(2)
+    with left:
+        st.caption('Baseline — no added lifestyle modifiers')
+        st.image(crop_view(baseline.image,bounds),use_container_width=True)
+    with right:
+        st.caption('Scenario: '+scenario)
+        st.image(crop_view(result.image,bounds),use_container_width=True)
+    st.caption('Same input, ages, layer controls and shared age-conditioned model proposal. Only lifestyle modifiers differ. Baseline is a visualization, not a healthy-person counterfactual.')
+    if not skin_on:st.caption('Skin layer is off: skin-only scenario effects are unavailable.')
+
+with st.expander('Lifestyle effects and source evidence'):
+    st.caption('Requested regional controls, not verified neural-feature attribution. Gains are authored; original source references are unverified. Missing citations remain visible. Combined gains are bounded, not a biological interaction model.')
+    rows=[]
+    for factor,record in result.plan['lifestyle_scenarios'].items():
+        for name,effect in record['features'].items():
+            rows.append({'Factor':record['label'],'Feature':name,'Region':effect['region'],
+                'Requested gain':round(effect['gain'],3),
+                'Feature enabled':result.plan['features'][name]['score']>0,
+                'Layer enabled':result.plan['features'][name]['render_channel'] in ('skin','wrinkle') and skin_on or result.plan['features'][name]['render_channel']=='geometry' and geometry_on,
+                'Evidence':'incomplete_or_provisional' if any(p['evidence_status']=='incomplete_or_provisional' for p in effect['paths']) else 'unverified_graph_references'})
+    if rows:st.dataframe(rows,hide_index=True,use_container_width=True)
+    else:st.caption('No added lifestyle effects requested. Age baseline remains active.')
+    factor=st.selectbox('Inspect lifestyle evidence',list(result.plan['lifestyle_scenarios']),key='lifestyle_reference')
+    st.json(result.plan['lifestyle_scenarios'][factor])
+    st.caption('Smoking facial-wrinkle localization around the mouth/eyes is an authored visual choice. The graph has no perioral-line or gray-hair pathway; those missing features receive no lifestyle claim.')
 
 processing_ms = session.detection_ms+session.preparation_ms+session.segmentation_ms+session.proposal_ms+result.metrics['total_ms']
 if current==target:
@@ -174,7 +220,8 @@ with st.expander('Knowledge graph, age baseline and evidence limits'):
     st.caption('Existing v03 graph paths supply reference context. Smooth age baselines and missing-feature overlays are provisional visual assumptions; they do not explain neural model internals.')
     rows=[]
     for name,record in result.plan['features'].items():
-        rows.append({'Feature':name.replace('_',' '),'Age-baseline intensity':round(record['score'],3),
+        rows.append({'Feature':name.replace('_',' '),'Age-baseline intensity':round(record['baseline_score'],3),
+            'Scenario intensity':round(record['score'],3),
             'Graph status':record['graph_support_status'],'Baseline status':record['evidence_status']})
     st.dataframe(rows,use_container_width=True,hide_index=True)
     feature_id=st.selectbox('Inspect feature references',list(result.plan['features']),key='feature_reference')
@@ -190,6 +237,6 @@ with st.expander('Knowledge graph, age baseline and evidence limits'):
 
 st.caption(f'Local render: {result.metrics["total_ms"]:.0f} ms · source detection passes: {session.detection_count} · '
     f'semantic parsing passes: {session.segmentation_count} · learned appearance passes: {session.proposal_count}. '
-    'Age changes rerun the local skin model; detection/masks stay cached. Inspection controls reuse the last rendered image.')
+    'Age/quality changes rerun the local skin model; lifestyle scenarios share that proposal and reuse detection/masks. The two most recent compositions stay in session memory.')
 st.caption('No photos are uploaded to external services, automatically saved, or sent to the research/Box pipeline. '
     'Clear removes this session’s retained references, not guaranteed secure memory erasure.')

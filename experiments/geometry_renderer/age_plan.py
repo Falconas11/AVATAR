@@ -15,6 +15,7 @@ import math
 from numbers import Real
 from pathlib import Path
 from typing import Any
+from .lifestyle import feature_contributions, scenario_evidence
 
 
 @dataclass(frozen=True)
@@ -255,11 +256,8 @@ def build_age_plan(current_age: int, target_age: int, *, lifestyle: dict | None 
     for feature_id, spec in FEATURES.items():
         matched = tuple(node for node in spec.graph_ids if node in nodes)
         paths = _graph_paths(matched, nodes, edges, target_age)
-        roots = {path['nodes'][0] for path in paths}
-        # A graph-supported exposure may modulate, never substitute for, aging.
-        # The .35 cap is also a visible-demo parameter, not an epidemiologic effect.
-        exposure = max((values.get(root, 0.0) for root in roots), default=0.0)
-        modifier = 1+.35*exposure
+        contributions = feature_contributions(feature_id, paths, values)
+        modifier = 1+min(.35,sum(contributions.values()))
         current, target = _age_baseline(current_age, spec), _age_baseline(target_age, spec)
         delta = max(0.0, target-current)
         citations = list(dict.fromkeys(citation for path in paths for citation in path['citations']))
@@ -284,6 +282,8 @@ def build_age_plan(current_age: int, target_age: int, *, lifestyle: dict | None 
             'graph_support_status': 'absent_from_graph' if missing else ('no_applicable_graph_path' if not paths else
                 'incomplete_graph_paths' if any(p['evidence_status']=='incomplete_or_provisional' for p in paths) else 'unverified_graph_references'),
             'assumptions': assumptions, 'lifestyle_modifier': modifier,
+            'lifestyle_contributions':contributions,
+            'baseline_score':min(1.,delta*spec.visual_gain),
             'demo_curve': _curve_spec(spec)}
     mechanism_ids = {key for key,node in nodes.items() if node['layer']=='mechanism'}
     controls = dict(mechanism_strengths or {})
@@ -304,6 +304,7 @@ def build_age_plan(current_age: int, target_age: int, *, lifestyle: dict | None 
         value=float(controls.get(mechanism_id,1))
         for key in affected:
             features[key]['score'] *= value
+            features[key]['baseline_score'] *= value
             features[key].setdefault('mechanism_controls',[]).append(mechanism_id)
         mechanisms[mechanism_id]={'label':nodes[mechanism_id]['label'],
             'control':value,'affected_features':affected,'source_descendant_ids':sorted(descendants-{mechanism_id}),
@@ -311,16 +312,17 @@ def build_age_plan(current_age: int, target_age: int, *, lifestyle: dict | None 
             'biochemical_simulation':False,'clinically_calibrated':False}
     for key,f in features.items():
         f['score'] *= float(feature_controls.get(key,1))
+        f['baseline_score'] *= float(feature_controls.get(key,1))
     source_features=[key for key,node in nodes.items() if node['layer']=='feature' and
         node['renderable'].lower()=='true' and node['aging_related'].lower()=='true']
     coverage={key:[name for name,f in features.items() if key in f['graph_node_ids']] for key in source_features}
     if any(not mappings for mappings in coverage.values()):
         raise ValueError('Source graph contains an aging feature without a render-plan mapping')
     return {'current_age': current_age, 'target_age': target_age, 'mode': 'illustrative_local',
-        'features': features, 'mechanisms':mechanisms,'source_feature_coverage':coverage,
+        'features': features, 'lifestyle_scenarios':scenario_evidence(features,values), 'mechanisms':mechanisms,'source_feature_coverage':coverage,
         'overlay_graph': baseline_overlay_graph(),
         'metadata': {'source_graph': source_graph, 'baseline_model': 'local_demo_smoothstep_v0.2',
             'clinically_calibrated': False, 'lifestyle_values': values,
-            'lifestyle_policy': 'Only applicable existing graph paths modulate baseline delta; no demographic priors.',
+            'lifestyle_policy': 'Allowlisted visual routes require applicable source paths. Additive gains capped at35%; aliases are not summed. Diet is not rendered; no clinical doses, duration, interaction model or demographic priors.',
             'lifestyle_gain_limit': 1.35},
         'disclaimer': 'Illustrative local visual aging simulation. All age baselines and missing-feature overlays are provisional and uncalibrated; not a personalized or medical prediction.'}

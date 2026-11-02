@@ -1,0 +1,584 @@
+{
+  "model_sha256": "5941608e21f5d218ec52862938898efb276b63048aa8586372ff046ef865e22b",
+  "current_age": 30,
+  "target_age": 75,
+  "quality": "ultra",
+  "scenarios": {
+    "UV exposure": {
+      "uv_exposure": 1.0
+    },
+    "Smoking": {
+      "smoking": 1.0
+    },
+    "Alcohol": {
+      "alcohol": 1.0
+    },
+    "Stress (exploratory)": {
+      "stress": 1.0
+    },
+    "Combined exposure": {
+      "uv_exposure": 1.0,
+      "smoking": 1.0,
+      "alcohol": 1.0
+    }
+  },
+  "controls": "same default geometry, skin/hair, mechanism/feature controls; no per-input tuning",
+  "input_provenance": "Generated fictional adult portraits using OpenAI image generation in this conversation; not real people or research participants.",
+  "samples": [
+    {
+      "id": "S01",
+      "input_sha256": "09068def48bc9b7f81c7c35d6f7faaf68a8ce5e760650495d7a09c33ecd1735a",
+      "proposal_cache_hit": true,
+      "proposal_seconds": 0.011,
+      "scenarios": {
+        "UV exposure": {
+          "seconds": 0.47,
+          "changed_pixels": 136874,
+          "mean_abs_rgb_difference": 1.0001,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ]
+          }
+        },
+        "Smoking": {
+          "seconds": 0.475,
+          "changed_pixels": 126717,
+          "mean_abs_rgb_difference": 0.9585,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ]
+          }
+        },
+        "Alcohol": {
+          "seconds": 0.479,
+          "changed_pixels": 27509,
+          "mean_abs_rgb_difference": 0.0422,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        },
+        "Stress (exploratory)": {
+          "seconds": 0.502,
+          "changed_pixels": 28815,
+          "mean_abs_rgb_difference": 0.0347,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "stress": [
+              "skin_texture",
+              "dry_skin",
+              "dull_skin_tone",
+              "under_eye_circles",
+              "enlarged_pores"
+            ]
+          }
+        },
+        "Combined exposure": {
+          "seconds": 0.496,
+          "changed_pixels": 154613,
+          "mean_abs_rgb_difference": 1.4879,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ],
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ],
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        }
+      },
+      "diet_exact_baseline": true,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "proposal_preparations": 1,
+      "neural_inference_runs": 0,
+      "baseline_matches_previous_revision": false,
+      "previous_baseline_difference": {
+        "pixels": 1,
+        "max_rgb": 2.0,
+        "mean_rgb": 3.887620552683576e-06
+      }
+    },
+    {
+      "id": "S02",
+      "input_sha256": "af4aa380c37fe67431ddaa9c2de8d26d26e0fcd6c13663c3e90c1a503f59206a",
+      "proposal_cache_hit": true,
+      "proposal_seconds": 0.011,
+      "scenarios": {
+        "UV exposure": {
+          "seconds": 0.501,
+          "changed_pixels": 146476,
+          "mean_abs_rgb_difference": 0.9057,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ]
+          }
+        },
+        "Smoking": {
+          "seconds": 0.513,
+          "changed_pixels": 136050,
+          "mean_abs_rgb_difference": 0.8557,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ]
+          }
+        },
+        "Alcohol": {
+          "seconds": 0.489,
+          "changed_pixels": 28935,
+          "mean_abs_rgb_difference": 0.0445,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        },
+        "Stress (exploratory)": {
+          "seconds": 0.481,
+          "changed_pixels": 34579,
+          "mean_abs_rgb_difference": 0.0401,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "stress": [
+              "skin_texture",
+              "dry_skin",
+              "dull_skin_tone",
+              "under_eye_circles",
+              "enlarged_pores"
+            ]
+          }
+        },
+        "Combined exposure": {
+          "seconds": 0.464,
+          "changed_pixels": 160781,
+          "mean_abs_rgb_difference": 1.3458,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ],
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ],
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        }
+      },
+      "diet_exact_baseline": true,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "proposal_preparations": 1,
+      "neural_inference_runs": 0,
+      "baseline_matches_previous_revision": true,
+      "previous_baseline_difference": {
+        "pixels": 0,
+        "max_rgb": 0.0,
+        "mean_rgb": 0.0
+      }
+    },
+    {
+      "id": "S03",
+      "input_sha256": "3c4fad6382e5b1641bb309d8f279c6c237c47c874d0467868c14c4ddf8dc6803",
+      "proposal_cache_hit": true,
+      "proposal_seconds": 0.011,
+      "scenarios": {
+        "UV exposure": {
+          "seconds": 0.437,
+          "changed_pixels": 141452,
+          "mean_abs_rgb_difference": 0.8061,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ]
+          }
+        },
+        "Smoking": {
+          "seconds": 0.443,
+          "changed_pixels": 130847,
+          "mean_abs_rgb_difference": 0.7544,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ]
+          }
+        },
+        "Alcohol": {
+          "seconds": 0.452,
+          "changed_pixels": 61037,
+          "mean_abs_rgb_difference": 0.1271,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        },
+        "Stress (exploratory)": {
+          "seconds": 0.488,
+          "changed_pixels": 32669,
+          "mean_abs_rgb_difference": 0.0382,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "stress": [
+              "skin_texture",
+              "dry_skin",
+              "dull_skin_tone",
+              "under_eye_circles",
+              "enlarged_pores"
+            ]
+          }
+        },
+        "Combined exposure": {
+          "seconds": 0.517,
+          "changed_pixels": 166912,
+          "mean_abs_rgb_difference": 1.2158,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ],
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ],
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        }
+      },
+      "diet_exact_baseline": true,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "proposal_preparations": 1,
+      "neural_inference_runs": 0,
+      "baseline_matches_previous_revision": true,
+      "previous_baseline_difference": {
+        "pixels": 0,
+        "max_rgb": 0.0,
+        "mean_rgb": 0.0
+      }
+    },
+    {
+      "id": "S04",
+      "input_sha256": "274a57fcf49e9acc234c2a63aaa8c8cfcbdd051a41b9e6add2c39f47f372e7d9",
+      "proposal_cache_hit": true,
+      "proposal_seconds": 0.012,
+      "scenarios": {
+        "UV exposure": {
+          "seconds": 0.502,
+          "changed_pixels": 145891,
+          "mean_abs_rgb_difference": 0.9379,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ]
+          }
+        },
+        "Smoking": {
+          "seconds": 0.483,
+          "changed_pixels": 135464,
+          "mean_abs_rgb_difference": 0.9013,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ]
+          }
+        },
+        "Alcohol": {
+          "seconds": 0.481,
+          "changed_pixels": 26370,
+          "mean_abs_rgb_difference": 0.0409,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        },
+        "Stress (exploratory)": {
+          "seconds": 0.597,
+          "changed_pixels": 31708,
+          "mean_abs_rgb_difference": 0.038,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "stress": [
+              "skin_texture",
+              "dry_skin",
+              "dull_skin_tone",
+              "under_eye_circles",
+              "enlarged_pores"
+            ]
+          }
+        },
+        "Combined exposure": {
+          "seconds": 0.604,
+          "changed_pixels": 160326,
+          "mean_abs_rgb_difference": 1.3801,
+          "safety_scale": 1.0,
+          "hair_score_unchanged": true,
+          "requested_effects": {
+            "uv_exposure": [
+              "forehead_wrinkles",
+              "crow_feet",
+              "skin_laxity",
+              "age_spots",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone",
+              "sunspots"
+            ],
+            "smoking": [
+              "crow_feet",
+              "nasolabial_folds",
+              "skin_laxity",
+              "skin_texture",
+              "jowls",
+              "facial_wrinkles",
+              "deep_nasolabial_folds",
+              "dry_skin",
+              "lower_face_sagging",
+              "uneven_skin_tone"
+            ],
+            "alcohol": [
+              "skin_texture",
+              "dry_skin",
+              "facial_puffiness",
+              "broken_capillaries",
+              "facial_redness"
+            ]
+          }
+        }
+      },
+      "diet_exact_baseline": true,
+      "detection_passes": 1,
+      "parsing_passes": 1,
+      "proposal_preparations": 1,
+      "neural_inference_runs": 0,
+      "baseline_matches_previous_revision": true,
+      "previous_baseline_difference": {
+        "pixels": 0,
+        "max_rgb": 0.0,
+        "mean_rgb": 0.0
+      }
+    }
+  ],
+  "source_sha256": {
+    "lifestyle.py": "0e306f8626268fa42e54a461e112541e2de6363d484c73eaeba50a2926406059",
+    "age_plan.py": "ee8a81796649526885e4878f9d956e8f94c957c3f224f2e48f837c6004e72f9a",
+    "pipeline.py": "d82961d032d25b4d34fea48fd85c3a7646aeffb50b75a64eded7f3d00dbf6fc7",
+    "skin_layers.py": "e00915c086551919710baf3018675fe9e20ea3ccfcb23cb0eab886f4de99d5f6",
+    "session.py": "c6289171d8e5342839651655a6a28e88b3ce6aa22d9dc1321d8871de785ce644",
+    "app.py": "418f63db6005d2bab1780d7da11900af258c7fc69c6756fb5e84f38b4ec55334"
+  },
+  "limitations": "Qualitative scenarios with unverified graph references and authored gains, not clinical exposure/duration or perceptual validation. Cached proposal times exclude inference. No laptop performance claim.",
+  "verification": {
+    "full_experiment_tests": 156,
+    "existing_api_tests": 3,
+    "post_trace_fix_affected_tests": 18,
+    "browser": "Default render; same-age UV/smoking share one proposal; wipe/reset/clear; zero external requests/browser errors."
+  }
+}

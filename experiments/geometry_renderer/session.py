@@ -29,10 +29,12 @@ class DemoSession:
     segmentation_count: int = 0
     render_count: int = 0
     working_scale: float = 1
+    _render_cache: dict = field(default_factory=dict,repr=False)
     _render_key: tuple | None = None
     _render_result: object | None = field(default=None,repr=False)
 
     def clear(self) -> None:
+        self._render_cache.clear()
         self.prepared = self.regions = self._key = self._render_key = self._render_result = self.aged_proposal = None
         self.proposal_metrics = self._proposal_key = None
         self.proposal_ms = 0
@@ -100,6 +102,7 @@ class DemoSession:
             self.proposal_ms = (perf_counter()-start)*1000
             self.proposal_count += 1
             self._render_key = self._render_result = None
+            self._render_cache.clear()
         return self.aged_proposal
 
     def render_age(self, current_age: int, target_age: int, *, lifestyle: dict | None=None,
@@ -110,7 +113,8 @@ class DemoSession:
             raise ValueError('Select a portrait before rendering')
         key = (current_age,target_age,tuple(sorted((lifestyle or {}).items())),
             tuple(sorted((geometry_strengths or {}).items())),skin_strength,hair_strength,tuple(sorted(enabled_layers)),tuple(sorted((mechanism_strengths or {}).items())),tuple(sorted((feature_strengths or {}).items())))
-        if key == self._render_key and self._render_result is not None:
+        if key in self._render_cache:
+            self._render_key,self._render_result=key,self._render_cache[key]
             return self._render_result
         if renderer is None:
             from .pipeline import render_local_aging
@@ -120,5 +124,8 @@ class DemoSession:
             geometry_strengths=geometry_strengths,skin_strength=skin_strength,
             hair_strength=hair_strength,enabled_layers=enabled_layers)
         self._render_key = key
+        if len(self._render_cache)>=2:
+            self._render_cache.pop(next(iter(self._render_cache)))
+        self._render_cache[key]=self._render_result
         self.render_count += 1
         return self._render_result
