@@ -1,4 +1,4 @@
-# AVATAR mesh-first local aging v0.4.2
+# AVATAR mesh-first local aging v0.4.3
 
 Local CPU prototype: repository knowledge graph + explicit age baseline, fixed-border
 mesh geometry, optional age-conditioned skin residual, and segmented hair graying.
@@ -103,7 +103,7 @@ The FRAN model is a124MB public ONNX conversion; no GPL FaceStudio code is used.
 
 ![Generated fictional input, original and illustrative local aging](screenshots/local-aging-ui.png)
 
-Latest verification: **160 experiment tests passed**, plus3 existing API tests.
+Latest verification: **167 experiment tests passed**, plus3 existing API tests.
 Browser regression additionally verifies same-age UV/smoking comparison with one
 shared model proposal, reset/clear and zero external requests or browser errors.
 Historical detail-quality CPU evidence: the mirrored-parser/detail run took **8.878s** for the
@@ -206,3 +206,15 @@ existing bright-outlier/boundary guards. Skin has less fine residual contrast,
 softly limited extreme creases, and reduced extra grain/eye shadow when learned
 detail is already present. No invented follicles or clinical calibration.
 Version title is v0.4.2. No new model/dependency, deployment or research changes.
+
+## v0.4.3 source face-shape preservation
+
+[Dataset search, verified project sources and limits](research/FACE_DATASETS.md).
+[Original / v0.4.2 / v0.4.3 comparison](validation/naturalness_iterations/natural_shape_v043/README.md).
+Removes generic outward jaw expansion, reduces overlapping descent/hollowing,
+uses the source face frame and bounds source-relative contour changes. Separate
+cheek/jowl volume gains also prevent the nose slider activating jaw volume.
+Shape ratios/guard scale are visible in the coverage panel. These are authored
+engineering bounds, not dataset-trained aging or biometric identity measures.
+No new model/dependency, source graph/research changes, deployment or real photos
+in tests. Current source version title is v0.4.3.

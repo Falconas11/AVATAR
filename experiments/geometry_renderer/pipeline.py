@@ -10,10 +10,16 @@ from time import perf_counter
 import cv2
 import numpy as np
 from .age_plan import build_age_plan
+from .shape_preservation import face_frame,preserve_source_shape,shape_ratios
 from .core import PreparedFace, displacement_field, inverse_maps, safe_destination
 from .skin_layers import render_skin
 from .hair_layers import gray_hair
 from .mechanism_layers import volume_displacement,render_surface,ear_warp
+
+
+# Adult naturalization profile: authored rendering gains, not measured age rates.
+# The standalone geometry diagnostic keeps its existing visibility amplitudes.
+CONTOUR_GAINS={'cheeks':.55,'jowls':.43}
 
 
 @dataclass(frozen=True)
@@ -48,13 +54,20 @@ def render_local_aging(prepared: PreparedFace, regions: dict | None, current_age
         feature['age_score'] = feature['baseline_score']
         feature['render_operator_enabled'] = False
     scores = {name: record['score'] for name,record in features.items()}
-    delta = displacement_field(prepared.points,prepared.face_count,current_age=current_age,target_age=target_age,
+    lateral,vertical=face_frame(prepared.points)
+    local_points=prepared.points@np.column_stack((lateral,vertical))
+    delta = displacement_field(local_points,prepared.face_count,current_age=current_age,target_age=target_age,
         nose=max(scores['nasal_tip_ptosis'],scores['increased_nasal_length']*.7)*geometry['nose'] if 'geometry' in enabled else 0,
-        cheeks=scores['cheek_descent']*geometry['cheeks'] if 'geometry' in enabled else 0,
-        jowls=scores['jowls']*geometry['jowls'] if 'geometry' in enabled else 0, progression=1)
+        cheeks=scores['cheek_descent']*geometry['cheeks']*CONTOUR_GAINS['cheeks'] if 'geometry' in enabled else 0,
+        jowls=scores['jowls']*geometry['jowls']*CONTOUR_GAINS['jowls'] if 'geometry' in enabled else 0, progression=1)
+    delta=delta[:,1,None]*vertical
     if 'geometry' in enabled:
-        delta += volume_displacement(prepared.points,prepared.face_count,plan)*max(geometry.values())
+        delta += volume_displacement(prepared.points,prepared.face_count,plan,
+            cheek_strength=geometry['cheeks'],jowl_strength=geometry['jowls'])
+    delta,shape_guard=preserve_source_shape(prepared.points,delta,prepared.face_count)
     destination, safety = safe_destination(prepared,delta)
+    shape_guard['rendered']=shape_ratios(destination,(lateral,vertical))
+    shape_guard['authored_contour_gains']=dict(CONTOUR_GAINS)
     h,w = prepared.image.shape[:2]
     warped_regions = {}
     if learned_proposal is not None and (learned_proposal.shape != prepared.image.shape or learned_proposal.dtype != np.uint8):
@@ -147,7 +160,7 @@ def render_local_aging(prepared: PreparedFace, regions: dict | None, current_age
     for source_id,record in coverage.items():
         for mapped in record['source_feature_ids']:
             features[mapped]['render_operator_enabled'] = bool(record['enabled'] and record['available'] and record['intensity']>0)
-    metrics = {'geometry_ms':geometry_ms,'skin_ms':skin_ms,'hair_ms':hair_ms,
+    metrics = {'shape_preservation':shape_guard,'geometry_ms':geometry_ms,'skin_ms':skin_ms,'hair_ms':hair_ms,
         'total_ms':(perf_counter()-start)*1000,'geometry_changed_pixels':geometry_changed,
         'skin_changed_pixels':skin_changed,'hair_changed_pixels':hair_changed,
         'hair_mask_pixels':int((hair_mask>.5).sum()),'skin':skin_metrics,'hair':hair_metrics,

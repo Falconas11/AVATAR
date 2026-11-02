@@ -7,6 +7,7 @@ from __future__ import annotations
 import cv2
 import numpy as np
 from .skin_layers import skin_region_mask
+from .shape_preservation import face_frame
 
 SURFACE_GROUPS={
  'under_eye_circles':('under_eye_circles',),
@@ -20,23 +21,27 @@ def score(plan,name):
     return float(plan['features'].get(name,{}).get('score',0))
 
 
-def volume_displacement(points,face_count,plan):
-    face=points[:face_count];fw,fh=np.ptp(face,axis=0);cx=face[:,0].mean()
+def volume_displacement(points,face_count,plan,*,cheek_strength=1.,jowl_strength=1.):
+    lateral,vertical=face_frame(points)
+    face=points[:face_count]@np.column_stack((lateral,vertical))
+    fw,fh=np.ptp(face,axis=0);cx=face[:,0].mean()
     delta=np.zeros_like(points,dtype=np.float64)
     def field(ids,rx,ry):
         centers=face[list(ids)]
         z=((face[:,None,0]-centers[None,:,0])/(fw*rx))**2+((face[:,None,1]-centers[None,:,1])/(fh*ry))**2
         return np.exp(-z*2).max(axis=1)
     # Midface support loss narrows the cheeks, rather than translating every
-    # feature downward together. Lower-face laxity moves contour outward/down.
-    hollow=field((50,101,205,280,330,425),.22,.20)*score(plan,'cheek_volume_loss')
-    laxity=max(score(plan,'skin_laxity'),score(plan,'lower_face_sagging'))
+    # feature downward together. Lower-face laxity descends locally without
+    # inventing broader jaw bones or changing every face into a square.
+    hollow=field((50,101,205,280,330,425),.22,.20)*score(plan,'cheek_volume_loss')*cheek_strength
+    laxity=max(score(plan,'skin_laxity'),score(plan,'lower_face_sagging'))*jowl_strength
     jaw=field((136,172,150,365,397,379),.17,.16)*laxity
     side=np.tanh((face[:,0]-cx)/(fw*.12))
-    delta[:face_count,0] += -side*fw*.042*hollow+side*fw*.026*jaw
-    delta[:face_count,1] += fh*.032*jaw
-    puff=field((50,205,280,425),.16,.14)*score(plan,'facial_puffiness')
-    delta[:face_count,0] += side*fw*.018*puff
+    local_x=-side*fw*.018*hollow
+    local_y=fh*.010*jaw
+    puff=field((50,205,280,425),.16,.14)*score(plan,'facial_puffiness')*cheek_strength
+    local_x += side*fw*.010*puff
+    delta[:face_count]=local_x[:,None]*lateral+local_y[:,None]*vertical
     # Apparent nasal length shares the nose operator; max avoids double counting.
     return delta
 

@@ -15,8 +15,8 @@ from experiments.geometry_renderer.comparison import crop_view,difference_view,h
 from experiments.geometry_renderer.session import DemoSession
 from experiments.geometry_renderer.lifestyle import PRESETS
 
-st.set_page_config(page_title='AVATAR Local Aging v0.4.2',layout='wide')
-st.title('AVATAR Local Aging v0.4.2')
+st.set_page_config(page_title='AVATAR Local Aging v0.4.3',layout='wide')
+st.title('AVATAR Local Aging v0.4.3')
 st.caption('Age baseline → face geometry + learned skin appearance + segmented gray hair. All photo processing stays on this computer.')
 st.warning('Illustrative aging visualization. Target age is a control, not a calibrated prediction of how this person will look.')
 
@@ -215,6 +215,8 @@ with st.expander('Source-graph implementation coverage',expanded=False):
     st.caption('Every source aging feature has an explicit operator. Availability and proxy limitations are reported separately; this does not verify a biochemical mechanism.')
     st.dataframe([{'Feature':key,**record} for key,record in result.metrics['feature_coverage'].items()],use_container_width=True)
     st.json(result.metrics['mechanisms'])
+    st.caption('Source-relative face-shape safeguard: limits changes in jaw/cheek/chin proportions; an authored heuristic, not dataset-calibrated anatomy.')
+    st.json(result.metrics['shape_preservation'])
 
 with st.expander('Knowledge graph, age baseline and evidence limits'):
     st.caption('Existing v03 graph paths supply reference context. Smooth age baselines and missing-feature overlays are provisional visual assumptions; they do not explain neural model internals.')

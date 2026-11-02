@@ -1,0 +1,272 @@
+{
+  "experiment": "natural_shape_v043",
+  "reference": "v042",
+  "target": 75,
+  "source_age": 30,
+  "samples": [
+    {
+      "id": "S01",
+      "safety_scale": 1.0,
+      "seconds": 1.746,
+      "proposal_cache_hit": true,
+      "shape_preservation": {
+        "scale": 1.0,
+        "source": {
+          "cheek_width": 268.74919591735664,
+          "jaw_to_cheek": 0.677069903891609,
+          "jaw_corner_to_cheek": 0.7829954537008004,
+          "chin_to_jaw": 0.6354547983009974,
+          "lower_face_to_height": 0.25621597940701546
+        },
+        "requested": {
+          "cheek_width": 267.5468006450217,
+          "jaw_to_cheek": 0.679659735015172,
+          "jaw_corner_to_cheek": 0.785176776888838,
+          "chin_to_jaw": 0.6358408879247947,
+          "lower_face_to_height": 0.25549698978373225
+        },
+        "guarded": {
+          "cheek_width": 267.5468006450217,
+          "jaw_to_cheek": 0.679659735015172,
+          "jaw_corner_to_cheek": 0.785176776888838,
+          "chin_to_jaw": 0.6358408879247947,
+          "lower_face_to_height": 0.25549698978373225
+        },
+        "relative_limits": {
+          "cheek_width": 0.015,
+          "jaw_to_cheek": 0.015,
+          "jaw_corner_to_cheek": 0.015,
+          "chin_to_jaw": 0.025,
+          "lower_face_to_height": 0.04
+        },
+        "clinically_calibrated": false,
+        "interpretation": "Source-relative contour safeguard, not biometric identity verification or a dataset-trained age rule.",
+        "rendered": {
+          "cheek_width": 267.5468006450217,
+          "jaw_to_cheek": 0.679659735015172,
+          "jaw_corner_to_cheek": 0.785176776888838,
+          "chin_to_jaw": 0.6358408879247947,
+          "lower_face_to_height": 0.25549698978373225
+        },
+        "authored_contour_gains": {
+          "cheeks": 0.55,
+          "jowls": 0.43
+        }
+      },
+      "hair": {
+        "hair_pixels": 93387,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 9.2032470703125,
+        "mode": "shadow_preserving_ash_gray",
+        "retained_source_fraction": 0.10935140865430949,
+        "protected_bright_pixels": 8889,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 24.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 33.6308708190918,
+        "mean_luminance_after": 42.87177276611328
+      }
+    },
+    {
+      "id": "S02",
+      "safety_scale": 1.0,
+      "seconds": 1.086,
+      "proposal_cache_hit": true,
+      "shape_preservation": {
+        "scale": 1.0,
+        "source": {
+          "cheek_width": 285.76975581320323,
+          "jaw_to_cheek": 0.6958056884202408,
+          "jaw_corner_to_cheek": 0.8019721552153634,
+          "chin_to_jaw": 0.6377893453184472,
+          "lower_face_to_height": 0.27477595933762605
+        },
+        "requested": {
+          "cheek_width": 284.17705328209854,
+          "jaw_to_cheek": 0.6994891859463176,
+          "jaw_corner_to_cheek": 0.8058191175084436,
+          "chin_to_jaw": 0.6379688076778787,
+          "lower_face_to_height": 0.27428170328018076
+        },
+        "guarded": {
+          "cheek_width": 284.17705328209854,
+          "jaw_to_cheek": 0.6994891859463176,
+          "jaw_corner_to_cheek": 0.8058191175084436,
+          "chin_to_jaw": 0.6379688076778787,
+          "lower_face_to_height": 0.27428170328018076
+        },
+        "relative_limits": {
+          "cheek_width": 0.015,
+          "jaw_to_cheek": 0.015,
+          "jaw_corner_to_cheek": 0.015,
+          "chin_to_jaw": 0.025,
+          "lower_face_to_height": 0.04
+        },
+        "clinically_calibrated": false,
+        "interpretation": "Source-relative contour safeguard, not biometric identity verification or a dataset-trained age rule.",
+        "rendered": {
+          "cheek_width": 284.17705328209854,
+          "jaw_to_cheek": 0.6994891859463176,
+          "jaw_corner_to_cheek": 0.8058191175084436,
+          "chin_to_jaw": 0.6379688076778787,
+          "lower_face_to_height": 0.27428170328018076
+        },
+        "authored_contour_gains": {
+          "cheeks": 0.55,
+          "jowls": 0.43
+        }
+      },
+      "hair": {
+        "hair_pixels": 36568,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 8.170677185058594,
+        "mode": "shadow_preserving_ash_gray",
+        "retained_source_fraction": 0.09311419820608181,
+        "protected_bright_pixels": 2865,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 24.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 28.51091766357422,
+        "mean_luminance_after": 36.813541412353516
+      }
+    },
+    {
+      "id": "S03",
+      "safety_scale": 1.0,
+      "seconds": 1.048,
+      "proposal_cache_hit": true,
+      "shape_preservation": {
+        "scale": 1.0,
+        "source": {
+          "cheek_width": 281.78989102558353,
+          "jaw_to_cheek": 0.6714351385223157,
+          "jaw_corner_to_cheek": 0.7764744686925804,
+          "chin_to_jaw": 0.6414248496921341,
+          "lower_face_to_height": 0.26245871353056077
+        },
+        "requested": {
+          "cheek_width": 280.0281070812124,
+          "jaw_to_cheek": 0.6753527803447358,
+          "jaw_corner_to_cheek": 0.7804286721565236,
+          "chin_to_jaw": 0.6416897701751286,
+          "lower_face_to_height": 0.2616239507523328
+        },
+        "guarded": {
+          "cheek_width": 280.0281070812124,
+          "jaw_to_cheek": 0.6753527803447358,
+          "jaw_corner_to_cheek": 0.7804286721565236,
+          "chin_to_jaw": 0.6416897701751286,
+          "lower_face_to_height": 0.2616239507523328
+        },
+        "relative_limits": {
+          "cheek_width": 0.015,
+          "jaw_to_cheek": 0.015,
+          "jaw_corner_to_cheek": 0.015,
+          "chin_to_jaw": 0.025,
+          "lower_face_to_height": 0.04
+        },
+        "clinically_calibrated": false,
+        "interpretation": "Source-relative contour safeguard, not biometric identity verification or a dataset-trained age rule.",
+        "rendered": {
+          "cheek_width": 280.0281070812124,
+          "jaw_to_cheek": 0.6753527803447358,
+          "jaw_corner_to_cheek": 0.7804286721565236,
+          "chin_to_jaw": 0.6416897701751286,
+          "lower_face_to_height": 0.2616239507523328
+        },
+        "authored_contour_gains": {
+          "cheeks": 0.55,
+          "jowls": 0.43
+        }
+      },
+      "hair": {
+        "hair_pixels": 60285,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 7.897636413574219,
+        "mode": "shadow_preserving_ash_gray",
+        "retained_source_fraction": 0.13034751596582897,
+        "protected_bright_pixels": 7176,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 24.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 32.7823600769043,
+        "mean_luminance_after": 40.81991958618164
+      }
+    },
+    {
+      "id": "S04",
+      "safety_scale": 1.0,
+      "seconds": 1.013,
+      "proposal_cache_hit": true,
+      "shape_preservation": {
+        "scale": 1.0,
+        "source": {
+          "cheek_width": 275.6212848287443,
+          "jaw_to_cheek": 0.6980089802075401,
+          "jaw_corner_to_cheek": 0.8029395236391955,
+          "chin_to_jaw": 0.6429102455731099,
+          "lower_face_to_height": 0.2713905999797377
+        },
+        "requested": {
+          "cheek_width": 274.2551400632047,
+          "jaw_to_cheek": 0.7012778195654854,
+          "jaw_corner_to_cheek": 0.8063132958534114,
+          "chin_to_jaw": 0.6430838120658201,
+          "lower_face_to_height": 0.2709736030617743
+        },
+        "guarded": {
+          "cheek_width": 274.2551400632047,
+          "jaw_to_cheek": 0.7012778195654854,
+          "jaw_corner_to_cheek": 0.8063132958534114,
+          "chin_to_jaw": 0.6430838120658201,
+          "lower_face_to_height": 0.2709736030617743
+        },
+        "relative_limits": {
+          "cheek_width": 0.015,
+          "jaw_to_cheek": 0.015,
+          "jaw_corner_to_cheek": 0.015,
+          "chin_to_jaw": 0.025,
+          "lower_face_to_height": 0.04
+        },
+        "clinically_calibrated": false,
+        "interpretation": "Source-relative contour safeguard, not biometric identity verification or a dataset-trained age rule.",
+        "rendered": {
+          "cheek_width": 274.2551400632047,
+          "jaw_to_cheek": 0.7012778195654854,
+          "jaw_corner_to_cheek": 0.8063132958534114,
+          "chin_to_jaw": 0.6430838120658201,
+          "lower_face_to_height": 0.2709736030617743
+        },
+        "authored_contour_gains": {
+          "cheeks": 0.55,
+          "jowls": 0.43
+        }
+      },
+      "hair": {
+        "hair_pixels": 45196,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 13.163421630859375,
+        "mode": "shadow_preserving_ash_gray",
+        "retained_source_fraction": 0.09525179219399947,
+        "protected_bright_pixels": 3629,
+        "feather_pixels": 7.524,
+        "max_luminance_lift": 24.0,
+        "selection_note": "Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.",
+        "mean_luminance_before": 55.7050666809082,
+        "mean_luminance_after": 68.57816314697266
+      }
+    }
+  ],
+  "source_code_sha256": {
+    "hair_layers.py": "cc837124859b89b3f4d0a4f899bd76f2ea620aa564c96df01dfd37b464c7050b",
+    "mechanism_layers.py": "c55e09201481389c174008cc6b5bb747eca7db3ceeea470e2f3cb24434140f14",
+    "skin_layers.py": "69dbff10a4233d2d284f6b527ba586795d39b98365ccf68351f22a3866a68dae",
+    "pipeline.py": "7d4ef9fddc6b405a3cdd892d1babcb080e1c1e1aa19c9450aae6ac0bdda8b637",
+    "core.py": "69e6db51a1229b54e217abce214f658d419a8d3c4df83ed089a59d1d304e7490",
+    "shape_preservation.py": "e55a3a7b0514cbb225f09a563523fc1fad4e56c10fad67688ffd0bebbc57f86c"
+  }
+}
