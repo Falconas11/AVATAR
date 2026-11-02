@@ -321,11 +321,11 @@ def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
     contrast = float(np.clip((source_q[2]-source_q[0]+6)/(target_q[2]-target_q[0]+6),.95,1.05))
     corrected = (target_l-float(target_q[1]))*contrast+float(source_q[1])
     residual = corrected-source_l
-    width = float(np.ptp(p[:,0]))
-    broad = cv2.GaussianBlur(residual,(0,0),max(1.0,width*.04))
-    # Keep the mid/high-frequency learned furrows and much of the broad optical
-    # shape/shadow proposal. No hand-authored lines, spots or random grain run.
-    transferred = np.clip(residual-broad*.2,-55,55)
+    # Retain broad volume shading and mid-scale furrows; attenuate only the
+    # finest residual detail to reduce the papery texture of tiled inference.
+    # No hand-authored crease paths run in this learned transfer.
+    fine = residual-cv2.GaussianBlur(residual,(0,0),.9)
+    transferred = np.clip(residual-fine*.4,-55,55)
     edited_lab = source_lab.copy()
     edited_lab[...,0] = np.clip(np.rint(source_l+transferred),0,255).astype(np.uint8)
     candidate = cv2.cvtColor(edited_lab,cv2.COLOR_LAB2RGB).astype(np.float32)

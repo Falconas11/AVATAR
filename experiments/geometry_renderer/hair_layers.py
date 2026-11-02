@@ -201,22 +201,45 @@ def gray_hair(image: np.ndarray, mask: np.ndarray, strength: float, *, seed: int
         return image.copy(),metrics
     rgb=image.astype(np.float32)
     lum=rgb@np.array([.2126,.7152,.0722],np.float32)
-    detail=lum-cv2.GaussianBlur(lum,(0,0),1.1)
-    # Preserve luminance ordering and fine strands, lifting dark hair to silver
-    # without assigning a uniform maximum-white value.
-    silver=np.clip(95+.65*lum+.4*detail,35,235)
+    base=cv2.GaussianBlur(lum,(0,0),1.3)
+    detail=lum-base
+    # Estimate local strand direction from the source structure tensor. Noise
+    # follows actual hair flow instead of painting a single vertical gray veil.
+    gx=cv2.Sobel(lum,cv2.CV_32F,1,0,ksize=3)
+    gy=cv2.Sobel(lum,cv2.CV_32F,0,1,ksize=3)
+    jxx=cv2.GaussianBlur(gx*gx,(0,0),1.8)
+    jyy=cv2.GaussianBlur(gy*gy,(0,0),1.8)
+    jxy=cv2.GaussianBlur(gx*gy,(0,0),1.8)
+    angle=.5*np.arctan2(2*jxy,jxx-jyy)
+    tx,ty=-np.sin(angle),np.cos(angle)
+    y,x=np.indices(mask.shape,dtype=np.float32)
     noise=np.random.default_rng(seed).standard_normal(mask.shape).astype(np.float32)
-    strands=cv2.GaussianBlur(noise,(0,0),sigmaX=.5,sigmaY=2.5)
-    low,high=np.percentile(strands,[1,99])
-    strands=np.clip((strands-low)/max(float(high-low),1e-6),0,1)
-    # Softmax confidence is not a fraction of hair at this pixel. Treat the
-    # winning hair class consistently; the previous .35 ramp left whole valid
-    # regions brown simply because their confidence was .55 rather than .85.
+    flowing=np.zeros_like(noise)
+    for offset in (-4.,-2.,0.,2.,4.):
+        flowing+=cv2.remap(noise,x+offset*tx,y+offset*ty,cv2.INTER_LINEAR,borderMode=cv2.BORDER_REFLECT_101)
+    flowing=cv2.GaussianBlur(flowing/5,(0,0),3.)
+    # Anchor silver locks to existing illuminated strands. Random selection on
+    # its own produces a mottled wig; use only weak, smooth seed variation.
+    lo,hi=np.percentile(base[support],[15,85])
+    highlight=np.clip((base-float(lo))/max(float(hi-lo),8.),0,1)
+    variation=flowing/max(float(np.std(flowing[support])),1e-6)
+    selection=np.clip((highlight-.18)*1.35+variation*.04,0,1)*float(strength)
+    # Textureless hair has no observable locks: neutralize conservatively
+    # rather than silently skipping it or inventing random high contrast.
+    if float(hi-lo)<2.:
+        selection=np.full_like(mask,.8*float(strength))
     confidence=np.clip((mask-.5)/.10,0,1)
-    alpha=confidence*float(strength)*(.72+.28*strands)
+    edge=cv2.distanceTransform(support.astype(np.uint8),cv2.DIST_L2,3)
+    edge=np.clip(edge/2.,0,1)
+    alpha=confidence*selection*edge*.75
+    silver=np.clip(30+1.45*base+detail,0,235)
     neutral=np.repeat(silver[...,None],3,axis=2)
     result=np.rint(np.clip(rgb*(1-alpha[...,None])+neutral*alpha[...,None],0,255)).astype(np.uint8)
     result[~support]=image[~support]
+    metrics.update(mode='source_illuminated_silver_locks',
+        retained_source_fraction=float(np.mean(np.all(result[support]==image[support],axis=1))),
+        selection_mean=float(selection[support].mean()),
+        selection_note='Authored strand-selection density, not measured gray-hair percentage.')
     metrics.update(applied=bool(np.any(result!=image)),
         mean_change=float(np.abs(result.astype(np.float32)-rgb)[support].mean()),
         mean_luminance_before=float(lum[support].mean()),

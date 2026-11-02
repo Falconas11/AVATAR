@@ -1,0 +1,85 @@
+{
+  "experiment": "source_locks_D",
+  "target": 75,
+  "source_age": 30,
+  "samples": [
+    {
+      "id": "S01",
+      "safety_scale": 1.0,
+      "seconds": 1.772,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 93112,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 11.741719245910645,
+        "mode": "source_illuminated_silver_locks",
+        "retained_source_fraction": 0.36902869662342125,
+        "selection_mean": 0.3120070695877075,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 33.53141784667969,
+        "mean_luminance_after": 45.306129455566406
+      }
+    },
+    {
+      "id": "S02",
+      "safety_scale": 1.0,
+      "seconds": 1.112,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 36564,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 10.847025871276855,
+        "mode": "source_illuminated_silver_locks",
+        "retained_source_fraction": 0.32742588338256207,
+        "selection_mean": 0.32394173741340637,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 28.518402099609375,
+        "mean_luminance_after": 39.43740463256836
+      }
+    },
+    {
+      "id": "S03",
+      "safety_scale": 1.0,
+      "seconds": 1.051,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 60285,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 9.358551979064941,
+        "mode": "source_illuminated_silver_locks",
+        "retained_source_fraction": 0.4172182134859418,
+        "selection_mean": 0.2474825084209442,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 32.78590393066406,
+        "mean_luminance_after": 42.186973571777344
+      }
+    },
+    {
+      "id": "S04",
+      "safety_scale": 1.0,
+      "seconds": 1.102,
+      "proposal_cache_hit": true,
+      "hair": {
+        "hair_pixels": 45189,
+        "strength": 0.8549382716049383,
+        "applied": true,
+        "mean_change": 14.836973190307617,
+        "mode": "source_illuminated_silver_locks",
+        "retained_source_fraction": 0.3272256522605059,
+        "selection_mean": 0.3351643681526184,
+        "selection_note": "Authored strand-selection density, not measured gray-hair percentage.",
+        "mean_luminance_before": 55.69955062866211,
+        "mean_luminance_after": 70.4195556640625
+      }
+    }
+  ],
+  "source_code_sha256": {
+    "hair_layers.py": "19f7caf4d45eeb2baa7492fa680232bfab48e67cb148ea8e6d260f59176f080d",
+    "mechanism_layers.py": "da6ff78642cf8d1c4472b65f9d1db35903f8eae85c01f0644fc0b690d0d4aa11",
+    "skin_layers.py": "f028ef84e3577a6abb4e7f7106eec33167e2674f7ed8d1ef95fc724103f1d99a",
+    "pipeline.py": "e49c1f35cea6d0a6e850c702ecfefe4333e6b7f24751a86036ffed967bf7db28"
+  }
+}

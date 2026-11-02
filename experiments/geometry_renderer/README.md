@@ -163,3 +163,13 @@ The fixtures' provenance and generation/crop manifest are in
 ```sh
 python -m experiments.geometry_renderer.validate_synthetic_batch --quality ultra
 ```
+
+## Naturalness refinement
+
+[Four rounds on matched fictional faces](validation/naturalness_iterations/README.md)
+record rejected mottled gray-hair variants and the current source-lit silver-lock
+variant. Current composition retains dark strands/shadows, increases cheek/jaw
+volume changes within existing mesh safety checks and attenuates fine papery skin
+residuals. These are visual refinements, not calibrated age or naturalness claims.
+Launch remains `python -m experiments.geometry_renderer.launch`; no new model or
+runtime dependency is required. Research collection and deployment are unchanged.

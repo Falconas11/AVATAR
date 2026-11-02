@@ -33,8 +33,8 @@ def volume_displacement(points,face_count,plan):
     laxity=max(score(plan,'skin_laxity'),score(plan,'lower_face_sagging'))
     jaw=field((136,172,150,365,397,379),.17,.16)*laxity
     side=np.tanh((face[:,0]-cx)/(fw*.12))
-    delta[:face_count,0] += -side*fw*.028*hollow+side*fw*.018*jaw
-    delta[:face_count,1] += fh*.016*jaw
+    delta[:face_count,0] += -side*fw*.042*hollow+side*fw*.026*jaw
+    delta[:face_count,1] += fh*.032*jaw
     puff=field((50,205,280,425),.16,.14)*score(plan,'facial_puffiness')
     delta[:face_count,0] += side*fw*.018*puff
     # Apparent nasal length shares the nose operator; max avoids double counting.

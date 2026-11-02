@@ -52,11 +52,23 @@ def test_deterministic_strands_reduce_chroma_and_preserve_contrast(synthetic_hai
     assert np.any(a[mask>0]!=c[mask>0])
     source=image[mask>0].astype(float)
     changed=a[mask>0].astype(float)
-    assert np.ptp(changed,axis=1).mean()<np.ptp(source,axis=1).mean()*.5
+    # Mixed dark/silver locks should lose chroma without bleaching all hair.
+    assert np.ptp(changed,axis=1).mean()<np.ptp(source,axis=1).mean()*.75
     old_lum=source@np.array([.2126,.7152,.0722])
     new_lum=changed@np.array([.2126,.7152,.0722])
     assert np.std(new_lum)>np.std(old_lum)*.6
-    assert np.corrcoef(old_lum,new_lum)[0,1]>.95
+    # Selective white locks intentionally change global brightness ordering.
+    # Check source strand detail after removing local mean, rather than forcing
+    # the old near-uniform gray overlay's globally monotonic transform.
+    import cv2
+    weights=np.array([.2126,.7152,.0722])
+    old_full=image.astype(float)@weights
+    new_full=a.astype(float)@weights
+    old_detail=old_full-cv2.GaussianBlur(old_full,(0,0),2)
+    new_detail=new_full-cv2.GaussianBlur(new_full,(0,0),2)
+    assert np.corrcoef(old_detail[mask>0],new_detail[mask>0])[0,1]>.75
+    retained=np.all(a[mask>0]==image[mask>0],axis=1).mean()
+    assert .1<retained<.5  # dark locks must actually remain, not a gray veil
     assert new_lum.max()<245
 
 @pytest.mark.parametrize('strength',[-.1,1.1,float('nan')])
