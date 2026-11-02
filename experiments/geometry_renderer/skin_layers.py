@@ -236,6 +236,32 @@ def _semantic_mask(value: np.ndarray, shape, label: str) -> np.ndarray:
     return np.clip(mask,0,1)
 
 
+def regional_appearance_weights(image_shape,p,scores):
+    """Soft region controls on a learned residual; never hand-drawn creases."""
+    h,w=image_shape[:2];fw,fh=np.ptp(p,axis=0);y,x=np.ogrid[:h,:w]
+    weight=np.full((h,w),max(scores.get('facial_wrinkles',0)*.8,
+        scores.get('skin_texture',0)*.8),np.float32)
+    def add(name,centers,rx,ry):
+        nonlocal weight
+        value=scores.get(name,0)
+        if not value:return
+        for center in centers:
+            field=np.exp(-.5*(((x-center[0])/(fw*rx))**2+((y-center[1])/(fh*ry))**2))
+            weight=np.maximum(weight,field*value)
+    add('forehead_wrinkles',[(p[10]+p[9])/2],.40,.18)
+    add('glabellar_lines',[p[9]],.14,.12)
+    add('crow_feet',[p[33]+[-fw*.05,0],p[263]+[fw*.05,0]],.16,.10)
+    for name in ('nasolabial_folds','deep_nasolabial_folds'):
+        add(name,[(p[4]+p[61])/2,(p[4]+p[291])/2],.16,.18)
+    add('marionette_lines',[p[61]+[0,fh*.09],p[291]+[0,fh*.09]],.13,.14)
+    add('perioral_lines',[(p[0]+p[17])/2],.25,.15)
+    for name in ('under_eye_bags','tear_trough'):
+        add(name,[p[145]+[0,fh*.045],p[374]+[0,fh*.045]],.18,.09)
+    add('cheek_volume_loss',[p[50],p[280]],.24,.19)
+    add('skin_laxity',[p[136],p[365]],.24,.17)
+    return np.clip(weight,0,1)
+
+
 def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
                          proposal: np.ndarray, *, skin_mask=None, neck_mask=None):
     """Transfer aligned learned skin luminance residual; never draw crease paths.
@@ -246,7 +272,7 @@ def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
     """
     if proposal.shape != image.shape or proposal.dtype != np.uint8:
         raise ValueError('Learned proposal must be a matching RGB uint8 image')
-    scores = {name:_score(plan,name) for name in SUPPORTED_FEATURES}
+    scores = {name:_score(plan,name) for name in (*SUPPORTED_FEATURES,'facial_wrinkles','deep_nasolabial_folds')}
     neck_score = _score(plan,'neck_lines')
     requested = [name for name,score in scores.items() if score > 0]
     if neck_score > 0:
@@ -262,7 +288,7 @@ def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
     skin = skin_region_mask(image.shape,p)
     if skin_mask is not None:
         skin *= _semantic_mask(skin_mask,image.shape[:2],'Skin mask')
-    alpha = skin*strength
+    alpha = skin*regional_appearance_weights(image.shape,p,scores)
     if neck_score > 0:
         if neck_mask is None:
             metadata['unsupported_features'].append('neck_lines')
@@ -299,7 +325,7 @@ def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
     broad = cv2.GaussianBlur(residual,(0,0),max(1.0,width*.04))
     # Keep the mid/high-frequency learned furrows and much of the broad optical
     # shape/shadow proposal. No hand-authored lines, spots or random grain run.
-    transferred = np.clip(residual-broad*.5,-55,55)
+    transferred = np.clip(residual-broad*.2,-55,55)
     edited_lab = source_lab.copy()
     edited_lab[...,0] = np.clip(np.rint(source_l+transferred),0,255).astype(np.uint8)
     candidate = cv2.cvtColor(edited_lab,cv2.COLOR_LAB2RGB).astype(np.float32)

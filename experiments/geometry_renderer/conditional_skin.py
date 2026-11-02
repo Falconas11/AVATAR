@@ -46,11 +46,10 @@ def verified_model_path(model_path: Path | None=None) -> Path:
 def _windowed_residual(network, rgb: np.ndarray, current_age: int, target_age: int) -> tuple[np.ndarray,int]:
     """512-window overlap-add, with positive raised-cosine coverage everywhere.
 
-    A 512 canvas uses one window; the 768 detail canvas uses four overlapping
-    windows. No nine-window mode is exposed: its cost consumes the20s budget.
+    A512 canvas uses one window;768 uses four and1024 uses nine overlapping windows. The quality-first ultra mode uses nine windows on a1024 canvas.
     """
     size=rgb.shape[0]
-    if rgb.shape!=(size,size,3) or size not in (512,768):
+    if rgb.shape!=(size,size,3) or size not in (512,768,1024):
         raise ValueError('Conditional work canvas must be512 or768 square RGB')
     summed=np.zeros_like(rgb,dtype=np.float32)
     covered=np.zeros((size,size),np.float32)
@@ -89,9 +88,9 @@ def generate_aged_skin(image: np.ndarray,landmarks: np.ndarray,*,current_age: in
         raise ValueError('Conditional skin requires an RGB uint8 image')
     if type(current_age) is not int or type(target_age) is not int or not 18<=current_age<=target_age<=100:
         raise ValueError('Use integer ages18–100, target at least current age')
-    if quality not in {'fast','detail'}:
+    if quality not in {'fast','detail','ultra'}:
         raise ValueError('Conditional skin quality must be fast or detail')
-    metrics={'quality':quality,'forward_count':0,'working_size':512 if quality=='fast' else 768,
+    metrics={'quality':quality,'forward_count':0,'working_size':{'fast':512,'detail':768,'ultra':1024}[quality],
         'backend':'Optional FRAN-style age-conditioned skin / OpenCV CPU',
         'source_age_condition':current_age,'target_age_condition':target_age,
         'applied':False,'inference_ms':0.0,'mean_head_change':0.0,
@@ -102,7 +101,7 @@ def generate_aged_skin(image: np.ndarray,landmarks: np.ndarray,*,current_age: in
     path=verified_model_path(model_path)
     x0,y0,x1,y1=head_crop_bounds(image,landmarks)
     source=image[y0:y1,x0:x1]
-    size=512 if quality=='fast' else 768
+    size={'fast':512,'detail':768,'ultra':1024}[quality]
     rgb=cv2.resize(source,(size,size),interpolation=cv2.INTER_CUBIC).astype(np.float32)/255
     start=perf_counter()
     try:

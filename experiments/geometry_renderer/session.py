@@ -104,18 +104,19 @@ class DemoSession:
 
     def render_age(self, current_age: int, target_age: int, *, lifestyle: dict | None=None,
                    geometry_strengths: dict | None=None, skin_strength: float=1,
-                   hair_strength: float=1, enabled_layers=('geometry','skin','hair'),renderer=None):
+                   hair_strength: float=1, enabled_layers=('geometry','skin','hair'),renderer=None,
+                   mechanism_strengths=None,feature_strengths=None):
         if self.prepared is None:
             raise ValueError('Select a portrait before rendering')
         key = (current_age,target_age,tuple(sorted((lifestyle or {}).items())),
-            tuple(sorted((geometry_strengths or {}).items())),skin_strength,hair_strength,tuple(sorted(enabled_layers)))
+            tuple(sorted((geometry_strengths or {}).items())),skin_strength,hair_strength,tuple(sorted(enabled_layers)),tuple(sorted((mechanism_strengths or {}).items())),tuple(sorted((feature_strengths or {}).items())))
         if key == self._render_key and self._render_result is not None:
             return self._render_result
         if renderer is None:
             from .pipeline import render_local_aging
             renderer = render_local_aging
         self._render_result = renderer(self.prepared,self.regions,current_age,target_age,lifestyle=lifestyle,
-            learned_proposal=self.aged_proposal,
+            learned_proposal=self.aged_proposal,mechanism_strengths=mechanism_strengths,feature_strengths=feature_strengths,
             geometry_strengths=geometry_strengths,skin_strength=skin_strength,
             hair_strength=hair_strength,enabled_layers=enabled_layers)
         self._render_key = key

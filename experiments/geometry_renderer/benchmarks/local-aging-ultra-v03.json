@@ -1,0 +1,34 @@
+{
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.11.17",
+  "cpu": "",
+  "logical_cpus": 5,
+  "opencv_threads": 4,
+  "quality": "ultra",
+  "neural_forward_windows": 9,
+  "runtime_gpu_acceleration": false,
+  "first_photo_seconds": 15.682,
+  "first_photo_stage_ms": {
+    "source_detection_ms": 438.22,
+    "preparation_ms": 6.27,
+    "semantic_parsing_ms": 668.05,
+    "conditional_skin_ms": 13008.13,
+    "compositing_ms": 1097.23
+  },
+  "new_age_seconds": [
+    14.228
+  ],
+  "new_age_p95_seconds": 14.228,
+  "inspection_cache_ms": 0.008,
+  "source_detection_passes": 1,
+  "semantic_parsing_passes": 1,
+  "conditional_age_inferences": 2,
+  "working_shape": [
+    1487,
+    1487,
+    3
+  ],
+  "budget_seconds": 0,
+  "budget_pass": null,
+  "scope": "Fresh Python process and first photo + new age changes after models installed. OS file cache may be warm. Excludes initial dependency/model downloads and browser display. Run on your actual laptop; cloud results do not prove laptop performance or visual age accuracy."
+}

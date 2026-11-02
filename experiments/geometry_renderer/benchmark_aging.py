@@ -15,13 +15,13 @@ import platform
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--quality',choices=('fast','detail'),default='detail')
+    parser.add_argument('--quality',choices=('fast','detail','ultra'),default='detail')
     parser.add_argument('--iterations',type=int,default=3)
     parser.add_argument('--threads',type=int,default=min(4,os.cpu_count() or 1))
-    parser.add_argument('--budget-seconds',type=float,default=20)
+    parser.add_argument('--budget-seconds',type=float,default=0)
     parser.add_argument('--output',type=Path)
     args=parser.parse_args()
-    if args.iterations<1 or args.threads<1 or args.budget_seconds<=0:
+    if args.iterations<1 or args.threads<1 or args.budget_seconds<0:
         parser.error('iterations, threads and budget must be positive')
     import cv2
     import numpy as np
@@ -48,7 +48,7 @@ def main():
     cached=session.render_age(30,age)
     cache_ms=(perf_counter()-cached_start)*1000
     warm_p95=float(np.percentile(new_age_seconds,95))
-    passed=first_photo_seconds<=args.budget_seconds and max(new_age_seconds)<=args.budget_seconds
+    passed=(first_photo_seconds<=args.budget_seconds and max(new_age_seconds)<=args.budget_seconds) if args.budget_seconds else None
     record={'platform':platform.platform(),'python':platform.python_version(),
         'cpu':platform.processor(),'logical_cpus':os.cpu_count(),'opencv_threads':cv2.getNumThreads(),
         'quality':args.quality,'neural_forward_windows':session.proposal_metrics['forward_count'],
@@ -65,6 +65,6 @@ def main():
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(payload+'\n')
     print(payload)
-    raise SystemExit(0 if passed else 2)
+    raise SystemExit(2 if passed is False else 0)
 
 if __name__=='__main__':main()

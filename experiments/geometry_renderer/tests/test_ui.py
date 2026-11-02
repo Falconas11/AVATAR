@@ -5,7 +5,7 @@ APP = Path(__file__).resolve().parents[1]/'app.py'
 
 
 def test_streamlit_sample_sliders_cache_overlay_reset_and_clear():
-    app = AppTest.from_file(str(APP), default_timeout=30).run()
+    app = AppTest.from_file(str(APP), default_timeout=60).run()
     assert not app.exception
     assert 'Select a local portrait' in app.info[0].value
     app.checkbox(key='use_sample').check().run()

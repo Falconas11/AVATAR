@@ -18,7 +18,8 @@
     "crop": "Fixed landmark-based head crop shared with semantic parser",
     "quality_modes": {
       "fast": "One512window",
-      "detail": "768workcanvas,four512windows,stride256,positive raised-cosine overlap-add"
+      "detail": "768workcanvas,four512windows,stride256,positive raised-cosine overlap-add",
+      "ultra": "1024 canvas, nine512windows, quality-first mode"
     }
   },
   "training_provenance": "Author describes training on synthetic re-aged FFHQ faces using SAM teacher outputs. Training images are not included. Dataset rights and demographic biases are separate from code/model license.",
@@ -28,7 +29,7 @@
     "Neural target-age conditioning is not calibrated individual age prediction",
     "Graph baseline/masks are external controls and do not explain network internals",
     "May hallucinate skin/identity/expression/lighting inside the proposal; semantic skin compositing required",
-    "Fast single512window gives lower detail; optional detail mode uses four512windows on768canvas. Ninewindow1024 mode is deliberately not exposed because its CPU cost consumes the20s budget.",
+    "Fast single512window gives lower detail; optional detail mode uses four512windows on768canvas. Quality-first ultra mode exposes nine windows and is intentionally slower.",
     "Laptop20second end-to-end gate must be measured on the actual laptop, not inferred from cloud benchmark"
   ],
   "validation": {

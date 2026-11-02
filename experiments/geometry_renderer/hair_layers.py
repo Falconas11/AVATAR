@@ -126,7 +126,7 @@ def segment_regions(image: np.ndarray, model_path: Path | None = None, *,
     labels = np.zeros(image.shape[:2],np.uint8)
     labels[y0:y1,x0:x1] = local_labels
     masks = {}
-    for name,classes in [('hair',(HAIR_CLASS,)),('skin',SKIN_CLASSES),('neck',(NECK_CLASS,))]:
+    for name,classes in [('hair',(HAIR_CLASS,)),('skin',SKIN_CLASSES),('neck',(NECK_CLASS,)),('ears',(7,8))]:
         # Conservative winner gate prevents low-confidence hair probability
         # leaking onto an explicitly classified skin/background pixel.
         confidence = probabilities[list(classes)].sum(axis=0)
@@ -204,12 +204,15 @@ def gray_hair(image: np.ndarray, mask: np.ndarray, strength: float, *, seed: int
     detail=lum-cv2.GaussianBlur(lum,(0,0),1.1)
     # Preserve luminance ordering and fine strands, lifting dark hair to silver
     # without assigning a uniform maximum-white value.
-    silver=np.clip(75+.65*lum+.4*detail,35,235)
+    silver=np.clip(95+.65*lum+.4*detail,35,235)
     noise=np.random.default_rng(seed).standard_normal(mask.shape).astype(np.float32)
     strands=cv2.GaussianBlur(noise,(0,0),sigmaX=.5,sigmaY=2.5)
     low,high=np.percentile(strands,[1,99])
     strands=np.clip((strands-low)/max(float(high-low),1e-6),0,1)
-    confidence=np.clip((mask-.5)/.35,0,1)
+    # Softmax confidence is not a fraction of hair at this pixel. Treat the
+    # winning hair class consistently; the previous .35 ramp left whole valid
+    # regions brown simply because their confidence was .55 rather than .85.
+    confidence=np.clip((mask-.5)/.10,0,1)
     alpha=confidence*float(strength)*(.72+.28*strands)
     neutral=np.repeat(silver[...,None],3,axis=2)
     result=np.rint(np.clip(rgb*(1-alpha[...,None])+neutral*alpha[...,None],0,255)).astype(np.uint8)

@@ -56,6 +56,31 @@ FEATURES: dict[str, FeatureSpec] = {
     'jowls': FeatureSpec('lower cheek and jawline', 'geometry', 30, 88, .90, ('jowls',)),
 }
 
+# Source-KG feature vocabulary is covered explicitly. Closely related aliases
+# share operators via max aggregation, never summed duplicate severities.
+FEATURES.update({
+ 'facial_wrinkles': FeatureSpec('facial skin','wrinkle',24,86,.9,('facial_wrinkles',)),
+ 'deep_nasolabial_folds': FeatureSpec('nasolabial region','wrinkle',25,88,.9,('deep_nasolabial_folds',)),
+ 'dry_skin': FeatureSpec('facial skin','skin',28,88,.65,('dry_skin',)),
+ 'dull_skin_tone': FeatureSpec('facial skin','skin',30,90,.45,('dull_skin_tone',)),
+ 'facial_puffiness': FeatureSpec('cheeks','geometry',40,95,.22,('facial_puffiness',)),
+ 'lower_face_sagging': FeatureSpec('lower face','geometry',25,85,.9,('lower_face_sagging',)),
+ 'under_eye_circles': FeatureSpec('under eyes','skin',25,88,.6,('under_eye_circles',)),
+ 'uneven_skin_tone': FeatureSpec('facial skin','skin',30,90,.5,('uneven_skin_tone',)),
+ 'hyperpigmentation': FeatureSpec('cheeks','skin',35,95,.3,('hyperpigmentation',)),
+ 'inconsistent_facial_pigmentation': FeatureSpec('facial skin','skin',35,95,.3,('inconsistent_facial_pigmentation',)),
+ 'sunspots': FeatureSpec('cheeks and forehead','skin',30,88,.65,('sunspots',)),
+ 'nodular_elastosis': FeatureSpec('photoexposed skin','skin',45,95,.3,('nodular_elastosis',),
+   'Renders only a coarse photoaged-surface proxy; does not synthesize or diagnose pathological nodules.'),
+ 'enlarged_pores': FeatureSpec('nose and medial cheeks','skin',25,85,.45,('enlarged_pores',)),
+ 'broken_capillaries': FeatureSpec('nose and cheeks','skin',40,95,.16,('broken_capillaries',)),
+ 'facial_redness': FeatureSpec('nose and cheeks','skin',40,95,.16,('facial_redness',)),
+ 'spider_veins': FeatureSpec('cheeks','skin',45,95,.14,('spider_veins',)),
+ 'increased_nasal_length': FeatureSpec('nose','geometry',30,90,.55,('increased_nasal_length',)),
+ 'earlobe_elongation': FeatureSpec('visible earlobes','geometry',35,90,.7,('earlobe_elongation',)),
+ 'earlobe_ptosis': FeatureSpec('visible earlobes','geometry',35,90,.7,('earlobe_ptosis',)),
+})
+
 LIFESTYLE_FACTORS = frozenset({'smoking', 'uv_exposure', 'alcohol', 'stress', 'diet'})
 _PLACEHOLDERS = frozenset({'', 'n/a', 'na', 'none', 'unknown', 'tbd', 'mechanistic mapping'})
 
@@ -205,7 +230,8 @@ def _graph_paths(graph_ids: tuple[str, ...], nodes: dict[str, dict[str, str]],
 
 
 def build_age_plan(current_age: int, target_age: int, *, lifestyle: dict | None = None,
-                   graph_root: Path | None = None) -> dict:
+                   graph_root: Path | None = None, mechanism_strengths: dict | None = None,
+                   feature_strengths: dict | None = None) -> dict:
     """Return additional visible aging intensities without rendering or networking.
 
     Age baseline and lifestyle are deliberately separate: zero lifestyle factors
@@ -259,8 +285,40 @@ def build_age_plan(current_age: int, target_age: int, *, lifestyle: dict | None 
                 'incomplete_graph_paths' if any(p['evidence_status']=='incomplete_or_provisional' for p in paths) else 'unverified_graph_references'),
             'assumptions': assumptions, 'lifestyle_modifier': modifier,
             'demo_curve': _curve_spec(spec)}
+    mechanism_ids = {key for key,node in nodes.items() if node['layer']=='mechanism'}
+    controls = dict(mechanism_strengths or {})
+    feature_controls = dict(feature_strengths or {})
+    for mapping,allowed in ((controls,mechanism_ids),(feature_controls,set(features))):
+        if set(mapping)-allowed:
+            raise ValueError('Unknown graph mechanism or render feature control')
+        if any(isinstance(v,bool) or not isinstance(v,Real) or not math.isfinite(v) or not 0<=v<=1 for v in mapping.values()):
+            raise ValueError('Mechanism/feature controls must be finite fractions')
+    mechanisms = {}
+    for mechanism_id in sorted(mechanism_ids):
+        descendants={mechanism_id}
+        for _ in range(len(nodes)):
+            expanded=descendants | {e['target'] for e in edges if e['source'] in descendants}
+            if expanded==descendants: break
+            descendants=expanded
+        affected=[key for key,f in features.items() if set(f['graph_node_ids']) & descendants]
+        value=float(controls.get(mechanism_id,1))
+        for key in affected:
+            features[key]['score'] *= value
+            features[key].setdefault('mechanism_controls',[]).append(mechanism_id)
+        mechanisms[mechanism_id]={'label':nodes[mechanism_id]['label'],
+            'control':value,'affected_features':affected,'source_descendant_ids':sorted(descendants-{mechanism_id}),
+            'implementation':'qualitative descendant-linked render controller',
+            'biochemical_simulation':False,'clinically_calibrated':False}
+    for key,f in features.items():
+        f['score'] *= float(feature_controls.get(key,1))
+    source_features=[key for key,node in nodes.items() if node['layer']=='feature' and
+        node['renderable'].lower()=='true' and node['aging_related'].lower()=='true']
+    coverage={key:[name for name,f in features.items() if key in f['graph_node_ids']] for key in source_features}
+    if any(not mappings for mappings in coverage.values()):
+        raise ValueError('Source graph contains an aging feature without a render-plan mapping')
     return {'current_age': current_age, 'target_age': target_age, 'mode': 'illustrative_local',
-        'features': features, 'overlay_graph': baseline_overlay_graph(),
+        'features': features, 'mechanisms':mechanisms,'source_feature_coverage':coverage,
+        'overlay_graph': baseline_overlay_graph(),
         'metadata': {'source_graph': source_graph, 'baseline_model': 'local_demo_smoothstep_v0.2',
             'clinically_calibrated': False, 'lifestyle_values': values,
             'lifestyle_policy': 'Only applicable existing graph paths modulate baseline delta; no demographic priors.',

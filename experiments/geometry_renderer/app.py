@@ -14,8 +14,8 @@ from experiments.geometry_renderer.core import overlay
 from experiments.geometry_renderer.comparison import crop_view,difference_view,head_crop_bounds,wipe_view
 from experiments.geometry_renderer.session import DemoSession
 
-st.set_page_config(page_title='AVATAR Local Aging v0.2',layout='wide')
-st.title('AVATAR Local Aging v0.2')
+st.set_page_config(page_title='AVATAR Local Aging v0.3',layout='wide')
+st.title('AVATAR Local Aging v0.3')
 st.caption('Age baseline → face geometry + learned skin appearance + segmented gray hair. All photo processing stays on this computer.')
 st.warning('Illustrative aging visualization. Target age is a control, not a calibrated prediction of how this person will look.')
 
@@ -51,8 +51,8 @@ with st.sidebar:
     st.header('Aging layers')
     geometry_on = st.checkbox('Face geometry',value=True,key='geometry_on')
     skin_on = st.checkbox('Wrinkles and skin appearance',value=True,key='skin_on')
-    quality_label = st.selectbox('Skin quality',['Detailed (4 windows)','Fast (1 window)'],key='skin_quality')
-    quality = 'detail' if quality_label.startswith('Detailed') else 'fast'
+    quality_label = st.selectbox('Skin quality',['Quality-first (9 windows)','Detailed (4 windows)','Fast (1 window)'],key='skin_quality')
+    quality = 'ultra' if quality_label.startswith('Quality') else 'detail' if quality_label.startswith('Detailed') else 'fast'
     hair_on = st.checkbox('Hair graying',value=True,key='hair_on')
     skin_strength = st.slider('Skin appearance strength',0.,1.,1.,.05,key='skin_strength')
     hair_strength = st.slider('Hair graying strength',0.,1.,1.,.05,key='hair_strength')
@@ -69,6 +69,16 @@ with st.sidebar:
     mesh = st.checkbox('Show mesh and landmarks',key='show_mesh')
     inspect_masks = st.checkbox('Inspect hair and skin masks',key='inspect_masks')
     st.button('Reset aging',on_click=reset_aging)
+
+from experiments.geometry_renderer.age_plan import build_age_plan
+control_plan=build_age_plan(current,target)
+with st.sidebar.expander('All source-graph mechanisms'):
+    st.caption('Qualitative render controls, not biochemical simulation or measured biological rates.')
+    mechanism_strengths={key:st.slider(record['label'],0.,1.,1.,.05,key='mechanism_'+key)
+        for key,record in control_plan['mechanisms'].items()}
+with st.sidebar.expander('Individual aging features'):
+    disabled=st.multiselect('Disable feature operators',list(control_plan['features']),key='disabled_features')
+    feature_strengths={key:0 for key in disabled}
 
 if uploaded is not None:
     data,suffix = uploaded.getvalue(),Path(uploaded.name).suffix
@@ -89,7 +99,8 @@ try:
     enabled = tuple(name for name,on in [('geometry',geometry_on),('skin',skin_on),('hair',hair_on)] if on)
     result = session.render_age(current,target,lifestyle={'uv_exposure':uv,'smoking':smoking},
         geometry_strengths={'nose':nose,'cheeks':cheeks,'jowls':jowls},
-        skin_strength=skin_strength,hair_strength=hair_strength,enabled_layers=enabled)
+        skin_strength=skin_strength,hair_strength=hair_strength,enabled_layers=enabled,
+        mechanism_strengths=mechanism_strengths,feature_strengths=feature_strengths)
 except ValueError as exc:
     st.error(str(exc))
     st.stop()
@@ -120,8 +131,6 @@ else:
     st.caption('Amplified RGB difference is an inspection tool, not a portrait or proof of perceived age.')
 
 processing_ms = session.detection_ms+session.preparation_ms+session.segmentation_ms+session.proposal_ms+result.metrics['total_ms']
-if processing_ms>20_000 and skin_on:
-    st.warning('This computer exceeded the 20-second processing budget. Select Fast skin quality or turn off the optional skin appearance layer; mesh and hair rendering remain available.')
 if current==target:
     st.info('Current and target age are equal: no additional aging is applied.')
 if result.safety_scale<1:
@@ -148,6 +157,11 @@ if inspect_masks:
         column.image(crop_view((regions[name]*255).astype('uint8'),bounds),use_container_width=True)
     for warning in regions.get('warnings',[]):
         st.caption(warning)
+
+with st.expander('Source-graph implementation coverage',expanded=False):
+    st.caption('Every source aging feature has an explicit operator. Availability and proxy limitations are reported separately; this does not verify a biochemical mechanism.')
+    st.dataframe([{'Feature':key,**record} for key,record in result.metrics['feature_coverage'].items()],use_container_width=True)
+    st.json(result.metrics['mechanisms'])
 
 with st.expander('Knowledge graph, age baseline and evidence limits'):
     st.caption('Existing v03 graph paths supply reference context. Smooth age baselines and missing-feature overlays are provisional visual assumptions; they do not explain neural model internals.')
