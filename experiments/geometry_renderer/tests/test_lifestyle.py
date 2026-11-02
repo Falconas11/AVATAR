@@ -93,3 +93,20 @@ def test_identity_and_disabled_layers_win_over_scenario(synthetic,values):
     off=render_local_aging(synthetic,None,30,75,lifestyle=values,enabled_layers=(),learned_proposal=proposal)
     np.testing.assert_array_equal(equal.image,synthetic.image)
     np.testing.assert_array_equal(off.image,synthetic.image)
+
+
+def test_learned_surface_avoids_stacking_full_procedural_grain(synthetic):
+    from experiments.geometry_renderer.mechanism_layers import render_surface,SURFACE_GROUPS
+    from experiments.geometry_renderer.skin_layers import skin_region_mask
+    plan=build_age_plan(30,75)
+    for name,f in plan['features'].items():
+        f['score']=1. if name in SURFACE_GROUPS['surface_texture'] else 0.
+    y,x=np.indices(synthetic.image.shape[:2])
+    image=np.repeat((80+((x+y)%2)*70)[...,None],3,axis=2).astype(np.uint8)
+    full,_=render_surface(image,synthetic.points,plan)
+    light,metrics=render_surface(image,synthetic.points,plan,learned_detail=True)
+    mask=skin_region_mask(image.shape,synthetic.points)>0
+    a=np.abs(full.astype(float)-image)[mask].mean()
+    b=np.abs(light.astype(float)-image)[mask].mean()
+    assert a>0 and b<a*.4
+    assert metrics['texture_gain']==.25 and metrics['eye_gain']==.55

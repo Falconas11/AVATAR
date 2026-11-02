@@ -1,5 +1,7 @@
 # Naturalness iterations — fictional fixtures only
 
+**Current v0.4.2:** [hair/skin refinement and matched v0.4.1 comparison](balanced_v042/README.md).
+
 **v0.4.1 update:** the historical D hair algorithm is superseded by conservative
 tonal gray with bright-outlier and boundary protection. See
 [hotfix comparison](hair_hotfix_v041/contact-sheet.jpg) and

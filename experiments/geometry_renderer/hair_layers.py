@@ -207,7 +207,7 @@ def gray_hair(image: np.ndarray, mask: np.ndarray, strength: float, *, seed: int
     feather=max(3.,min(10.,min(image.shape[:2])*.012))
     core=support & (distance>feather+2) & (mask>.5)
     if core.sum()<32:
-        metrics.update(mode='conservative_tonal_gray',reason='no_reliable_hair_interior')
+        metrics.update(mode='shadow_preserving_ash_gray',reason='no_reliable_hair_interior')
         return image.copy(),metrics
     low,high=np.percentile(lum[core],[15,50])
     cutoff=float(high)+max(18.,float(high-low)*2.)
@@ -217,16 +217,16 @@ def gray_hair(image: np.ndarray, mask: np.ndarray, strength: float, *, seed: int
     confidence=np.clip((mask-.5)/.10,0,1)
     edge=np.clip((distance-1)/feather,0,1)
     alpha=confidence*edge*brightness_gate*.72*float(strength)
-    # Preserve source luminance, shadows and strands. Maximum target lift12
-    # levels (and effective lift<9); no white paint, noise or new strand texture.
-    silver=np.clip(lum+np.minimum(lum*.12,12),0,255)
+    # A smooth saturating lift makes dark hair visibly ash-gray without
+    # selecting bright patches. Black shadows stay black; no new strands/noise.
+    silver=np.clip(lum+32*(-np.expm1(-lum/25)),0,255)
     neutral=np.repeat(silver[...,None],3,axis=2)
     result=np.rint(np.clip(rgb*(1-alpha[...,None])+neutral*alpha[...,None],0,255)).astype(np.uint8)
     result[~support]=image[~support]
-    metrics.update(mode='conservative_tonal_gray',
+    metrics.update(mode='shadow_preserving_ash_gray',
         retained_source_fraction=float(np.mean(np.all(result[support]==image[support],axis=1))),
         protected_bright_pixels=int(np.sum(support & (brightness_gate==0))),
-        feather_pixels=float(feather),max_luminance_lift=9.,
+        feather_pixels=float(feather),max_luminance_lift=24.,
         selection_note='Conservative source-tone neutralization; not follicle synthesis or a measured gray-hair percentage.')
     metrics.update(applied=bool(np.any(result!=image)),
         mean_change=float(np.abs(result.astype(np.float32)-rgb)[support].mean()),

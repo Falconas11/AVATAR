@@ -69,7 +69,7 @@ def test_deterministic_strands_reduce_chroma_and_preserve_contrast(synthetic_hai
     assert np.corrcoef(old_detail[mask>0],new_detail[mask>0])[0,1]>.75
     retained=np.all(a[mask>0]==image[mask>0],axis=1).mean()
     assert 0<retained<.5  # feathered boundary is protected
-    assert np.max(new_lum-old_lum)<9.5  # no white-paint luminance lift
+    assert np.max(new_lum-old_lum)<24.5  # no white-paint luminance lift
     assert new_lum.max()<245
 
 @pytest.mark.parametrize('strength',[-.1,1.1,float('nan')])
@@ -163,3 +163,13 @@ def test_thin_flyaway_mask_is_left_unchanged_without_a_reliable_interior():
     out,metrics=gray_hair(image,mask,1)
     np.testing.assert_array_equal(out,image)
     assert not metrics['applied']
+
+
+def test_dark_gray_hair_gets_visible_lift_but_black_shadows_remain_black():
+    image=np.full((64,64,3),40,np.uint8);mask=np.ones((64,64),np.float32)
+    out,metrics=gray_hair(image,mask,1)
+    assert 12<float(out.mean()-image.mean())<24.5
+    black=np.zeros_like(image)
+    unchanged,_=gray_hair(black,mask,1)
+    np.testing.assert_array_equal(unchanged,black)
+    assert metrics['max_luminance_lift']==24.

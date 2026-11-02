@@ -41,7 +41,7 @@ def volume_displacement(points,face_count,plan):
     return delta
 
 
-def render_surface(image,points,plan,skin_mask=None):
+def render_surface(image,points,plan,skin_mask=None,*,learned_detail=False):
     mask=skin_region_mask(image.shape,points)
     if skin_mask is not None: mask*=np.clip(skin_mask,0,1)
     if not mask.any(): return image.copy(),{'operators':{},'mode':'explicit_surface_proxies'}
@@ -56,7 +56,11 @@ def render_surface(image,points,plan,skin_mask=None):
         before=out.copy();out=np.clip(out+change*a[...,None],0,255)
         operators[name]={'features':list(ids),'changed_pixels':int(np.any(np.rint(out)!=np.rint(before),axis=2).sum()),
           'interpretation':'authored phenotype proxy, not clinical severity'}
-    strength=score(plan,'under_eye_circles')
+    # A learned proposal already contains texture and eye shading. Avoid
+    # stacking synthetic grain/contrast and another full eye shadow over it.
+    texture_gain=.25 if learned_detail else 1.
+    eye_gain=.55 if learned_detail else 1.
+    strength=score(plan,'under_eye_circles')*eye_gain
     eye=sum(gauss(p[i]+[0,fh*.045],.105,.035) for i in (145,374))
     apply('under_eye_circles',-eye[...,None]*np.array([13,14,10])*strength,('under_eye_circles',))
     rng=np.random.default_rng(9817)
@@ -71,7 +75,7 @@ def render_surface(image,points,plan,skin_mask=None):
     noise=rng.normal(0,1,lum.shape).astype(np.float32)
     grain=cv2.GaussianBlur(noise,(0,0),.55)-cv2.GaussianBlur(noise,(0,0),2)
     tex=max(score(plan,n) for n in SURFACE_GROUPS['surface_texture'])
-    apply('surface_texture',np.repeat((detail*.28+grain*2.8)[...,None],3,axis=2)*tex,SURFACE_GROUPS['surface_texture'])
+    apply('surface_texture',np.repeat((detail*.28+grain*2.8)[...,None],3,axis=2)*tex*texture_gain,SURFACE_GROUPS['surface_texture'])
     dull=score(plan,'dull_skin_tone')
     apply('dullness',((lum[...,None]-roi)*.10-2)*dull,('dull_skin_tone',))
     vascular=max(score(plan,n) for n in SURFACE_GROUPS['vascular'])
@@ -87,6 +91,7 @@ def render_surface(image,points,plan,skin_mask=None):
     apply('vascular',(cheeks*.25+vessel)[...,None]*np.array([9,-3,-3])*vascular,SURFACE_GROUPS['vascular'])
     result=image.copy();result[y0:y1,x0:x1]=np.rint(out).clip(0,255).astype(np.uint8)
     return result,{'operators':operators,'mode':'explicit_surface_proxies',
+      'learned_detail_present':bool(learned_detail),'texture_gain':texture_gain,'eye_gain':eye_gain,
       'nodular_elastosis_representation':'coarse_surface_proxy_not_nodules'}
 
 

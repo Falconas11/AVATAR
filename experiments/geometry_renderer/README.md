@@ -1,4 +1,4 @@
-# AVATAR mesh-first local aging v0.4.1
+# AVATAR mesh-first local aging v0.4.2
 
 Local CPU prototype: repository knowledge graph + explicit age baseline, fixed-border
 mesh geometry, optional age-conditioned skin residual, and segmented hair graying.
@@ -103,7 +103,7 @@ The FRAN model is a124MB public ONNX conversion; no GPL FaceStudio code is used.
 
 ![Generated fictional input, original and illustrative local aging](screenshots/local-aging-ui.png)
 
-Latest verification: **158 experiment tests passed**, plus3 existing API tests.
+Latest verification: **160 experiment tests passed**, plus3 existing API tests.
 Browser regression additionally verifies same-age UV/smoking comparison with one
 shared model proposal, reset/clear and zero external requests or browser errors.
 Historical detail-quality CPU evidence: the mirrored-parser/detail run took **8.878s** for the
@@ -197,3 +197,12 @@ The warm-background/leaky-mask regression uses authored color blocks, not the
 user's portrait. [Regression and four fictional inputs](validation/naturalness_iterations/hair_hotfix_v041/)
 include the final source digests. Full suite:158 experiment tests plus3 existing
 API tests passed. No new model or dependency.
+
+## v0.4.2 hair and skin refinement
+
+[Matched input / v0.4.1 / v0.4.2 comparison and limits](validation/naturalness_iterations/balanced_v042/README.md).
+Current hair uses a stronger smooth shadow-preserving ash-gray lift with the
+existing bright-outlier/boundary guards. Skin has less fine residual contrast,
+softly limited extreme creases, and reduced extra grain/eye shadow when learned
+detail is already present. No invented follicles or clinical calibration.
+Version title is v0.4.2. No new model/dependency, deployment or research changes.

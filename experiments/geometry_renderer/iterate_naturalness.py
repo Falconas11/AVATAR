@@ -13,7 +13,7 @@ from hashlib import sha256
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--name',required=True)
-    parser.add_argument('--reference',choices=('v03','v040'),default='v03')
+    parser.add_argument('--reference',choices=('v03','v040','v041'),default='v03')
     args=parser.parse_args()
     if not args.name.replace('_','').replace('-','').isalnum():parser.error('simple experiment name required')
     import cv2,numpy as np
@@ -29,7 +29,7 @@ def main():
     cache=Path(os.environ.get('AVATAR_SYNTHETIC_CACHE',str(Path.home()/'.cache/avatar/synthetic-iterations')));cache.mkdir(parents=True,exist_ok=True)
     output=root/'validation/naturalness_iterations'/args.name;output.mkdir(parents=True,exist_ok=True)
     sheet=Image.new('RGB',(1536,64+560*4),'white');draw=ImageDraw.Draw(sheet);font=ImageFont.load_default(size=22)
-    reference_label='v0.4.0 released' if args.reference=='v040' else 'v0.3 reference'
+    reference_label={'v03':'v0.3 reference','v040':'v0.4.0 released','v041':'v0.4.1 previous'}[args.reference]
     for x,title in enumerate(('Synthetic input',reference_label,'Current candidate')):draw.text((x*512+10,18),title,fill='black',font=font)
     report={'experiment':args.name,'reference':args.reference,'target':75,'source_age':30,'samples':[],
         'source_code_sha256':{n:sha256((root/n).read_bytes()).hexdigest() for n in ('hair_layers.py','mechanism_layers.py','skin_layers.py','pipeline.py')}}
@@ -44,7 +44,7 @@ def main():
         result=render_local_aging(prepared,regions,30,75,lifestyle={'uv_exposure':0.,'smoking':0.},learned_proposal=proposal)
         bounds=head_crop_bounds(prepared);before=crop_view(prepared.image,bounds);after=crop_view(result.image,bounds)
         Image.fromarray(after).save(output/f'{item["id"]}_age75.png')
-        reference_dir='validation/naturalness_iterations/source_locks_D' if args.reference=='v040' else 'validation/synthetic_v03'
+        reference_dir={'v03':'validation/synthetic_v03','v040':'validation/naturalness_iterations/source_locks_D','v041':'validation/naturalness_iterations/hair_review_v041'}[args.reference]
         reference=np.asarray(Image.open(root/reference_dir/f'{item["id"]}_age75.png').convert('RGB'))
         row=64+index*560
         for column,pixels in enumerate((before,reference,after)):

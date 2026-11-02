@@ -327,7 +327,9 @@ def _render_learned_skin(image: np.ndarray, p: np.ndarray, plan: dict,
     # No hand-authored crease paths run in this learned transfer.
     fine = residual-cv2.GaussianBlur(residual,(0,0),.9)
     lifestyle_gain = regional_gain(image.shape,p,plan['features'])[y0:y1,x0:x1]
-    transferred = np.clip((residual-fine*.4)*lifestyle_gain,-55,55)
+    # Smoothly limit deep residual extremes rather than clipping them into
+    # harsh dark creases. Keep broad shape cues; reduce fine papery contrast.
+    transferred = 45*np.tanh((residual-fine*.6)*lifestyle_gain/45)
     metadata['lifestyle_gain_max'] = float(lifestyle_gain.max())
     metadata['lifestyle_localization'] = 'Authored regional gain on shared age proposal, not neural feature attribution.'
     edited_lab = source_lab.copy()

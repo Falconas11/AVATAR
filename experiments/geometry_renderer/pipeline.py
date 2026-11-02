@@ -102,7 +102,8 @@ def render_local_aging(prepared: PreparedFace, regions: dict | None, current_age
         skin_image,skin_metrics = geometry_image.copy(),{'enabled':False}
     surface_metrics={'operators':{}}
     if 'skin' in enabled:
-        skin_image,surface_metrics=render_surface(skin_image,destination,skin_plan,warped_regions.get('skin'))
+        skin_image,surface_metrics=render_surface(skin_image,destination,skin_plan,warped_regions.get('skin'),
+            learned_detail=learned_proposal is not None)
     skin_ms = (perf_counter()-stage_start)*1000
     stage_start = perf_counter()
     hair_mask = warped_regions.get('hair',np.zeros((h,w),np.float32))
