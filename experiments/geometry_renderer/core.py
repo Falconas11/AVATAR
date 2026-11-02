@@ -81,12 +81,15 @@ def prepare_face(image: np.ndarray, landmarks: np.ndarray) -> PreparedFace:
 
 
 def displacement_field(points: np.ndarray, face_count: int, *, current_age: int,
-                       target_age: int, nose: float, cheeks: float, jowls: float) -> np.ndarray:
+                       target_age: int, nose: float, cheeks: float, jowls: float,
+                       progression: float | None = None) -> np.ndarray:
     """Smooth compact radial fields. Age fraction is illustrative, not calibrated.
 
     Equal current/target age or zero strengths is exact identity. Strengths are
     [0,1]. Full field scale is reached after 60 slider years, without implying
-    an empirical rate. Boundary points have exactly zero displacement.
+    an empirical rate. Boundary points have exactly zero displacement. The v0.2
+    age planner supplies progression=1 because its feature scores already encode
+    the current-to-target age delta; this avoids applying age progression twice.
     """
     if (type(current_age) is not int or type(target_age) is not int or
             not 18 <= current_age <= target_age <= 100):
@@ -97,7 +100,9 @@ def displacement_field(points: np.ndarray, face_count: int, *, current_age: int,
     face = points[:face_count]
     width, height = np.ptp(face, axis=0)
     delta = np.zeros_like(points, dtype=np.float64)
-    age_fraction = min((target_age-current_age)/60, 1.0)
+    age_fraction = min((target_age-current_age)/60, 1.0) if progression is None else progression
+    if not np.isfinite(age_fraction) or not 0 <= age_fraction <= 1:
+        raise ValueError("Progression must be a finite fraction between 0 and 1")
     for region, indices in REGIONS.items():
         shift, radius = FIELDS[region]
         distance = np.linalg.norm(face[:, None, :] - face[list(indices)][None, :, :], axis=2)

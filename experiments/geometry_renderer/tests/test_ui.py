@@ -14,8 +14,10 @@ def test_streamlit_sample_sliders_cache_overlay_reset_and_clear():
     prepared = session.prepared
     assert prepared is not None and session.detection_count == 1
     assert app.checkbox(key='focus_face').value
-    assert app.slider(key='nose').value == .7
-    assert float(next(metric.value for metric in app.metric if metric.label == 'Nose-tip shift').split()[0]) > 1
+    assert app.slider(key='nose').value == .65
+    assert session.segmentation_count == 1
+    assert session.proposal_count == 1
+    app.selectbox(key='skin_quality').select('Fast (1 window)').run()
     app.selectbox(key='comparison_view').select('Before / after wipe').run()
     assert not app.exception and not app.error
     app.slider(key='wipe_position').set_value(30).run()
@@ -30,12 +32,12 @@ def test_streamlit_sample_sliders_cache_overlay_reset_and_clear():
     app.checkbox(key='show_mesh').check().run()
     assert not app.exception and not app.error
     assert session.prepared is prepared and session.detection_count == 1
-    assert any('not a scientifically calibrated prediction' in item.value for item in app.warning)
-    assert any('detection passes for this image: 1' in item.value for item in app.caption)
+    assert any('not a calibrated prediction' in item.value for item in app.warning)
+    assert any('source detection passes: 1' in item.value for item in app.caption)
     # Streamlit generates button keys for these callbacks.
-    next(button for button in app.button if button.label == 'Reset deformation').click().run()
+    next(button for button in app.button if button.label == 'Reset aging').click().run()
     assert app.slider(key='target_age').value == app.slider(key='current_age').value
-    assert app.slider(key='nose').value == 0
+    assert session._render_result.metrics['skin_changed_pixels'] == 0
     assert session.prepared is prepared and session.detection_count == 1
     app.slider(key='current_age').set_value(90).run()
     assert not app.exception and not app.error

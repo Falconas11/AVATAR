@@ -29,3 +29,13 @@ Dependency wheels retain their upstream licenses/notices in the isolated
 installation. The full Linux/Python 3.11 resolved versions are recorded in
 `requirements-linux-py311.lock`; install-time network downloads are distinct from
 runtime photo processing, which has no external service calls.
+
+## v0.2 local appearance models
+
+`models/conditional_skin.json` and `LICENSE.FRAN.txt` document the MIT independent
+FRAN reimplementation and verified public ONNX conversion. It is not Disney's
+proprietary official model. No FaceStudio GPL application code is copied. Training
+on synthetic FFHQ/SAM-derived material is a separate provenance/bias limitation.
+`models/face_parser.json` records the MIT BiSeNet model source, release SHA256 and
+CelebAMask-HQ training-data limitations. Large weights remain in ignored local
+cache; setup alone downloads them. Neither model is clinically calibrated.

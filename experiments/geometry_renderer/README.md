@@ -1,225 +1,114 @@
-# AVATAR Geometry Renderer v0.1
+# AVATAR mesh-first local aging v0.2
 
-Standalone CPU demo for [Issue #4](https://github.com/Falconas11/AVATAR/issues/4).
-**Illustrative geometric simulation, not a scientifically calibrated prediction.**
-The three controls are authored hypotheses pending quantitative anthropometric
-calibration. This is a locally warped photograph, not a generated future portrait.
-No diffusion, GPT, cloud processing, texture aging, wrinkles, hair whitening,
-or external ears. No production API, Box, consent, IRB, or deployment integration.
+Local CPU prototype: repository knowledge graph + explicit age baseline, fixed-border
+mesh geometry, optional age-conditioned skin residual, and segmented hair graying.
+**Illustrative appearance, not a calibrated prediction of the individual or exact age.**
+Fast-AgingGAN was tested and rejected on visual quality. The selected optional skin
+provider is an independently MIT-licensed FRAN-style reimplementation, not Disney's
+official model. It produces skin detail; mesh remains the explicit geometry path.
+No photos are uploaded, automatically saved, or connected to the research/Box API.
 
-## Install and launch
+## Install / launch
 
-Run from the repository root in the existing checkout on your own computer.
-Use **64-bit Python 3.11** in a separate virtual environment; do not install these
-requirements into the production API environment. Package installation requires
-Internet access; runtime uses MediaPipe models already bundled in its pinned
-wheel and needs no credentials or Internet connection.
-
-Linux (tested on x86-64):
+Use Python 3.11 in a separate environment. From the repository root on Linux:
 
 ```bash
 python3.11 -m venv experiments/geometry_renderer/.venv
 experiments/geometry_renderer/.venv/bin/python -m pip install -r experiments/geometry_renderer/requirements-linux-py311.lock
+experiments/geometry_renderer/.venv/bin/python -m experiments.geometry_renderer.prepare_models
 experiments/geometry_renderer/.venv/bin/python -m experiments.geometry_renderer.launch
 ```
 
-Windows PowerShell (commands provided, Windows runtime not tested here):
+Windows PowerShell (suitable starting point for the user's HP OMEN11 / RTX4060;
+Windows execution and that actual laptop have not been measured here):
 
 ```powershell
 py -3.11 -m venv experiments/geometry_renderer/.venv
 .\experiments\geometry_renderer\.venv\Scripts\python.exe -m pip install -r experiments/geometry_renderer/requirements.txt
+.\experiments\geometry_renderer\.venv\Scripts\python.exe -m experiments.geometry_renderer.prepare_models
 .\experiments\geometry_renderer\.venv\Scripts\python.exe -m experiments.geometry_renderer.launch
 ```
 
-The launcher prints the local address and binds **only to 127.0.0.1**, port 8501.
-Open that address on the same computer. `--port 8502` selects another local port.
-It disables Streamlit usage telemetry and file watching, sets the upload cap to
-10 MiB, limits OpenCV to one thread, and keeps default XSRF/CORS protection.
-On minimal Linux installations OpenCV may require the OS `libgl1` and
-`libglib2.0-0` libraries. No GPU, CUDA, model download, or API key is required.
+Setup downloads two public model assets (~177 MB total) once to ignored `.models/`,
+checks their pinned SHA256 and preserves existing mismatching files. Rendering is
+offline. No tokens, CUDA, Torch or GPU runtime are needed. The RTX4060 is **not**
+automatically used: the packaged OpenCV DNN backend is CPU, normally four threads.
+The launcher binds only to loopback, disables telemetry, and caps input at10MiB.
+`--port` and `--threads` override local defaults.
 
-`requirements.txt` pins direct dependencies for supported platforms;
-`requirements-linux-py311.lock` records all 59 resolved versions validated here.
-MediaPipe **0.10.21** deliberately uses the bundled-model Solutions API. Do not
-upgrade it to a different API/model distribution without updating and testing
-the detector. See [third-party licenses and model provenance](THIRD_PARTY.md).
+Select the public-domain NASA sample or a local JPEG/PNG; current age30 and target75
+are demonstration defaults, not estimates of the sample subject's age. Compare
+all layers, disable skin/hair independently, inspect semantic masks, or use wipe
+and diagnostic difference views. Equal ages are pixel-exact identity in working
+resolution. Clear releases session references, not secure memory erasure.
 
-## Use the demo
+## Pipeline and evidence
 
-1. Select a local JPEG/PNG with one clearly visible, approximately front-facing
-   face, or tick **Use public-domain NASA sample**. The sample is not an AVATAR
-   participant; its license/provenance is [documented here](tests/fixtures/README.md).
-2. Set current age and illustrative target age. Current ages 18–90 and target
-   ages from current age to 100 are supported. Equal ages produce exact identity.
-   These are slider parameters, not an estimate of the subject's actual age.
-3. Independently adjust **nasal tip ptosis**, **cheek/midface descent**, and
-   **lower-face/jowl sagging**. Zero strengths return the original pixels exactly.
-4. **Focus on face** is enabled by default, using exactly the same source-based
-   crop and scale in both views. Uncheck it to inspect the full portrait. Select
-   **Before / after wipe** for aligned inspection, or **Pixel difference ×4** for
-   an explicitly labelled diagnostic. These views do not add more deformation.
-5. Toggle the mesh/landmarks to inspect the mapping on both images. Applied
-   nose-tip/cheek/jowl shifts are displayed in resized input pixels after safety
-   limiting. A subpixel notice appears when the maximum shift is below 1 pixel.
-   **Reset deformation** sets strengths to zero,
-   target age to current age, and disables the overlay without detecting again.
-6. **Clear image from this session** clears the selected source and retained
-   processing state. Selecting new content replaces the old mesh.
+- `age_plan.py` reads existing v03 CSVs and records their SHA256. Seventeen feature
+  curves and an exported19-node/18-edge `local.*` graph overlay add normal aging,
+  missing hair/eye/neck/volume cues. All new edges/curves are **provisional visual
+  mappings**, not physiological causal estimates. Zero lifestyle factors still age.
+- `core.py` applies authored nose, cheek and jowl fields with fixed boundaries and
+  positive triangle-area checks. Scores already contain the age delta, avoiding
+  double age scaling.
+- `conditional_skin.py` applies source/target-conditioned local skin residuals,
+  with single512 or four-window768 quality. Semantic skin masks protect eyes,
+  lips, brows and background; source chroma is preserved. The default learned
+  path **never invokes hand-authored crease curves**. Individual KG feature scores
+  are requests/reference context, not an explanation of neural internals or proof
+  that each requested feature was synthesized.
+- `hair_layers.py` parses source skin/hair/neck once using a verified local model;
+  a mirrored pass reduces left/right parsing bias. Gray blending retains source
+  strand texture. Masks can still miss hair or have uneven boundaries; inspect them.
+- `session.py` caches detection/masks per image and appearance per age/quality;
+  comparison controls reuse the last result. Small faces are upsampled toward300px
+  face height, bounded by1536px canvas. This adds rasterization space, not recovered
+  original detail. No global photo cache or photo files are written.
 
-JPEG/PNG contents must match their extension, be nonempty, ≤10 MiB, have at least
-64 pixels per side, and contain ≤16 million pixels. Animated PNGs are rejected.
-EXIF orientation is applied, metadata is discarded, RGB output is resized to at
-most 960 pixels on its longest side. No usable face, multiple detected faces,
-clipped/tiny faces, and degenerate meshes produce informative errors.
+Skin's normal/height-field procedural fallback is retained only as a diagnostic;
+it was not convincing elderly appearance by itself and is not the product default.
+No production graph, API, consent, IRB, Box or deployment files are changed.
 
-### Privacy boundary
-
-The browser sends selected bytes **only to the local loopback Streamlit process**.
-They remain in the browser/Streamlit session and renderer memory. There is no
-photo-processing API, external upload, photo cache shared between sessions,
-filesystem photo write, download button, or automatic output export. Do not run
-this server remotely or expose it publicly. Closing/clearing releases references,
-not guaranteed secure memory erasure; OS swap/browser memory behavior is outside
-this demo's control. Upstream libraries can print generic initialization warnings
-but application logs contain no photo data or input filenames/paths.
-
-This tool does not authorize participant data collection and must not be wired
-into the research pipeline without a separate reviewed change. Only the explicitly
-licensed fixture is used to create the committed screenshots.
-
-## Geometry and safety
-
-`core.py` exposes the pure field and mesh functions. The unrefined MediaPipe
-468-point topology is explicit in `REGIONS`:
-
-| Hypothesis | Landmark anchors | Maximum authored downward shift | Compact field radius |
-|---|---|---|---|
-| Nose tip ptosis | 1, 2, 4 | 0.048 × detected face height | 0.18 × detected face width |
-| Cheek/midface descent | 50, 101, 205, 280, 330, 425 | 0.072 × face height | 0.28 × face width |
-| Lower-face/jowl sagging | 172, 136, 150, 397, 365, 379 | 0.088 × face height | 0.25 × face width |
-
-Defaults were increased to strength **0.7** with the above 4× amplitude revision.
-The first version's half-strength 30→66 settings moved the NASA sample's nose
-only ~0.37 input pixel and jowls ~0.68 pixel; the face is just 93×103 pixels inside
-that 512-pixel portrait. The revised defaults at the same selected age produce
-~2.08 / 3.12 / 3.82 pixel nose / cheek / jowl shifts. This change makes an authored
-**demonstration** visible; it does not establish a scientifically realistic age
-progression. The compact radii were retained to avoid spreading changes into eyes
-and mouth corners. The default view crops both images identically; it does not
-warp either image again to emphasize the result.
-
-These **unitless visual design parameters are not millimeters-per-decade rates**
-and are not empirical evidence. Strength multiplies each compact Wendland C2
-field; overlapping anchors use the smooth bounded union `1 − ∏(1 − kernel)`
-rather than summing peaks or introducing a hard maximum. An illustrative `min((target_age-current_age)/60, 1)` age fraction scales
-the requested displacement. The number 60 is a UI normalization choice, not a
-biological rate. Regions add together where their fields overlap.
-
-MediaPipe detection and SciPy Delaunay triangulation run once per selected content
-hash. This session-local state has no disk/global photo cache. The mesh adds 32
-fixed image-boundary anchors. On every slider event, the whole field is backtracked
-until every triangle retains positive orientation and at least 10% of its source
-area, and all coordinates stay in bounds. If no safe step is found, identity is
-returned. The UI reports an applied safety scale below 1; safety clipping can make
-combined slider effects nonlinear.
-
-Inverse affine maps use shared barycentric coordinates at triangle edges, with a
-single OpenCV `remap` to sample RGB pixels. This avoids mask holes, overlap blends,
-and different interpolation on shared edges. Incomplete coverage is rejected.
-Authored displacement, not triangulation itself, creates the visual change.
-
-## Tests and measured performance
-
-From the repository root with this virtual environment's Python:
+## Verification and your 20-second gate
 
 ```bash
 python -m pytest experiments/geometry_renderer/tests -q
-python -m experiments.geometry_renderer.benchmark --iterations 20 --size 512
-python -m experiments.geometry_renderer.benchmark --iterations 20 --size 960
+python -m experiments.geometry_renderer.benchmark_aging --quality detail --iterations 3 --output laptop-benchmark.json
 ```
 
-Validation on 2026-10-22: **38 tests passed**, including pixel-exact identity,
-strength/age scaling, bounded coordinates, pinned image borders, positive triangle
-areas, full inverse-map coverage, real MediaPipe single/no/multiple faces, corrupt
-and oversized images, orientation/resize, session reuse, and Streamlit AppTest
-controls/reset/clear. Visibility regressions verify the licensed fixture's default
-nose shift exceeds 1 input pixel and total shift exceeds 2% of face height, while
-remaining below 10%. Aligned crops, exact wipe endpoints, difference identity,
-unchanged source pixels, inspection-mode caching and zero-shift metrics are tested.
-These thresholds validate software visibility, not human aging. The existing main-branch `tests/` suite also passed (3 tests)
-in its original environment; production dependencies were not changed.
+The benchmark includes fresh-process imports, first-photo detection, parsing,
+conditional inference and compositing. New-age timing includes rerunning the
+conditioned model; inspection-cache timing is separate. Exit status2 means the
+20-second budget failed. Downloads/install and browser display are excluded;
+OS file cache may be warm. Run this on the **actual laptop** before accepting its
+20-second contract. Choose `--quality fast` or disable skin if it fails.
 
-CPU: AMD EPYC 9V74, Linux x86-64/glibc 2.41, Python 3.11.17; 5 logical CPUs visible,
-cgroup quota equivalent to 4 CPUs. OpenCV and OpenBLAS were set to one thread for
-the benchmark; MediaPipe uses its own CPU worker threads. Public-domain NASA
-fixture, 966 triangles, full strengths, 20→80 illustrative age interval,
-3 warmups followed by 20 warp/overlay measurements; detection has 5 warm samples.
+Current cloud CPU evidence is in `benchmarks/local-aging-detail.json`: AMD EPYC9V74,
+5 logical CPUs visible/4-CPU quota, four OpenCV threads, no GPU. This measurement
+is not a claim of HP/RTX execution. UI also warns when measured photo processing
+exceeds20seconds. Input validation, exact identity, masks, model hashes, source
+protection, graph overlays, caching and real offline model calls have tests.
 
-| Measurement | 512 × 512 | 960 × 960 |
-|---|---:|---:|
-| First detection, including lazy imports | 1157 ms | 1140 ms |
-| Warm detection p50 / p95 | 17.9 / 21.5 ms | 18.7 / 24.9 ms |
-| One-time mesh preparation | 3.1 ms | 4.2 ms |
-| Cached-landmark warp p50 / p95 | **67.7 / 70.7 ms** | **111.4 / 114.6 ms** |
-| Overlay p50 / p95 | 1.9 / 2.9 ms | 2.7 / 2.8 ms |
+The licensed sample is visually more elderly, with distributed skin relief rather
+than drawn lines; it does not certify target75. Identity, papery skin artifacts,
+demographic/model biases and uneven gray-hair masks remain limitations. No broad
+human age-perception study or clinical validation has been performed.
 
-[Raw 512 results](benchmarks/linux-512.json) · [Raw 960 results](benchmarks/linux-960.json).
-The full-strength 960-pixel run activated the triangle limiter (safety scale
-**0.5**); the 512 run used scale **1.0**. Timings reflect these actual safe outputs,
-not an assumption that every requested displacement was applied unchanged.
-These are server compute timings, not browser frame rates. An observed local
-Chromium run took ~0.81 s for one slider's complete Streamlit/browser round trip;
-initial page + first sample ~3.13 s (warm-process repeat ~1.63 s). Streamlit reruns,
-image encoding/transport and browser rendering dominate that extra latency.
-Performance varies by machine and input; no continuous real-time guarantee.
+## Research / provenance
 
-Optional real-browser validation, with Playwright/Chromium installed and the demo
-running at the default local port:
+[Repository comparison](REPOSITORY_RESEARCH.md) covers Fast-AgingGAN, FRAN,
+3DDFA_V2, DECA, EMOCA, FLAME and FaceScape, including asset/license/CPU limits.
+[Third-party notices](THIRD_PARTY.md) and `models/*.json` record asset hashes,
+MIT author/release provenance, preprocessing and training-data limitations.
+The FRAN model is a124MB public ONNX conversion; no GPL FaceStudio code is used.
+[Fixture provenance](tests/fixtures/README.md): NASA public-domain image only,
+never participant photos. Tests/screenshots explicitly use that fixture.
 
-```bash
-node experiments/geometry_renderer/tests/browser_smoke.cjs
-```
+![Licensed sample, original and illustrative local aging](screenshots/aging-comparison.png)
 
-`CHROMIUM_PATH` overrides the script's `/usr/bin/chromium` default. It verifies a
-rendered sample, visible default displacement, face crop, slider update, cached
-detection, wipe, difference, full-frame view, overlay, reset, clear, corrupt file handling, no browser exceptions, and **zero external browser requests**.
-It intentionally regenerates only the two licensed-fixture screenshots below.
-Browser dependencies are not part of the production or Python demo requirements.
-
-## Limitations
-
-- Only conservative 2D downward displacement, not 3D anatomy, calibrated aging,
-  medical advice, or a forecast. Tilt/pose, hair, expression and occlusion can
-  produce implausible changes; use frontal well-lit images.
-- Detection is fallible. Exactly one **detected usable** face is required; this
-  cannot certify that no other small/occluded face is in the photo. Far-away faces
-  can be missed or yield “no usable face”; no demographic accuracy claim is made.
-- Landmark noise, changing triangle gradients and interpolation can soften pixels
-  or move nearby background. Fixed borders and non-inversion ensure a valid map,
-  not anatomical truth or perfect visual quality.
-- Face Mesh does not reliably represent external ears. No ear controls or
-  appearance/texture synthesis are included.
-- Memory and image dimensions are bounded at input; clearing is not secure erasure.
-  Windows commands are documented but only Linux execution was validated.
-- No live research photos, Box operations, generation services, API/deployment
-  changes, or research consent/IRB changes were used for this experiment.
-
-## Screenshots
-
-Explicitly captured from the public-domain NASA fixture, never participant photos.
-
-![Original and illustrative geometric warp](screenshots/demo.png)
-![Pinned mesh and landmark overlay on both views](screenshots/mesh.png)
-
-## Files
-
-- `core.py`: region indices, authored fields, mesh validation, inverse map, overlay.
-- `detection.py`: bounded JPEG/PNG decode and offline CPU MediaPipe detection.
-- `session.py`: per-session in-memory detection/triangulation reuse.
-- `comparison.py`: shared face crops, wipe, diagnostic differences and applied shifts.
-- `app.py`, `launch.py`: local Streamlit UI and loopback-only launch settings.
-- `requirements*.txt` / `*.lock`, `THIRD_PARTY.md`: isolated dependencies/provenance.
-- `tests/`: pure functions, real detector, session/UI validation, licensed fixture,
-  optional Chromium smoke test.
-- `benchmark.py`, `benchmarks/`, `screenshots/`: reproducible timing evidence and
-  explicitly generated licensed-demo screenshots.
+Latest verification: **114 experiment tests passed**, plus3 existing API tests.
+On the recorded cloud CPU the mirrored-parser/detail run took **8.878s** for the
+first photo and **7.283s** for the next target age; the20-second gate passed.
+The real-browser smoke checks full rendering, wipe, identity reset, clear, no
+browser exceptions and no external browser requests. These are engineering and
+licensed-fixture visual checks, not laptop measurements or an age-accuracy score.

@@ -43,3 +43,14 @@ def applied_shifts(prepared: PreparedFace, destination: np.ndarray) -> dict[str,
     distances = np.linalg.norm(destination-prepared.points, axis=1)
     return {**{name: float(distances[list(indices)].mean()) for name,indices in REGIONS.items()},
             'maximum': float(distances[:prepared.face_count].max())}
+
+
+def head_crop_bounds(prepared: PreparedFace) -> tuple[int,int,int,int]:
+    """Fixed shared crop includes existing scalp hair and some visible neck."""
+    face = prepared.points[:prepared.face_count]
+    low,high = face.min(axis=0),face.max(axis=0)
+    width,height = high-low
+    h,w = prepared.image.shape[:2]
+    x0,y0 = np.maximum(np.floor(low-[width*.5,height*.8]),0).astype(int)
+    x1,y1 = np.minimum(np.ceil(high+[width*.5,height*.4])+1,[w,h]).astype(int)
+    return int(x0),int(y0),int(x1),int(y1)

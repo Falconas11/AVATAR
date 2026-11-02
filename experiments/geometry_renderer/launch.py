@@ -2,16 +2,18 @@
 from pathlib import Path
 import argparse
 import sys
+import os
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8501)
+    parser.add_argument('--threads',type=int,default=min(4,os.cpu_count() or 1))
     args = parser.parse_args()
     if not 1024 <= args.port <= 65535:
         parser.error('port must be between 1024 and 65535')
     import cv2
-    cv2.setNumThreads(1)
+    cv2.setNumThreads(max(1,args.threads))
     from streamlit.web import cli
     sys.argv = ['streamlit', 'run', str(Path(__file__).with_name('app.py')),
                 '--server.address=127.0.0.1', f'--server.port={args.port}',

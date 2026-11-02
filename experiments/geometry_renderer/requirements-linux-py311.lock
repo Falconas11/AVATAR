@@ -34,7 +34,7 @@ pandas==2.3.3
 pillow==11.2.1
 pluggy==1.7.0
 protobuf==4.25.9
-pyarrow==26.0.0
+pyarrow==19.0.1
 pycparser==3.12
 pydeck==0.9.3
 pyparsing==3.3.3
