@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 (async()=>{const b=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium'});try{
  const p=await b.newPage({viewport:{width:1500,height:1450}});const external=[],errors=[];p.on('pageerror',e=>errors.push(e.message));
  await p.route('**/*',r=>{const h=new URL(r.request().url()).hostname;if(h&&!['localhost','127.0.0.1'].includes(h)){external.push(h);return r.abort();}return r.continue();});
- await p.goto('http://127.0.0.1:8501');await p.getByText('Use public-domain NASA sample',{exact:true}).click();
+ await p.goto('http://127.0.0.1:8501');await p.getByText('Use bundled test portrait',{exact:true}).click();
  await p.getByText(/Local render:/).waitFor({timeout:60000});
  await p.locator('[data-testid=stImage] img').nth(1).evaluate(i=>i.decode());
  await p.screenshot({path:'experiments/geometry_renderer/screenshots/local-aging-ui.png',fullPage:true});

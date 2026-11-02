@@ -41,7 +41,8 @@ with st.sidebar:
     st.header('Local portrait')
     uploaded = st.file_uploader('Select JPEG or PNG (10 MiB maximum)',type=['jpg','jpeg','png'],
         key=f'portrait_{st.session_state.upload_generation}')
-    use_sample = st.checkbox('Use public-domain NASA sample',key='use_sample')
+    use_sample = st.checkbox('Use bundled test portrait',key='use_sample')
+    sample_choice = st.selectbox('Test portrait',['Synthetic S01','Synthetic S02','Synthetic S03','Synthetic S04','NASA reference'],disabled=not use_sample,key='sample_choice')
     st.button('Clear image from this session',on_click=clear_image)
     st.header('Age progression')
     current = st.slider('Current age',18,90,30,key='current_age')
@@ -83,9 +84,15 @@ with st.sidebar.expander('Individual aging features'):
 if uploaded is not None:
     data,suffix = uploaded.getvalue(),Path(uploaded.name).suffix
 elif use_sample:
-    data = (Path(__file__).parent/'tests/fixtures/astronaut.png').read_bytes()
-    suffix = '.png'
-    st.caption('Sample: public-domain NASA portrait of Eileen Collins via scikit-image. Stated input age is illustrative; no endorsement is implied.')
+    if sample_choice=='NASA reference':
+        data=(Path(__file__).parent/'tests/fixtures/astronaut.png').read_bytes()
+        st.caption('Public-domain NASA reference. The face occupies only about100 source pixels in height; it is retained as a low-resolution comparison.')
+    else:
+        sample_id=sample_choice.split()[-1]
+        data=(Path(__file__).parent/'tests/fixtures/synthetic_portraits'/f'{sample_id}.png').read_bytes()
+        st.caption(f'{sample_id}: generated fictional adult input, not a real participant. Age30 is a shared test control, not a true or estimated age. Older output is produced by the local program.')
+    suffix='.png'
+
 else:
     session.clear()
     st.info('Select a local portrait with exactly one clearly visible face, or use the licensed sample.')

@@ -146,3 +146,20 @@ Recorded cloud CPU quality-first run: first photo **15.682s**, next age **14.228
 no GPU. Raw measurements: `benchmarks/local-aging-ultra-v03.json`. These are not
 measurements on the user's HP laptop. The earlier114-test/four-window results
 above are historical v0.2 evidence.
+
+## Clear synthetic portrait batch
+
+The bundled-sample chooser now defaults to a clear fictional adult portrait, with
+four synthetic choices and the original low-resolution NASA reference retained.
+The generator makes inputs only; the local program makes the older outputs.
+
+[Four-input unified comparison and findings](validation/synthetic_v03/README.md)
+contains matched input/60/75 panels, exact shared settings and per-output hashes.
+All8 renders completed; native face heights332–350px, no input upsampling. This
+makes model artifacts more visible, not proof of exact age/identity accuracy.
+The fixtures' provenance and generation/crop manifest are in
+`tests/fixtures/synthetic_portraits/`. Reproduce with:
+
+```sh
+python -m experiments.geometry_renderer.validate_synthetic_batch --quality ultra
+```
